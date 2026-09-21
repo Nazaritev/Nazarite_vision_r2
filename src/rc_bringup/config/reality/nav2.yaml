@@ -1,0 +1,258 @@
+planner_server:
+    ros__parameters:
+        use_sim_time: False
+        expected_planner_frequency: 10.0                 # 如果没有达到频率就输出警告，并不能真正改变频率
+        planner_plugins: [ "GridBased" ]                 # 路径规划器的映射名
+        GridBased:
+            plugin: "navfn_planner/NavfnPlanner"
+            tolerance: 1.0                               # 终点偏差的容忍值
+            use_astar: false                             # 是否使用A*算法，否则使用Dijkstra算法
+            allow_unknown: true                          # 是否允许在未知区域规划路径
+            use_final_approach_orientation: false        # 终点是否使用设定的朝向
+
+controller_server:
+    ros__parameters:
+        use_sim_time: False
+        controller_frequency: 100.0                      # 速度发送频率（局部路径频率）
+        publish_zero_velocity: True                      # 是否在目标没有之后发布0速度
+        action_server_result_timeout: 10.0               # 行为服务器超时时间
+        controller_plugins: [ "FollowPath" ]             # 处理请求和参数的控制器插件的映射名称列表
+        progress_checker_plugin: "progress_checker"      # 进度检查器插件的映射名称
+        goal_checker_plugins: [ "goal_checker" ]         # 检查目标是否达到的目标检查器插件的映射名称列表
+        min_x_velocity_threshold: 0.01                   # 最小x轴速度阈值
+        min_y_velocity_threshold: 0.01                   # 最小y轴速度阈值
+        min_theta_velocity_threshold: 0.001              # 最小角速度阈值
+        failure_tolerance: 0.5                           # FollowPath操作失败之前，控制器插件失败的最大容忍时间
+        speed_limit_topic: "speed_limit"                 # 速度限制话题
+        odom_topic: "/Odometry"                          # 获取速度瞬时测量值的话题
+        enable_stamped_cmd_vel: False                    # True - 使用geometry_msgs::msg::TwistStamped消息类型，False - 使用geometry_msgs::msg::Twist消息类型
+        bond_heartbeat_period: 0.1                       # 生命周期节点绑定机制发布周期
+
+        progress_checker:
+            plugin: "nav2_controller::SimpleProgressChecker"
+            required_movement_radius: 0.30
+            movement_time_allowance: 25.0
+
+        goal_checker:
+            stateful: True
+            plugin: "nav2_controller::SimpleGoalChecker"
+            xy_goal_tolerance: 0.10
+            yaw_goal_tolerance: 3.1416
+
+        FollowPath:
+            plugin: "pb_omni_pid_pursuit_controller::OmniPidPursuitController"
+            translation_kp: 6.0                               # 移动速度pid
+            translation_ki: 0.1                               # 移动速度pid
+            translation_kd: 0.3                               # 移动速度pid
+            enable_head_rotation: false                        # true-头朝向路径 false-头边导自转
+            rotation_speed: 0.0                               # 导航的自转速度
+            rotation_kp: 3.0                                  # 旋转速度pid
+            rotation_ki: 0.1                                  # 旋转速度pid
+            rotation_kd: 0.3                                  # 旋转速度pid
+            transform_tolerance: 0.1                          # 坐标转换超时阈值，单位为秒
+            min_max_sum_error: 1.0                            # 没用的
+            lookahead_dist: 0.3                               # 前瞻点距离，use_velocity_scaled_lookahead_dist为false时有效
+            use_velocity_scaled_lookahead_dist: false         # 是否根据速度控制前瞻点距离
+            lookahead_time: 0.35                              # 前瞻点距离倍数，前瞻点距离=速度大小*lookahead_time，use_velocity_scaled_lookahead_dist为true时有效
+            min_lookahead_dist: 0.3                           # 最小前瞻点距离，use_velocity_scaled_lookahead_dist为true时有效
+            max_lookahead_dist: 0.5                           # 最大前瞻点距离，use_velocity_scaled_lookahead_dist为true时有效
+            use_interpolation: false                          # 寻找前瞻点是否使用插值
+            use_rotate_to_heading: false                      # 是否调整好朝向再移动
+            use_rotate_to_heading_treshold: 0.1               # 好像低于这个阈值就当作调整好了，use_rotate_to_heading为true时有效
+            min_approach_linear_velocity: 0.5                 # 最小速度大小
+            approach_velocity_scaling_dist: 1.0               # 距离终点多远开始减速
+            v_linear_min: -1.5                                # 最小速度
+            v_linear_max: 1.5                                 # 最大速度
+            v_angular_min: -3.0                               # 最小旋转速度
+            v_angular_max: 3.0                                # 最大旋转速度
+            curvature_min: 0.4                                # 低曲率阈值，低于此值不减速。
+            curvature_max: 0.7                                # 高曲率阈值，高于此值大幅减速。
+            reduction_ratio_at_high_curvature: 1.0            # 高曲率时的速度降低比例。 0.5 (即减速 50%)
+            curvature_forward_dist: 0.7                       # 前向距离，用于曲率计算
+            curvature_backward_dist: 0.3                      # 后向距离，用于曲率计算
+            max_velocity_scaling_factor_rate: 0.9             # 速度缩放因子的最大变化率
+
+velocity_smoother:
+    ros__parameters:
+        use_sim_time: False                  # 是否使用仿真时间
+        smoothing_frequency: 100.0           # 输出速度频率，如果大于输入速度频率，则使用插值
+        scale_velocities: False              # 如果当前加速度大于设定的加速度，是否对所有轴的速度都缩放
+        feedback: "OPEN_LOOP"                # OPEN_LOOP为开环控制，CLOSE_LOOP为使用里程计进行闭环控制
+        max_velocity: [ 3.0, 3.0, 4.0 ]      # 最大速度
+        min_velocity: [ -3.0, -3.0, -4.0 ]   # 最小速度
+        max_accel: [ 2.5, 2.5, 4.0 ]         # 最大加速度
+        max_decel: [ -2.5, -2.5, -4.0 ]      # 最小加速度
+        odom_topic: "/Odometry"              # 里程计话题，feedback为CLOSE_LOOP时使用
+        odom_duration: 0.1                   # 里程计周期，feedback为CLOSE_LOOP时使用
+        deadband_velocity: [ 0.0, 0.0, 0.0 ] # 死区速度，对于每个速度分量，速度大小小于死区速度，就会是0
+        velocity_timeout: 0.5                # 如果这个时间内没有接收到速度，就会发送速度0
+
+global_costmap:
+    global_costmap:
+        ros__parameters:
+            use_sim_time: False
+            update_frequency: 10.0
+            publish_frequency: 2.0
+            global_frame: map
+            robot_base_frame: base_link
+            robot_radius: 0.30
+            resolution: 0.05
+            track_unknown_space: true
+            transform_tolerance: 2.0
+            always_send_full_costmap: False
+            plugins: [ "static_layer", "terrain_analysis_layer", "denoise_layer", "inflation_layer" ]
+            static_layer:
+                plugin: "nav2_costmap_2d::StaticLayer"
+                map_subscribe_transient_local: True
+            terrain_analysis_layer:
+                plugin: "terrain_analysis_layer::TerrainAnalysisLayer"
+                enabled: true
+                footprint_clearing_enabled: false
+                point_cloud_topic1: "/livox/lidar"
+                point_cloud_topic2: ""
+                # combined_point_cloud_topic: ""
+                combined_point_cloud_topic: "/combined_point_cloud"
+                obstacle_point_cloud_topic: "/segmentation/obstacle"
+                # ground_point_cloud_topic: ""
+                ground_point_cloud_topic: "/segmentation/ground"
+                max_interval_duration: 0.15
+                sensor_frame: "livox_frame"
+                min_intensity: 0.1
+                max_intensity: 2.0
+                scan_voxel_size: 0.05               # 点云下采样
+                decay_time: 0.5                     # 点云时间差阈值 大于则不会被处理
+                no_decay_dis: 0.0                   # 点云距离阈值 小于该阈值不考虑时间差
+                clearing_dis: 0.0                   # 该距离外的点会被清除
+                use_sorting: True                   # 这个参数开起来就能上坡了；如果 use_sorting,那么就以周围点中的分位点作为地面点，否则以最低点作为地面点；周围其余点相对于地面点的高度作为通过代价，所以对于坡面，有的点的代价是正，有的是负，就相互抵消了；不要与 consider_drop 同时开启，计算上会有冲突
+                quantile_z: 0.2                     # useful if use_sorting is enabled.
+                consider_drop: False                # 考虑凹下去的地面,开启则将相对于地面点的高度取绝对值
+                limit_ground_lift: False            # useful if use_sorting is enabled
+                max_ground_lift: 0.3                # useful if use_sorting is enabled
+                clear_dy_obs: True                  # 清除动态物体的话，有动态物体走过的地方就走不了了
+                min_dy_obs_dis: 0.3                 # 以下参数都是在 clear_dy_obs 的情况下才有用的
+                min_dy_obs_angle: 0.0
+                min_dy_obs_rel_z: -0.3
+                abs_dy_obs_rel_z_thre: 0.2
+                min_dy_obs_vfov: -28.0
+                max_dy_obs_vfov: 33.0
+                min_dy_obs_point_num: 1
+                no_data_obstacle: False             # treat no data as obstacle
+                no_data_block_skip_num: 0
+                min_block_point_num: 10
+                vehicle_height: 0.5                 # 小于车辆高度的点才会进行处理
+                voxel_point_update_thre: 100
+                voxel_time_update_thre: 1.0
+                min_rel_z: -1.5                     # min_rel_z 以及 max_rel_z 限制了有效点云点的Z值范围，用于对天花板和地板进行处理
+                max_rel_z: 1.0
+                dis_ratio_z: 0.2                    # Z 值的最大最小范围由这两个值决定，但是并不等于这两个值，是有一个比例关系的，距离机器人越远，限定范围就越大，这其中考虑了坡度
+            denoise_layer:
+                plugin: "nav2_costmap_2d::DenoiseLayer"
+                enabled: true
+                minimal_group_size: 2
+                group_connectivity_type: 8
+            inflation_layer:
+                plugin: "nav2_costmap_2d::InflationLayer"
+                cost_scaling_factor: 2.8
+                inflation_radius: 3.0
+
+local_costmap:
+    local_costmap:
+        ros__parameters:
+            use_sim_time: False
+            update_frequency: 2.0
+            publish_frequency: 1.0
+            global_frame: odom
+            robot_base_frame: base_link
+            robot_radius: 0.30
+            rolling_window: true
+            width: 12
+            height: 12
+            resolution: 0.05
+            track_unknown_space: true
+            always_send_full_costmap: False
+            plugins: [ "static_layer" ]
+            static_layer:
+                plugin: "nav2_costmap_2d::StaticLayer"
+                map_subscribe_transient_local: True
+
+map_server:
+    ros__parameters:
+        use_sim_time: False
+        # Overridden in launch by the "map" launch configuration or provided default value.
+        # To use in yaml, remove the default "map" value in the tb3_simulation_launch.py file & provide full path to map below.
+        yaml_filename: ""
+
+map_saver:
+    ros__parameters:
+        use_sim_time: False
+        save_map_timeout: 5.0
+        free_thresh_default: 0.25
+        occupied_thresh_default: 0.65
+        map_subscribe_transient_local: True
+
+# https://docs.nav2.org/configuration/packages/configuring-bt-navigator.html#parameters
+bt_navigator:
+    ros__parameters:
+        use_sim_time: False                 # 是否使用仿真环境的时间
+        global_frame: map                   # 全局帧
+        robot_base_frame: base_link         # 行为树XML描述的路径
+        odom_topic: /Odometry               # 里程计发布的话题
+        bt_loop_duration: 10                # BT执行每次迭代的持续时间（以毫秒为单位）。
+        default_server_timeout: 20          # BT操作节点等待操作服务器确认时的默认超时值（以毫秒为单位）
+        plugin_lib_names:                   # 行为树节点共享库列表
+            - nav2_compute_path_to_pose_action_bt_node
+            - nav2_compute_path_through_poses_action_bt_node
+            - nav2_smooth_path_action_bt_node
+            - nav2_follow_path_action_bt_node
+            - nav2_spin_action_bt_node
+            - nav2_wait_action_bt_node
+            - nav2_assisted_teleop_action_bt_node
+            - nav2_back_up_action_bt_node
+            - nav2_drive_on_heading_bt_node
+            - nav2_clear_costmap_service_bt_node
+            - nav2_is_stuck_condition_bt_node
+            - nav2_goal_reached_condition_bt_node
+            - nav2_goal_updated_condition_bt_node
+            - nav2_globally_updated_goal_condition_bt_node
+            - nav2_is_path_valid_condition_bt_node
+            - nav2_initial_pose_received_condition_bt_node
+            - nav2_reinitialize_global_localization_service_bt_node
+            - nav2_rate_controller_bt_node
+            - nav2_distance_controller_bt_node
+            - nav2_speed_controller_bt_node
+            - nav2_truncate_path_action_bt_node
+            - nav2_truncate_path_local_action_bt_node
+            - nav2_goal_updater_node_bt_node
+            - nav2_recovery_node_bt_node
+            - nav2_pipeline_sequence_bt_node
+            - nav2_round_robin_node_bt_node
+            - nav2_transform_available_condition_bt_node
+            - nav2_time_expired_condition_bt_node
+            - nav2_path_expiring_timer_condition
+            - nav2_distance_traveled_condition_bt_node
+            - nav2_single_trigger_bt_node
+            - nav2_goal_updated_controller_bt_node
+            - nav2_is_battery_low_condition_bt_node
+            - nav2_navigate_through_poses_action_bt_node
+            - nav2_navigate_to_pose_action_bt_node
+            - nav2_remove_passed_goals_action_bt_node
+            - nav2_planner_selector_bt_node
+            - nav2_controller_selector_bt_node
+            - nav2_goal_checker_selector_bt_node
+            - nav2_controller_cancel_bt_node
+            - nav2_path_longer_on_approach_bt_node
+            - nav2_wait_cancel_bt_node
+            - nav2_spin_cancel_bt_node
+            - nav2_back_up_cancel_bt_node
+            - nav2_assisted_teleop_cancel_bt_node
+            - nav2_drive_on_heading_cancel_bt_node
+            - nav2_is_battery_charging_condition_bt_node
+            - costmap_updated_controller_bt_node
+
+bt_navigator_navigate_through_poses_rclcpp_node:
+    ros__parameters:
+        use_sim_time: False
+
+bt_navigator_navigate_to_pose_rclcpp_node:
+    ros__parameters:
+        use_sim_time: False

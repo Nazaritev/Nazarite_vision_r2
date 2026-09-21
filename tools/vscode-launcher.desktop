@@ -1,0 +1,18 @@
+[Desktop Entry]
+Name=Visual Studio Code
+Comment=Code Editing. Redefined.
+GenericName=Text Editor
+Exec=env HOME=/tmp/vscode-home-dgut XDG_CONFIG_HOME=/tmp/vscode-home-dgut/.config XDG_CACHE_HOME=/tmp/vscode-home-dgut/.cache XDG_DATA_HOME=/tmp/vscode-home-dgut/.local/share XDG_RUNTIME_DIR=/tmp/vscode-runtime-dgut ELECTRON_OZONE_PLATFORM_HINT=x11 /usr/share/code/code --ozone-platform=x11 --disable-gpu --disable-extensions --no-sandbox --user-data-dir=/tmp/vscode-user-dgut --extensions-dir=/home/dgut/.vscode/extensions %F
+Icon=vscode
+Type=Application
+StartupNotify=false
+StartupWMClass=Code
+Categories=TextEditor;Development;IDE;
+MimeType=application/x-code-workspace;
+Keywords=vscode;
+Actions=new-empty-window;
+
+[Desktop Action new-empty-window]
+Name=New Empty Window
+Exec=env HOME=/tmp/vscode-home-dgut XDG_CONFIG_HOME=/tmp/vscode-home-dgut/.config XDG_CACHE_HOME=/tmp/vscode-home-dgut/.cache XDG_DATA_HOME=/tmp/vscode-home-dgut/.local/share XDG_RUNTIME_DIR=/tmp/vscode-runtime-dgut ELECTRON_OZONE_PLATFORM_HINT=x11 /usr/share/code/code --ozone-platform=x11 --disable-gpu --disable-extensions --no-sandbox --user-data-dir=/tmp/vscode-user-dgut --extensions-dir=/home/dgut/.vscode/extensions --new-window %F
+Icon=vscode

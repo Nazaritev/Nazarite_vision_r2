@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="sentry_chassis_geometry">
+  <xacro:macro name="sentry_chassis_geometry" params="">
+    <!-- Keep base_link at the MID360 internal IMU origin for FAST-LIO. -->
+    <xacro:property name="livox_mount_roll" value="0.0"/>
+    <xacro:property name="livox_mount_pitch" value="3.1415926"/>
+    <xacro:property name="livox_mount_yaw" value="0.0"/>
+    <xacro:property name="livox_in_imu_x" value="-0.011"/>
+    <xacro:property name="livox_in_imu_y" value="-0.02329"/>
+    <xacro:property name="livox_in_imu_z" value="0.04412"/>
+
+    <link name="base_link"/>
+    <link name="chassis_link"/>
+    <link name="zed_camera_link"/>
+    <link name="livox_frame"/>
+    <link name="imu_link"/>
+
+    <joint name="base_to_chassis_link" type="fixed">
+      <origin rpy="0 0 0" xyz="-0.256 -0.291 -0.576"/>
+      <parent link="base_link"/>
+      <child link="chassis_link"/>
+      <axis xyz="0 0 0"/>
+    </joint>
+
+    <joint name="base_to_imu" type="fixed">
+      <origin
+        rpy="${livox_mount_roll} ${livox_mount_pitch} ${livox_mount_yaw}"
+        xyz="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="imu_link"/>
+      <axis xyz="0 0 0"/>
+    </joint>
+
+    <joint name="base_to_zed_camera_link" type="fixed">
+      <origin rpy="0 0 0" xyz="0 0 0.1"/>
+      <parent link="base_link"/>
+      <child link="zed_camera_link"/>
+      <axis xyz="0 0 0"/>
+    </joint>
+
+    <joint name="imu_to_livox" type="fixed">
+      <origin rpy="0 0 0" xyz="${livox_in_imu_x} ${livox_in_imu_y} ${livox_in_imu_z}"/>
+      <parent link="imu_link"/>
+      <child link="livox_frame"/>
+      <axis xyz="0 0 0"/>
+    </joint>
+  </xacro:macro>
+</robot>

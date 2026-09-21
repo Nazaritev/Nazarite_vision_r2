@@ -1,0 +1,25 @@
+relocalization:
+  ros__parameters:
+    initialpose_default: [0.0,0.0, 0.0, 0.0, 0.0, 0.0]
+    initialpose_presets:
+      start_origin: [0.0,0.0, 0.0, 0.0, 0.0, 0.0]
+      start_red_main: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      start_blue_main: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    active_region: global
+    regions:
+      global:
+        score_threshold: 6.0
+        ndt_resolution: 0.35
+        voxel_leaf_size: 0.06
+        scan_min_range: 0.5
+        scan_max_range: 6.4
+        local_map_radius: 7.5
+        min_scan_interval_sec: 0.08
+      key_zone:
+        score_threshold: 5.0
+        ndt_resolution: 0.30
+        voxel_leaf_size: 0.05
+        scan_min_range: 0.5
+        scan_max_range: 5.4
+        local_map_radius: 6.0
+        min_scan_interval_sec: 0.08

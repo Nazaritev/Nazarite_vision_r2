@@ -1,0 +1,64 @@
+/**:
+    ros__parameters:
+        feature_extract_enable: false
+        point_filter_num: 2
+        max_iteration: 6
+        filter_size_surf: 0.05
+        filter_size_map: 0.06
+        cube_side_length: 24.0
+        runtime_pos_log_enable: false
+        map_file_path: /home/dgut/scans.pcd
+
+        common:
+            lid_topic:  "/livox/lidar"
+            imu_topic:  "/livox/imu"
+            time_sync_en: false        # MID360 internal LiDAR/IMU timestamps are preferred over FAST-LIO software sync
+            time_offset_lidar_to_imu: 0.0 # Time offset between lidar and IMU calibrated by other algorithms, e.g. LI-Init (can be found in README).
+                                        # This param will take effect no matter what time_sync_en is. So if the time offset is not known exactly, please set as 0.0
+
+        preprocess:
+            lidar_type: 1                # 1 for Livox serials LiDAR, 2 for Velodyne LiDAR, 3 for ouster LiDAR, 4 for any other pointcloud input
+            scan_line:  6
+            blind: 0.6
+            timestamp_unit: 3
+            scan_rate: 10
+
+        mapping:
+            acc_cov: 0.1
+            gyr_cov: 0.1
+            b_acc_cov: 0.0001
+            b_gyr_cov: 0.0001
+            fov_degree:    360.0
+            det_range:     6.0
+            extrinsic_est_en: false      # Fixed install on the chassis; keep LiDAR-in-IMU extrinsic locked
+            extrinsic_T: [ -0.011, -0.02329, 0.04412 ]
+            extrinsic_R: [ 1.0, 0.0, 0.0,
+                           0.0, 1.0, 0.0,
+                           0.0, 0.0, 1.0 ]
+            plane_fit_threshold: 0.12    # Keep enough planar correspondences for startup recovery
+            max_match_sq_dist: 5.0       # Avoid rejecting valid correspondences while the map is sparse
+            max_plane_normal_z: 1.1      # Keep ground for z/roll/pitch observability; tighten by config only if yaw still slides
+            body_min_xy_range: 0.25      # Reject chassis/self-hit returns close to the upside-down sensor
+            body_max_xy_range: 5.2       # Keep the local tracker focused on one half-field worth of stable structure
+            body_z_min: -1.60
+            body_z_max: 0.80             # Upside-down MID360 at 0.6m: keep ground and block-top returns, still reject far-below outliers
+            skip_map_update_on_degeneracy: false # Keep updating the map so FAST-LIO can recover from sparse startup matches
+
+        publish:
+            path_en: false               # Path is not needed in competition and costs memory/bandwidth
+            effect_map_en: false         # Effect cloud is mainly for debugging and costs extra bandwidth
+            map_en: false                # The full accumulated map is not needed by the runtime stack
+            scan_publish_en:  true       # false: close all the point cloud output
+            laser_map_publish_en: true  # Keep internal accumulation but stop publishing the full map cloud during competition
+            dense_publish_en: false      # false: low down the points number in a global-frame point clouds scan.
+            scan_bodyframe_pub_en: false # IMU-body-frame cloud is only for debugging and adds extra publication load
+
+        diagnostics:
+            min_effective_features_warn: 80
+            max_horizontal_ratio_warn: 0.80
+            min_vertical_ratio_warn: 0.08
+
+        pcd_save:
+            pcd_save_en: true
+            interval: -1                 # how many LiDAR frames saved in each pcd file; 
+                                        # -1 : all frames will be saved in ONE pcd file, may lead to memory crash when having too much frames.

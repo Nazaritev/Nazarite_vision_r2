@@ -1,0 +1,31 @@
+<root main_tree_to_execute="MainTree">
+    <BehaviorTree ID="MainTree">
+        <RecoveryNode number_of_retries="100" name="NavigateRecovery">
+            <PipelineSequence name="NavigateWithReplanning">
+                <CostmapUpdatedController costmap_name="global_costmap">
+                    <ReactiveSequence>
+                        <RemovePassedGoals input_goals="{goals}" output_goals="{goals}"
+                            radius="0.7" />
+                        <ComputePathThroughPoses goals="{goals}" path="{path}"
+                            planner_id="GridBased" />
+                    </ReactiveSequence>
+                </CostmapUpdatedController>
+                <GoalCheckerSelector
+                    default_goal_checker="goal_checker"
+                    topic_name="goal_checker_selector"
+                    selected_goal_checker="{selected_goal_checker}" />
+                <FollowPath
+                    path="{path}"
+                    controller_id="FollowPath"
+                    goal_checker_id="{selected_goal_checker}" />
+            </PipelineSequence>
+            <ReactiveFallback name="RecoveryFallback">
+                <GoalUpdated />
+                <RoundRobin name="RecoveryActions">
+                    <ClearEntireCostmap name="ClearGlobalCostmap-Subtree"
+                        service_name="global_costmap/clear_entirely_global_costmap" />
+                </RoundRobin>
+            </ReactiveFallback>
+        </RecoveryNode>
+    </BehaviorTree>
+</root>

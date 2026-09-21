@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -e
+mkdir -p /tmp/vscode-home-dgut/.config /tmp/vscode-home-dgut/.cache /tmp/vscode-home-dgut/.local/share /tmp/vscode-runtime-dgut /tmp/vscode-user-dgut
+chmod 700 /tmp/vscode-runtime-dgut
+exec env HOME=/tmp/vscode-home-dgut XDG_CONFIG_HOME=/tmp/vscode-home-dgut/.config XDG_CACHE_HOME=/tmp/vscode-home-dgut/.cache XDG_DATA_HOME=/tmp/vscode-home-dgut/.local/share XDG_RUNTIME_DIR=/tmp/vscode-runtime-dgut ELECTRON_OZONE_PLATFORM_HINT=x11 /usr/share/code/code --ozone-platform=x11 --disable-gpu --disable-extensions --no-sandbox --user-data-dir=/tmp/vscode-user-dgut --extensions-dir=/home/dgut/.vscode/extensions "$@"

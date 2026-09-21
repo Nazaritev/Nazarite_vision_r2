@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="arm-new23">
+  <xacro:arg name="arm_mount_x" default="0.0"/>
+  <xacro:arg name="arm_mount_y" default="0.0"/>
+  <xacro:arg name="arm_mount_z" default="0.0"/>
+  <xacro:arg name="arm_mount_roll" default="0.0"/>
+  <xacro:arg name="arm_mount_pitch" default="0.0"/>
+  <xacro:arg name="arm_mount_yaw" default="0.0"/>
+
+  <xacro:include filename="$(find rc_bringup)/urdf/reality/combined_geometry_new23_macro.xacro"/>
+
+  <xacro:combined_arm_new23_geometry
+    arm_mount_x="$(arg arm_mount_x)"
+    arm_mount_y="$(arg arm_mount_y)"
+    arm_mount_z="$(arg arm_mount_z)"
+    arm_mount_roll="$(arg arm_mount_roll)"
+    arm_mount_pitch="$(arg arm_mount_pitch)"
+    arm_mount_yaw="$(arg arm_mount_yaw)"/>
+</robot>

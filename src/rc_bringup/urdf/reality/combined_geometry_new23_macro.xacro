@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="arm-new23_combined_geometry">
+  <xacro:include filename="$(find rc_bringup)/urdf/reality/chassis_geometry_macro.xacro"/>
+  <xacro:include filename="$(find arm-new23)/urdf/arm-new23.geometry_macro.xacro"/>
+
+  <xacro:macro name="combined_arm_new23_geometry" params="
+      arm_mount_x:=0.0
+      arm_mount_y:=0.0
+      arm_mount_z:=0.0
+      arm_mount_roll:=0.0
+      arm_mount_pitch:=0.0
+      arm_mount_yaw:=0.0">
+    <xacro:sentry_chassis_geometry/>
+
+    <link name="arm_mount_link"/>
+    <joint name="chassis_to_arm_mount_new23_joint" type="fixed">
+      <origin
+        xyz="${arm_mount_x} ${arm_mount_y} ${arm_mount_z}"
+        rpy="${arm_mount_roll} ${arm_mount_pitch} ${arm_mount_yaw}"/>
+      <parent link="chassis_link"/>
+      <child link="arm_mount_link"/>
+      <axis xyz="0 0 0"/>
+    </joint>
+
+    <xacro:arm_new23_geometry parent="arm_mount_link"/>
+  </xacro:macro>
+</robot>
