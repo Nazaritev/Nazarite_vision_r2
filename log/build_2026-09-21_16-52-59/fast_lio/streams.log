@@ -1,0 +1,301 @@
+[0.008s] Invoking command in '/home/dgut/code/Nazarite/build/fast_lio': AMENT_PREFIX_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/dgut/code/Nazarite/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/dgut/code/Nazarite/src/fast_lio -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/dgut/code/Nazarite/install/fast_lio
+[0.049s] -- The C compiler identification is GNU 11.4.0
+[0.089s] -- The CXX compiler identification is GNU 11.4.0
+[0.095s] -- Detecting C compiler ABI info
+[0.150s] -- Detecting C compiler ABI info - done
+[0.154s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.154s] -- Detecting C compile features
+[0.155s] -- Detecting C compile features - done
+[0.157s] -- Detecting CXX compiler ABI info
+[0.216s] -- Detecting CXX compiler ABI info - done
+[0.220s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.221s] -- Detecting CXX compile features
+[0.221s] -- Detecting CXX compile features - done
+[0.221s] -- Current CPU archtecture: x86_64
+[0.226s] -- Processer number:  16
+[0.226s] -- core for MP: 3
+[0.493s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found version "3.10.12") 
+[0.495s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.602s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.648s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.671s] -- Found rclcpp: 16.0.18 (/opt/ros/humble/share/rclcpp/cmake)
+[0.698s] -- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.702s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.708s] -- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.717s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.728s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.761s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.763s] -- Found rmw_cyclonedds_cpp: 1.3.4 (/opt/ros/humble/share/rmw_cyclonedds_cpp/cmake)
+[0.778s] -- Using RMW implementation 'rmw_cyclonedds_cpp' as default
+[0.785s] -- Looking for pthread.h
+[0.842s] -- Looking for pthread.h - found
+[0.842s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.905s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[0.906s] -- Found Threads: TRUE  
+[0.945s] -- Found rclcpp_components: 16.0.18 (/opt/ros/humble/share/rclcpp_components/cmake)
+[0.965s] -- Found geometry_msgs: 4.9.1 (/opt/ros/humble/share/geometry_msgs/cmake)
+[0.975s] -- Found nav_msgs: 4.9.1 (/opt/ros/humble/share/nav_msgs/cmake)
+[0.988s] -- Found sensor_msgs: 4.9.1 (/opt/ros/humble/share/sensor_msgs/cmake)
+[1.002s] -- Found std_srvs: 4.9.1 (/opt/ros/humble/share/std_srvs/cmake)
+[1.009s] -- Found visualization_msgs: 4.9.1 (/opt/ros/humble/share/visualization_msgs/cmake)
+[1.024s] -- Found pcl_ros: 2.4.5 (/opt/ros/humble/share/pcl_ros/cmake)
+[1.055s] -- Checking for module 'eigen3'
+[1.067s] --   Found eigen3, version 3.4.0
+[1.096s] -- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1") 
+[1.096s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[1.125s] -- Checking for module 'flann'
+[1.137s] --   Found flann, version 1.9.1
+[1.178s] -- Found FLANN: /usr/lib/x86_64-linux-gnu/libflann_cpp.so  
+[1.178s] -- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+[1.898s] -- Checking for module 'libusb-1.0'
+[1.915s] --   Found libusb-1.0, version 1.0.25
+[1.956s] -- Found libusb: /usr/lib/x86_64-linux-gnu/libusb-1.0.so  
+[1.957s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[2.017s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[2.158s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[2.164s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[2.169s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[2.298s] -- Found Qhull version 8.0.2
+[2.430s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[2.561s] -- Found PCL_COMMON: /usr/lib/x86_64-linux-gnu/libpcl_common.so  
+[2.562s] -- Found PCL_KDTREE: /usr/lib/x86_64-linux-gnu/libpcl_kdtree.so  
+[2.563s] -- Found PCL_OCTREE: /usr/lib/x86_64-linux-gnu/libpcl_octree.so  
+[2.563s] -- Found PCL_SEARCH: /usr/lib/x86_64-linux-gnu/libpcl_search.so  
+[2.564s] -- Found PCL_SAMPLE_CONSENSUS: /usr/lib/x86_64-linux-gnu/libpcl_sample_consensus.so  
+[2.564s] -- Found PCL_FILTERS: /usr/lib/x86_64-linux-gnu/libpcl_filters.so  
+[2.564s] -- Found PCL_2D: /usr/include/pcl-1.12  
+[2.565s] -- Found PCL_GEOMETRY: /usr/include/pcl-1.12  
+[2.565s] -- Found PCL_IO: /usr/lib/x86_64-linux-gnu/libpcl_io.so  
+[2.566s] -- Found PCL_FEATURES: /usr/lib/x86_64-linux-gnu/libpcl_features.so  
+[2.567s] -- Found PCL_ML: /usr/lib/x86_64-linux-gnu/libpcl_ml.so  
+[2.567s] -- Found PCL_SEGMENTATION: /usr/lib/x86_64-linux-gnu/libpcl_segmentation.so  
+[2.568s] -- Found PCL_VISUALIZATION: /usr/lib/x86_64-linux-gnu/libpcl_visualization.so  
+[2.569s] -- Found PCL_SURFACE: /usr/lib/x86_64-linux-gnu/libpcl_surface.so  
+[2.569s] -- Found PCL_REGISTRATION: /usr/lib/x86_64-linux-gnu/libpcl_registration.so  
+[2.570s] -- Found PCL_KEYPOINTS: /usr/lib/x86_64-linux-gnu/libpcl_keypoints.so  
+[2.570s] -- Found PCL_TRACKING: /usr/lib/x86_64-linux-gnu/libpcl_tracking.so  
+[2.571s] -- Found PCL_RECOGNITION: /usr/lib/x86_64-linux-gnu/libpcl_recognition.so  
+[2.572s] -- Found PCL_STEREO: /usr/lib/x86_64-linux-gnu/libpcl_stereo.so  
+[2.573s] -- Found PCL_APPS: /usr/lib/x86_64-linux-gnu/libpcl_apps.so  
+[2.573s] -- Found PCL_IN_HAND_SCANNER: /usr/include/pcl-1.12  
+[2.573s] -- Found PCL_MODELER: /usr/include/pcl-1.12  
+[2.574s] -- Found PCL_POINT_CLOUD_EDITOR: /usr/include/pcl-1.12  
+[2.574s] -- Found PCL_OUTOFCORE: /usr/lib/x86_64-linux-gnu/libpcl_outofcore.so  
+[2.575s] -- Found PCL_PEOPLE: /usr/lib/x86_64-linux-gnu/libpcl_people.so  
+[2.597s] -- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)
+[2.598s] -- Found Eigen3: TRUE (found version "3.4.0") 
+[2.598s] -- Ensuring Eigen3 include directory is part of orocos-kdl CMake target
+[2.646s] -- Found livox_ros_driver2: 1.0.0 (/home/dgut/code/Nazarite/install/livox_ros_driver2/share/livox_ros_driver2/cmake)
+[2.662s] -- Found rosidl_default_generators: 1.2.1 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[2.675s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: system filesystem date_time iostreams serialization 
+[2.681s] -- Eigen:/usr/include/eigen3
+[2.681s] -- PCL: /usr/include/pcl-1.12
+[2.858s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[3.198s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[3.322s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[3.349s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[3.353s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[3.376s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[3.376s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[3.376s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[3.376s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[3.402s] -- Found PythonExtra: .so  
+[3.577s] -- Configuring done
+[3.698s] -- Generating done
+[3.730s] -- Build files have been written to: /home/dgut/code/Nazarite/build/fast_lio
+[3.763s] Invoked command in '/home/dgut/code/Nazarite/build/fast_lio' returned '0': AMENT_PREFIX_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/dgut/code/Nazarite/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/dgut/code/Nazarite/src/fast_lio -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/dgut/code/Nazarite/install/fast_lio
+[3.764s] Invoking command in '/home/dgut/code/Nazarite/build/fast_lio': AMENT_PREFIX_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/dgut/code/Nazarite/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/dgut/code/Nazarite/build/fast_lio -- -j16 -l16
+[3.841s] [  2%] Generating C code for ROS interfaces
+[3.859s] [  5%] Generating Rust code for ROS interfaces
+[3.860s] [  7%] Generating C++ code for ROS interfaces
+[3.903s] [  7%] Built target ament_cmake_python_symlink_fast_lio
+[3.904s] [ 10%] Building CXX object CMakeFiles/slope_filter_node.dir/src/slope_filter_node.cpp.o
+[4.239s] running egg_info
+[4.242s] creating fast_lio.egg-info
+[4.244s] writing fast_lio.egg-info/PKG-INFO
+[4.244s] writing dependency_links to fast_lio.egg-info/dependency_links.txt
+[4.244s] writing top-level names to fast_lio.egg-info/top_level.txt
+[4.244s] writing manifest file 'fast_lio.egg-info/SOURCES.txt'
+[4.244s] reading manifest file 'fast_lio.egg-info/SOURCES.txt'
+[4.244s] [ 10%] Built target fast_lio__cpp
+[4.245s] writing manifest file 'fast_lio.egg-info/SOURCES.txt'
+[4.245s] [ 10%] Built target fast_lio__rs
+[4.257s] [ 15%] Generating C++ type support dispatch for ROS interfaces
+[4.258s] [ 15%] Generating C++ introspection for ROS interfaces
+[4.264s] [ 18%] Generating C++ type support for eProsima Fast-RTPS
+[4.272s] [ 21%] Building C object CMakeFiles/fast_lio__rosidl_generator_c.dir/rosidl_generator_c/fast_lio/msg/detail/pose6_d__functions.c.o
+[4.291s] [ 21%] Built target ament_cmake_python_build_fast_lio_egg
+[4.391s] [ 23%] Linking C shared library libfast_lio__rosidl_generator_c.so
+[4.476s] [ 23%] Built target fast_lio__rosidl_generator_c
+[4.500s] [ 26%] Generating C introspection for ROS interfaces
+[4.500s] [ 28%] Generating C type support for eProsima Fast-RTPS
+[4.502s] [ 31%] Generating C type support dispatch for ROS interfaces
+[4.609s] [ 34%] Building CXX object CMakeFiles/fast_lio__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/fast_lio/msg/detail/dds_fastrtps/pose6_d__type_support.cpp.o
+[4.636s] [ 36%] Building CXX object CMakeFiles/fast_lio__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/fast_lio/msg/pose6_d__type_support.cpp.o
+[4.703s] [ 39%] Building CXX object CMakeFiles/fast_lio__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/fast_lio/msg/detail/pose6_d__type_support.cpp.o
+[4.931s] [ 42%] Building CXX object CMakeFiles/fast_lio__rosidl_typesupport_c.dir/rosidl_typesupport_c/fast_lio/msg/pose6_d__type_support.cpp.o
+[4.999s] [ 44%] Linking CXX shared library libfast_lio__rosidl_typesupport_c.so
+[5.042s] [ 47%] Building CXX object CMakeFiles/fast_lio__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/fast_lio/msg/detail/pose6_d__type_support_c.cpp.o
+[5.067s] [ 50%] Linking CXX shared library libfast_lio__rosidl_typesupport_cpp.so
+[5.091s] [ 50%] Built target fast_lio__rosidl_typesupport_c
+[5.107s] [ 52%] Building C object CMakeFiles/fast_lio__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/fast_lio/msg/detail/pose6_d__type_support.c.o
+[5.135s] [ 55%] Linking CXX shared library libfast_lio__rosidl_typesupport_fastrtps_cpp.so
+[5.160s] [ 55%] Built target fast_lio__rosidl_typesupport_cpp
+[5.191s] [ 57%] Linking C shared library libfast_lio__rosidl_typesupport_introspection_c.so
+[5.208s] [ 60%] Building CXX object CMakeFiles/fastlio_mapping.dir/include/ikd-Tree/ikd_Tree.cpp.o
+[5.213s] [ 63%] Building CXX object CMakeFiles/fastlio_mapping.dir/src/laserMapping.cpp.o
+[5.216s] [ 65%] Building CXX object CMakeFiles/fastlio_mapping.dir/src/preprocess.cpp.o
+[5.283s] [ 65%] Built target fast_lio__rosidl_typesupport_fastrtps_cpp
+[5.283s] [ 65%] Built target fast_lio__rosidl_typesupport_introspection_c
+[5.331s] [ 68%] Linking CXX shared library libfast_lio__rosidl_typesupport_introspection_cpp.so
+[5.408s] [ 71%] Linking CXX shared library libfast_lio__rosidl_typesupport_fastrtps_c.so
+[5.429s] [ 71%] Built target fast_lio__rosidl_typesupport_introspection_cpp
+[5.579s] [ 71%] Built target fast_lio__rosidl_typesupport_fastrtps_c
+[5.628s] [ 71%] Built target fast_lio
+[5.685s] [ 73%] Generating Python code for ROS interfaces
+[6.371s] [ 73%] Built target fast_lio__py
+[6.425s] [ 76%] Building C object CMakeFiles/fast_lio__rosidl_generator_py.dir/rosidl_generator_py/fast_lio/msg/_pose6_d_s.c.o
+[6.744s] [ 78%] Linking C shared library rosidl_generator_py/fast_lio/libfast_lio__rosidl_generator_py.so
+[6.842s] [ 78%] Built target fast_lio__rosidl_generator_py
+[6.892s] [ 81%] Building C object CMakeFiles/fast_lio__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/fast_lio/_fast_lio_s.ep.rosidl_typesupport_introspection_c.c.o
+[6.892s] [ 84%] Building C object CMakeFiles/fast_lio__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/fast_lio/_fast_lio_s.ep.rosidl_typesupport_c.c.o
+[6.893s] [ 86%] Building C object CMakeFiles/fast_lio__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/fast_lio/_fast_lio_s.ep.rosidl_typesupport_fastrtps_c.c.o
+[7.080s] [ 89%] Linking C shared library rosidl_generator_py/fast_lio/fast_lio_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[7.125s] [ 92%] Linking C shared library rosidl_generator_py/fast_lio/fast_lio_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[7.145s] [ 92%] Built target fast_lio__rosidl_typesupport_fastrtps_c__pyext
+[7.149s] [ 94%] Linking C shared library rosidl_generator_py/fast_lio/fast_lio_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[7.220s] [ 94%] Built target fast_lio__rosidl_typesupport_c__pyext
+[7.223s] [ 94%] Built target fast_lio__rosidl_typesupport_introspection_c__pyext
+[21.566s] [ 97%] Linking CXX executable slope_filter_node
+[22.825s] [ 97%] Built target slope_filter_node
+[79.380s] [100%] Linking CXX executable fastlio_mapping
+[80.069s] [100%] Built target fastlio_mapping
+[88.589s] Invoked command in '/home/dgut/code/Nazarite/build/fast_lio' returned '0': AMENT_PREFIX_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/dgut/code/Nazarite/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/dgut/code/Nazarite/build/fast_lio -- -j16 -l16
+[88.591s] Invoking command in '/home/dgut/code/Nazarite/build/fast_lio': AMENT_PREFIX_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/dgut/code/Nazarite/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/dgut/code/Nazarite/build/fast_lio
+[88.598s] -- Install configuration: "Release"
+[88.599s] -- Execute custom install script
+[88.599s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/ament_index/resource_index/rosidl_interfaces/fast_lio
+[88.606s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__functions.h
+[88.614s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__struct.h
+[88.620s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__type_support.h
+[88.626s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/pose6_d.h
+[88.633s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_generator_c__visibility_control.h
+[88.639s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/environment/library_path.sh
+[88.646s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/environment/library_path.dsv
+[88.653s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__rosidl_typesupport_fastrtps_c.h
+[88.659s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[88.666s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__builder.hpp
+[88.673s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__struct.hpp
+[88.679s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__traits.hpp
+[88.686s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__type_support.hpp
+[88.693s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/pose6_d.hpp
+[88.699s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_generator_cpp__visibility_control.hpp
+[88.706s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__rosidl_typesupport_fastrtps_cpp.hpp
+[88.713s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[88.720s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__rosidl_typesupport_introspection_c.h
+[88.727s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[88.735s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__rosidl_typesupport_introspection_cpp.hpp
+[88.741s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/environment/pythonpath.sh
+[88.747s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/environment/pythonpath.dsv
+[88.754s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio-0.0.0-py3.10.egg-info/PKG-INFO
+[88.759s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio-0.0.0-py3.10.egg-info/SOURCES.txt
+[88.766s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio-0.0.0-py3.10.egg-info/dependency_links.txt
+[88.772s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio-0.0.0-py3.10.egg-info/top_level.txt
+[88.779s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/__init__.py
+[88.785s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/_fast_lio_s.ep.rosidl_typesupport_c.c
+[88.792s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/_fast_lio_s.ep.rosidl_typesupport_fastrtps_c.c
+[88.800s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/_fast_lio_s.ep.rosidl_typesupport_introspection_c.c
+[88.806s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[88.813s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[88.819s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[88.826s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/libfast_lio__rosidl_generator_py.so
+[88.833s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/__init__.py
+[88.839s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/_pose6_d.py
+[88.845s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/_pose6_d_s.c
+[88.851s] -- Up-to-date symlink: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[88.852s] -- Up-to-date symlink: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[88.852s] -- Up-to-date symlink: /home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[88.852s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/ament_index/resource_index/rust_packages/fast_lio
+[88.858s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/rust/Cargo.toml
+[88.866s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/rust/build.rs
+[88.871s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/rust/src/lib.rs
+[88.879s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/rust/src/msg.rs
+[88.886s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/rust/src/msg/rmw.rs
+[88.892s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/msg/Pose6D.idl
+[88.901s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/msg/Pose6D.msg
+[88.907s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/lib/fast_lio/slope_filter_node
+[88.914s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/lib/fast_lio/fastlio_mapping
+[88.922s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/config/avia.yaml
+[88.929s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/config/horizon.yaml
+[88.935s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/config/mid360.yaml
+[88.942s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/config/ouster64.yaml
+[88.948s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/config/velodyne.yaml
+[88.955s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/launch/__pycache__/mapping.launch.cpython-310.pyc
+[88.962s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/launch/gdb_debug_example.launch
+[88.970s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/launch/mapping.launch.py
+[88.977s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/launch/mapping_avia.launch
+[88.984s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/launch/mapping_horizon.launch
+[88.992s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/launch/mapping_ouster64.launch
+[88.998s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/launch/mapping_velodyne.launch
+[89.005s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/rviz/fastlio.rviz
+[89.013s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/ament_index/resource_index/package_run_dependencies/fast_lio
+[89.020s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/ament_index/resource_index/parent_prefix_path/fast_lio
+[89.027s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/environment/ament_prefix_path.sh
+[89.035s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/environment/ament_prefix_path.dsv
+[89.041s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/environment/path.sh
+[89.049s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/environment/path.dsv
+[89.056s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/local_setup.bash
+[89.065s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/local_setup.sh
+[89.071s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/local_setup.zsh
+[89.077s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/local_setup.dsv
+[89.083s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/package.dsv
+[89.090s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/ament_index/resource_index/packages/fast_lio
+[89.096s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/rosidl_cmake-extras.cmake
+[89.103s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/ament_cmake_export_include_directories-extras.cmake
+[89.109s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/ament_cmake_export_libraries-extras.cmake
+[89.117s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/ament_cmake_export_targets-extras.cmake
+[89.124s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[89.130s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/ament_cmake_export_dependencies-extras.cmake
+[89.138s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[89.146s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/fast_lioConfig.cmake
+[89.154s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/fast_lioConfig-version.cmake
+[89.161s] -- Symlinking: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/package.xml
+[89.167s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_generator_c.so
+[89.167s] -- Set runtime path of "/home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_generator_c.so" to ""
+[89.167s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_typesupport_fastrtps_c.so
+[89.167s] -- Set runtime path of "/home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_typesupport_fastrtps_c.so" to ""
+[89.168s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_typesupport_fastrtps_cpp.so
+[89.168s] -- Set runtime path of "/home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_typesupport_fastrtps_cpp.so" to ""
+[89.168s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_typesupport_introspection_c.so
+[89.168s] -- Set runtime path of "/home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_typesupport_introspection_c.so" to ""
+[89.168s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_typesupport_c.so
+[89.168s] -- Set runtime path of "/home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_typesupport_c.so" to ""
+[89.168s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_typesupport_introspection_cpp.so
+[89.168s] -- Set runtime path of "/home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_typesupport_introspection_cpp.so" to ""
+[89.169s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_typesupport_cpp.so
+[89.169s] -- Set runtime path of "/home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_typesupport_cpp.so" to ""
+[89.191s] Listing '/home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio'...
+[89.191s] Compiling '/home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/__init__.py'...
+[89.191s] Listing '/home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg'...
+[89.191s] Compiling '/home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/__init__.py'...
+[89.191s] Compiling '/home/dgut/code/Nazarite/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/_pose6_d.py'...
+[89.194s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_generator_py.so
+[89.195s] -- Set runtime path of "/home/dgut/code/Nazarite/install/fast_lio/lib/libfast_lio__rosidl_generator_py.so" to ""
+[89.195s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_cExport.cmake
+[89.195s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_cExport-release.cmake
+[89.195s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_typesupport_fastrtps_cExport.cmake
+[89.195s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_typesupport_fastrtps_cExport-release.cmake
+[89.195s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_cppExport.cmake
+[89.195s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_typesupport_fastrtps_cppExport.cmake
+[89.195s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_typesupport_fastrtps_cppExport-release.cmake
+[89.196s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_introspection_cExport.cmake
+[89.196s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_introspection_cExport-release.cmake
+[89.196s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_cExport.cmake
+[89.196s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_cExport-release.cmake
+[89.196s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_introspection_cppExport.cmake
+[89.196s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_introspection_cppExport-release.cmake
+[89.196s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_cppExport.cmake
+[89.196s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_cppExport-release.cmake
+[89.196s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_pyExport.cmake
+[89.196s] -- Installing: /home/dgut/code/Nazarite/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_pyExport-release.cmake
+[118.620s] Invoked command in '/home/dgut/code/Nazarite/build/fast_lio' returned '0': AMENT_PREFIX_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/dgut/code/Nazarite/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/dgut/code/Nazarite/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/dgut/code/Nazarite/build/fast_lio

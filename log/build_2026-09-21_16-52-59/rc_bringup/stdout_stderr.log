@@ -1,0 +1,104 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake_auto: 1.3.14 (/opt/ros/humble/share/ament_cmake_auto/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/dgut/code/Nazarite/build/rc_bringup
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/behavior_trees/navigate_through_poses_nav.xml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/behavior_trees/navigate_to_pose_nav.xml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/mapper_params_online_async.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/MID360_driver.json
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/fast_lio.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/icp_registration.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/nav2.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/nav2_params.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/nav2_params_forest_small.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/nav2_params_forest_small.zip
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/nav2_params_forest_small_teb_mppi copy.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/nav2_params_forest_small_teb_mppi.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/nav2_params_forest_small_teb_mppi.zip
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/navigate_to_pose_teb_mppi_selector.xml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/point_lio.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/relocalization_presets.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/serial_driver.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/simulation/fast_lio.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/simulation/icp_registration.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/simulation/nav2.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/simulation/point_lio.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/launch/__pycache__/bringup.launch.cpython-310.pyc
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/launch/__pycache__/mapping.launch.cpython-310.pyc
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/launch/__pycache__/mapping2.launch.cpython-310.pyc
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/launch/__pycache__/mapping_combined.launch.cpython-310.pyc
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/launch/__pycache__/navigation_combined_new23.launch.cpython-310.pyc
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/launch/bringup.launch.py
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/launch/localization.launch.py
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/launch/mapping.launch.py
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/launch/mapping2.launch.py
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/launch/mapping_combined.launch.py
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/launch/mapping_copy.launch.py
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/launch/navigation_combined_new23.launch.py
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/launch/relocalization_rsasaki.launch.py
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/map/my_2d_map.pgm
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/map/my_2d_map.yaml
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/map/scans_1.9_filtered.pcd
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/map/scans_1.9_filtered_half_std_best_for_loc.pcd
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/urdf/reality/chassis_geometry_macro.xacro
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/urdf/reality/combined_geometry.xacro
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/urdf/reality/combined_geometry_macro.xacro
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/urdf/reality/combined_geometry_new23.xacro
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/urdf/reality/combined_geometry_new23_macro.xacro
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/urdf/reality/model.xacro
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/urdf/simulation/model.xacro
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/meshes/RMUC2024_world/meshes/RMUC_2024.stl
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/meshes/RMUC2024_world/model.config
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/meshes/RMUC2024_world/model.sdf
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/meshes/RMUC2025_world/meshes/RMUC_2025.stl
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/meshes/RMUC2025_world/model.config
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/meshes/RMUC2025_world/model.sdf
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/meshes/RMUL2024_world/meshes/RMUL_2024.stl
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/meshes/RMUL2024_world/model.config
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/meshes/RMUL2024_world/model.sdf
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/meshes/RMUL2025_world/meshes/RMUL_2025.stl
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/meshes/RMUL2025_world/model.config
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/meshes/RMUL2025_world/model.sdf
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/meshes/mid360.stl
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/rviz/default.rviz
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/rviz/lio.rviz
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/rviz/loam_livox.rviz
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/rviz/mapping_combined.rviz
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/rviz/navigation_combined_new23.rviz
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/world/RMUC2024_world/RMUC2024_world.world
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/world/RMUC2025_world/RMUC2025_world.world
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/world/RMUL2024_world/RMUL2024_world.world
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/world/RMUL2024_world/RMUL2024_world_dynamic_obstacles.world
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/world/RMUL2025_world/RMUL2025_world.world
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/ament_index/resource_index/package_run_dependencies/rc_bringup
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/ament_index/resource_index/parent_prefix_path/rc_bringup
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/environment/ament_prefix_path.sh
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/environment/ament_prefix_path.dsv
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/environment/path.sh
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/environment/path.dsv
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/local_setup.bash
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/local_setup.sh
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/local_setup.zsh
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/local_setup.dsv
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/package.dsv
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/ament_index/resource_index/packages/rc_bringup
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/cmake/rc_bringupConfig.cmake
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/cmake/rc_bringupConfig-version.cmake
+-- Symlinking: /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/package.xml

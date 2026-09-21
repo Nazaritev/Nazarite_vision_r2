@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<root BTCPP_format="4" main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <Sequence>
+      <LogMessage message="========== R2 Mode 1 BT Started ==========" level="info"/>
+      <WaitForNavReady/>
+
+      <ForceSuccess>
+        <KeepRunningUntilFailure>
+          <Sequence>
+            <Inverter>
+              <CheckFinalRequested/>
+            </Inverter>
+            <SubTree ID="GrabCycle"/>
+          </Sequence>
+        </KeepRunningUntilFailure>
+      </ForceSuccess>
+
+      <LogMessage message="========== FINAL POINT ==========" level="info"/>
+      <PublishFinalGoal/>
+      <WaitForNavArrival/>
+      <SetChassisMode mode="2"/>
+      <SendSerialCommand command="6"/>
+      <WaitForSerialCommandComplete command="6"/>
+      <SetChassisMode mode="2"/>
+      <PublishExternalMode mode="2"/>
+      <FinalExit/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="GrabCycle">
+    <Sequence>
+      <LogMessage message="前往抓取点" level="info"/>
+      <PublishGrabGoal/>
+      <WaitForNavArrival/>
+      <StabilizationWait/>
+
+      <Fallback>
+        <Sequence>
+          <WaitForDetectionReady/>
+          <CheckGrabCount/>
+          <RecordPreGrabDepth/>
+          <SendSerialCommand command="1"/>
+          <IncrementGrabCount/>
+          <EvaluateGrabFeedback/>
+          <CheckGrabFeedbackSuccess/>
+
+          <PublishShiftGoal/>
+          <WaitForNavArrival/>
+          <SubTree ID="ShiftCycle"/>
+        </Sequence>
+
+        <Sequence>
+          <LogMessage message="当前抓取点跳过，切换后续目标" level="warn"/>
+          <AdvanceToNextTarget force_final="false" success_completed="false"/>
+        </Sequence>
+      </Fallback>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="ShiftCycle">
+    <Sequence>
+      <SetChassisMode mode="2"/>
+      <SendSerialCommand command="7"/>
+      <WaitForSerialCommandComplete command="7"/>
+      <SetChassisMode mode="2"/>
+
+      <StartBarcodeMonitor/>
+      <RetryUntilSuccessful num_attempts="-1">
+        <Fallback>
+          <CheckBarcodeInBuffer expected="100"/>
+          <CheckBarcodeInBuffer expected="200"/>
+          <Sequence>
+            <CheckTFAligned/>
+            <SendSerialCommand command="2"/>
+          </Sequence>
+        </Fallback>
+      </RetryUntilSuccessful>
+
+      <WaitForBarcodeWithTimeout/>
+
+      <Fallback>
+        <Sequence>
+          <CheckBarcodeInBuffer expected="200"/>
+          <SubTree ID="HandleBarcode200"/>
+        </Sequence>
+
+        <Sequence>
+          <CheckBarcodeInBuffer expected="100"/>
+          <SubTree ID="HandleBarcode100"/>
+        </Sequence>
+      </Fallback>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="HandleBarcode100">
+    <Sequence>
+      <StopSerialCommand command="2"/>
+      <SetChassisMode mode="2"/>
+      <SendSerialCommand command="8"/>
+      <WaitForSerialCommandComplete command="8"/>
+      <SendSerialCommand command="3"/>
+      <WaitForSerialCommandComplete command="3"/>
+      <PostBarcodeDelay/>
+      <SendSerialCommand command="9"/>
+      <WaitForSerialCommandComplete command="9"/>
+      <PublishShiftReturnGoal/>
+      <WaitForNavArrival/>
+      <SetChassisMode mode="2"/>
+      <SendSerialCommand command="4"/>
+      <WaitForSerialCommandComplete command="4"/>
+      <SetChassisMode mode="2"/>
+      <AdvanceToNextTarget force_final="false" success_completed="true"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="HandleBarcode200">
+    <Sequence>
+      <StopSerialCommand command="2"/>
+      <SetChassisMode mode="2"/>
+      <SendSerialCommand command="8"/>
+      <WaitForSerialCommandComplete command="8"/>
+      <SendSerialCommand command="3"/>
+      <WaitForSerialCommandComplete command="3"/>
+      <PostBarcodeDelay/>
+      <SendSerialCommand command="9"/>
+      <WaitForSerialCommandComplete command="9"/>
+      <PublishShiftReturnGoal/>
+      <WaitForNavArrival/>
+      <SetChassisMode mode="2"/>
+      <SendSerialCommand command="4"/>
+      <WaitForSerialCommandComplete command="4"/>
+      <SetChassisMode mode="2"/>
+      <AdvanceToNextTarget force_final="true" success_completed="true"/>
+    </Sequence>
+  </BehaviorTree>
+</root>

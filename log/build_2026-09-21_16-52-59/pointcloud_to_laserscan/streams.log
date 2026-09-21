@@ -1,0 +1,99 @@
+[0.022s] Invoking command in '/home/dgut/code/Nazarite/build/pointcloud_to_laserscan': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/dgut/code/Nazarite/src/pointcloud_to_laserscan -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/dgut/code/Nazarite/install/pointcloud_to_laserscan
+[0.276s] -- The C compiler identification is GNU 11.4.0
+[0.276s] -- The CXX compiler identification is GNU 11.4.0
+[0.276s] -- Detecting C compiler ABI info
+[0.276s] -- Detecting C compiler ABI info - done
+[0.276s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.276s] -- Detecting C compile features
+[0.276s] -- Detecting C compile features - done
+[0.276s] -- Detecting CXX compiler ABI info
+[0.276s] -- Detecting CXX compiler ABI info - done
+[0.277s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.277s] -- Detecting CXX compile features
+[0.277s] -- Detecting CXX compile features - done
+[0.277s] -- Found ament_cmake_auto: 1.3.14 (/opt/ros/humble/share/ament_cmake_auto/cmake)
+[0.483s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.483s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.557s] -- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.561s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.567s] -- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.584s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.591s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.632s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.634s] -- Found rmw_cyclonedds_cpp: 1.3.4 (/opt/ros/humble/share/rmw_cyclonedds_cpp/cmake)
+[0.652s] -- Using RMW implementation 'rmw_cyclonedds_cpp' as default
+[0.660s] -- Looking for pthread.h
+[0.721s] -- Looking for pthread.h - found
+[0.721s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.787s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[0.788s] -- Found Threads: TRUE  
+[0.951s] -- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[0.963s] In this package, headers install destination is set to `include` by ament_auto_package. It is recommended to install `include/pointcloud_to_laserscan` instead and will be the default behavior of ament_auto_package from ROS 2 Kilted Kaiju. On distributions before Kilted, ament_auto_package behaves the same way when you use USE_SCOPED_HEADER_INSTALL_DIR option.
+[0.968s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[0.968s] -- Configured cppcheck include dirs: /home/dgut/code/Nazarite/src/pointcloud_to_laserscan/include
+[0.968s] -- Configured cppcheck exclude dirs and/or files: 
+[0.969s] -- Added test 'cpplint' to check C / C++ code against the Google style
+[0.969s] -- Configured cpplint exclude dirs and/or files: 
+[0.970s] -- Added test 'flake8' to check Python code syntax and style conventions
+[0.970s] -- Added test 'lint_cmake' to check CMake code style
+[0.970s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[0.971s] -- Added test 'uncrustify' to check C / C++ code style
+[0.972s] -- Configured uncrustify additional arguments: 
+[0.972s] -- Added test 'xmllint' to check XML markup files
+[0.975s] -- Configuring done
+[1.016s] -- Generating done
+[1.025s] -- Build files have been written to: /home/dgut/code/Nazarite/build/pointcloud_to_laserscan
+[1.038s] Invoked command in '/home/dgut/code/Nazarite/build/pointcloud_to_laserscan' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/dgut/code/Nazarite/src/pointcloud_to_laserscan -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/dgut/code/Nazarite/install/pointcloud_to_laserscan
+[1.040s] Invoking command in '/home/dgut/code/Nazarite/build/pointcloud_to_laserscan': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/dgut/code/Nazarite/build/pointcloud_to_laserscan -- -j16 -l16
+[1.090s] [ 10%] Building CXX object CMakeFiles/laserscan_to_pointcloud_node.dir/rclcpp_components/node_main_laserscan_to_pointcloud_node.cpp.o
+[1.091s] [ 30%] Building CXX object CMakeFiles/pointcloud_to_laserscan_node.dir/rclcpp_components/node_main_pointcloud_to_laserscan_node.cpp.o
+[1.091s] [ 30%] Building CXX object CMakeFiles/laserscan_to_pointcloud.dir/src/laserscan_to_pointcloud_node.cpp.o
+[4.474s] [ 40%] Linking CXX executable laserscan_to_pointcloud_node
+[4.487s] [ 50%] Linking CXX executable pointcloud_to_laserscan_node
+[4.626s] [ 50%] Built target laserscan_to_pointcloud_node
+[4.640s] [ 50%] Built target pointcloud_to_laserscan_node
+[19.045s] [ 60%] Linking CXX shared library liblaserscan_to_pointcloud.so
+[19.187s] [ 60%] Built target laserscan_to_pointcloud
+[19.205s] [ 70%] Building CXX object CMakeFiles/pointcloud_to_laserscan.dir/src/pointcloud_to_laserscan_node.cpp.o
+[34.406s] [ 80%] Linking CXX shared library libpointcloud_to_laserscan.so
+[34.771s] [ 80%] Built target pointcloud_to_laserscan
+[34.824s] [ 90%] Building CXX object CMakeFiles/dummy_pointcloud_publisher.dir/src/dummy_pointcloud_publisher.cpp.o
+[40.370s] [100%] Linking CXX executable dummy_pointcloud_publisher
+[40.492s] [100%] Built target dummy_pointcloud_publisher
+[40.856s] Invoked command in '/home/dgut/code/Nazarite/build/pointcloud_to_laserscan' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/dgut/code/Nazarite/build/pointcloud_to_laserscan -- -j16 -l16
+[40.857s] Invoking command in '/home/dgut/code/Nazarite/build/pointcloud_to_laserscan': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/dgut/code/Nazarite/build/pointcloud_to_laserscan
+[40.865s] -- Install configuration: ""
+[40.865s] -- Execute custom install script
+[40.865s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/lib/pointcloud_to_laserscan/laserscan_to_pointcloud_node
+[40.876s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/lib/pointcloud_to_laserscan/pointcloud_to_laserscan_node
+[40.887s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/include/pointcloud_to_laserscan/laserscan_to_pointcloud_node.hpp
+[40.898s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/include/pointcloud_to_laserscan/pointcloud_to_laserscan_node.hpp
+[40.909s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/include/pointcloud_to_laserscan/visibility_control.h
+[40.919s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/environment/library_path.sh
+[40.930s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/environment/library_path.dsv
+[40.941s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/lib/liblaserscan_to_pointcloud.so
+[40.951s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/lib/libpointcloud_to_laserscan.so
+[40.962s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/lib/pointcloud_to_laserscan/dummy_pointcloud_publisher
+[40.972s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/launch/pointcloud_to_laserscan_launch.py
+[40.982s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/launch/sample_laserscan_to_pointcloud_launch.py
+[40.992s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/launch/sample_pointcloud_to_laserscan_launch.py
+[41.002s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/ament_index/resource_index/package_run_dependencies/pointcloud_to_laserscan
+[41.013s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/ament_index/resource_index/parent_prefix_path/pointcloud_to_laserscan
+[41.023s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/environment/ament_prefix_path.sh
+[41.032s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/environment/ament_prefix_path.dsv
+[41.041s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/environment/path.sh
+[41.051s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/environment/path.dsv
+[41.061s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/local_setup.bash
+[41.070s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/local_setup.sh
+[41.079s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/local_setup.zsh
+[41.088s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/local_setup.dsv
+[41.098s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/package.dsv
+[41.108s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/ament_index/resource_index/packages/pointcloud_to_laserscan
+[41.118s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/ament_index/resource_index/rclcpp_components/pointcloud_to_laserscan
+[41.128s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/cmake/ament_cmake_export_dependencies-extras.cmake
+[41.139s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/cmake/ament_cmake_export_include_directories-extras.cmake
+[41.149s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/cmake/ament_cmake_export_libraries-extras.cmake
+[41.159s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/cmake/pointcloud_to_laserscanConfig.cmake
+[41.169s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/cmake/pointcloud_to_laserscanConfig-version.cmake
+[41.179s] -- Symlinking: /home/dgut/code/Nazarite/install/pointcloud_to_laserscan/share/pointcloud_to_laserscan/package.xml
+[41.198s] Invoked command in '/home/dgut/code/Nazarite/build/pointcloud_to_laserscan' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/dgut/code/Nazarite/build/pointcloud_to_laserscan

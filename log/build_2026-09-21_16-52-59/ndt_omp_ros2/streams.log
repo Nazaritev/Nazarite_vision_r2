@@ -1,0 +1,189 @@
+[0.023s] Invoking command in '/home/dgut/code/Nazarite/build/ndt_omp_ros2': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/dgut/code/Nazarite/src/ndt_omp_ros2 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/dgut/code/Nazarite/install/ndt_omp_ros2
+[0.279s] -- The C compiler identification is GNU 11.4.0
+[0.279s] -- The CXX compiler identification is GNU 11.4.0
+[0.279s] -- Detecting C compiler ABI info
+[0.279s] -- Detecting C compiler ABI info - done
+[0.279s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.279s] -- Detecting C compile features
+[0.279s] -- Detecting C compile features - done
+[0.279s] -- Detecting CXX compiler ABI info
+[0.279s] -- Detecting CXX compiler ABI info - done
+[0.279s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.279s] -- Detecting CXX compile features
+[0.279s] -- Detecting CXX compile features - done
+[0.279s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.485s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.485s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.485s] -- Found rclcpp: 16.0.18 (/opt/ros/humble/share/rclcpp/cmake)
+[0.489s] -- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.493s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.500s] -- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.508s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.521s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.555s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.557s] -- Found rmw_cyclonedds_cpp: 1.3.4 (/opt/ros/humble/share/rmw_cyclonedds_cpp/cmake)
+[0.574s] -- Using RMW implementation 'rmw_cyclonedds_cpp' as default
+[0.587s] -- Looking for pthread.h
+[0.640s] -- Looking for pthread.h - found
+[0.640s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.702s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[0.703s] -- Found Threads: TRUE  
+[0.760s] -- Checking for module 'eigen3'
+[0.773s] --   Found eigen3, version 3.4.0
+[0.808s] -- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1") 
+[0.808s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[0.841s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.65.0") found components: system filesystem date_time iostreams serialization 
+[0.846s] -- Checking for module 'flann'
+[0.858s] --   Found flann, version 1.9.1
+[0.902s] -- Found FLANN: /usr/lib/x86_64-linux-gnu/libflann_cpp.so  
+[0.902s] -- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+[0.931s] -- Found GLEW: /usr/lib/x86_64-linux-gnu/libGLEW.so  
+[0.935s] -- Found OpenGL: /usr/lib/x86_64-linux-gnu/libOpenGL.so  found components: OpenGL GLX 
+[1.003s] -- Could NOT find MPI_C (missing: MPI_C_HEADER_DIR MPI_C_WORKS) 
+[1.003s] -- Could NOT find MPI (missing: MPI_C_FOUND C) 
+[1.005s] -- Found JsonCpp: /usr/lib/x86_64-linux-gnu/libjsoncpp.so (found suitable version "1.9.5", minimum required is "0.7.0") 
+[1.012s] -- Found ZLIB: /usr/lib/x86_64-linux-gnu/libz.so (found version "1.2.11") 
+[1.029s] -- Found PNG: /usr/lib/x86_64-linux-gnu/libpng.so (found version "1.6.37") 
+[1.037s] -- Found Eigen3: /usr/include/eigen3 (found version "3.4.0") 
+[1.138s] -- Found X11: /usr/include   
+[1.138s] -- Looking for XOpenDisplay in /usr/lib/x86_64-linux-gnu/libX11.so;/usr/lib/x86_64-linux-gnu/libXext.so
+[1.223s] -- Looking for XOpenDisplay in /usr/lib/x86_64-linux-gnu/libX11.so;/usr/lib/x86_64-linux-gnu/libXext.so - found
+[1.223s] -- Looking for gethostbyname
+[1.301s] -- Looking for gethostbyname - found
+[1.301s] -- Looking for connect
+[1.371s] -- Looking for connect - found
+[1.371s] -- Looking for remove
+[1.438s] -- Looking for remove - found
+[1.438s] -- Looking for shmat
+[1.513s] -- Looking for shmat - found
+[1.513s] -- Looking for IceConnectionNumber in ICE
+[1.580s] -- Looking for IceConnectionNumber in ICE - found
+[1.683s] -- Found EXPAT: /usr/lib/x86_64-linux-gnu/libexpat.so (found version "2.4.7") 
+[1.684s] -- Found double-conversion: /usr/lib/x86_64-linux-gnu/libdouble-conversion.so  
+[1.687s] -- Found LZ4: /usr/lib/x86_64-linux-gnu/liblz4.so (found version "1.9.3") 
+[1.691s] -- Found LZMA: /usr/lib/x86_64-linux-gnu/liblzma.so (found version "5.2.5") 
+[1.706s] -- Found JPEG: /usr/lib/x86_64-linux-gnu/libjpeg.so (found version "80") 
+[1.716s] -- Found TIFF: /usr/lib/x86_64-linux-gnu/libtiff.so (found version "4.3.0")  
+[1.721s] -- Found Freetype: /usr/lib/x86_64-linux-gnu/libfreetype.so (found version "2.11.1") 
+[1.726s] -- Found utf8cpp: /usr/include/utf8cpp  
+[1.826s] -- Checking for module 'libusb-1.0'
+[1.845s] --   Found libusb-1.0, version 1.0.25
+[1.895s] -- Found libusb: /usr/lib/x86_64-linux-gnu/libusb-1.0.so  
+[1.896s] -- Found OpenNI: /usr/lib/libOpenNI.so;libusb::libusb (found version "1.5.4.0") 
+[1.896s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[1.974s] -- Found OpenNI2: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb (found version "2.2.0.33") 
+[1.974s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[1.974s] ** WARNING ** io features related to pcap will be disabled
+[2.038s] -- Could NOT find MPI_C (missing: MPI_C_HEADER_DIR MPI_C_WORKS) 
+[2.039s] -- Could NOT find MPI (missing: MPI_C_FOUND C) 
+[2.149s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[2.155s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[2.166s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[2.227s] -- Could NOT find MPI_C (missing: MPI_C_HEADER_DIR MPI_C_WORKS) 
+[2.227s] -- Could NOT find MPI (missing: MPI_C_FOUND C) 
+[2.315s] -- Found Qhull version 8.0.2
+[2.423s] -- Could NOT find MPI_C (missing: MPI_C_HEADER_DIR MPI_C_WORKS) 
+[2.423s] -- Could NOT find MPI (missing: MPI_C_FOUND C) 
+[2.584s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[2.692s] -- Could NOT find MPI_C (missing: MPI_C_HEADER_DIR MPI_C_WORKS) 
+[2.692s] -- Could NOT find MPI (missing: MPI_C_FOUND C) 
+[2.855s] -- looking for PCL_COMMON
+[2.855s] -- Found PCL_COMMON: /usr/lib/x86_64-linux-gnu/libpcl_common.so  
+[2.855s] -- looking for PCL_KDTREE
+[2.856s] -- Found PCL_KDTREE: /usr/lib/x86_64-linux-gnu/libpcl_kdtree.so  
+[2.857s] -- looking for PCL_OCTREE
+[2.858s] -- Found PCL_OCTREE: /usr/lib/x86_64-linux-gnu/libpcl_octree.so  
+[2.859s] -- looking for PCL_SEARCH
+[2.861s] -- Found PCL_SEARCH: /usr/lib/x86_64-linux-gnu/libpcl_search.so  
+[2.861s] -- looking for PCL_SAMPLE_CONSENSUS
+[2.863s] -- Found PCL_SAMPLE_CONSENSUS: /usr/lib/x86_64-linux-gnu/libpcl_sample_consensus.so  
+[2.863s] -- looking for PCL_FILTERS
+[2.866s] -- Found PCL_FILTERS: /usr/lib/x86_64-linux-gnu/libpcl_filters.so  
+[2.866s] -- looking for PCL_2D
+[2.866s] -- Found PCL_2D: /usr/include/pcl-1.12  
+[2.866s] -- looking for PCL_GEOMETRY
+[2.866s] -- Found PCL_GEOMETRY: /usr/include/pcl-1.12  
+[2.866s] -- looking for PCL_IO
+[2.868s] -- Found PCL_IO: /usr/lib/x86_64-linux-gnu/libpcl_io.so  
+[2.868s] -- looking for PCL_FEATURES
+[2.872s] -- Found PCL_FEATURES: /usr/lib/x86_64-linux-gnu/libpcl_features.so  
+[2.873s] -- looking for PCL_ML
+[2.873s] -- Found PCL_ML: /usr/lib/x86_64-linux-gnu/libpcl_ml.so  
+[2.873s] -- looking for PCL_SEGMENTATION
+[2.873s] -- Found PCL_SEGMENTATION: /usr/lib/x86_64-linux-gnu/libpcl_segmentation.so  
+[2.873s] -- looking for PCL_VISUALIZATION
+[2.873s] -- Found PCL_VISUALIZATION: /usr/lib/x86_64-linux-gnu/libpcl_visualization.so  
+[2.873s] -- looking for PCL_SURFACE
+[2.874s] -- Found PCL_SURFACE: /usr/lib/x86_64-linux-gnu/libpcl_surface.so  
+[2.874s] -- looking for PCL_REGISTRATION
+[2.875s] -- Found PCL_REGISTRATION: /usr/lib/x86_64-linux-gnu/libpcl_registration.so  
+[2.875s] -- looking for PCL_KEYPOINTS
+[2.876s] -- Found PCL_KEYPOINTS: /usr/lib/x86_64-linux-gnu/libpcl_keypoints.so  
+[2.878s] -- looking for PCL_TRACKING
+[2.878s] -- Found PCL_TRACKING: /usr/lib/x86_64-linux-gnu/libpcl_tracking.so  
+[2.878s] -- looking for PCL_RECOGNITION
+[2.878s] -- Found PCL_RECOGNITION: /usr/lib/x86_64-linux-gnu/libpcl_recognition.so  
+[2.878s] -- looking for PCL_STEREO
+[2.879s] -- Found PCL_STEREO: /usr/lib/x86_64-linux-gnu/libpcl_stereo.so  
+[2.879s] -- looking for PCL_APPS
+[2.880s] -- Found PCL_APPS: /usr/lib/x86_64-linux-gnu/libpcl_apps.so  
+[2.881s] -- looking for PCL_IN_HAND_SCANNER
+[2.884s] -- Found PCL_IN_HAND_SCANNER: /usr/include/pcl-1.12  
+[2.884s] -- looking for PCL_MODELER
+[2.884s] -- Found PCL_MODELER: /usr/include/pcl-1.12  
+[2.884s] -- looking for PCL_POINT_CLOUD_EDITOR
+[2.884s] -- Found PCL_POINT_CLOUD_EDITOR: /usr/include/pcl-1.12  
+[2.884s] -- looking for PCL_OUTOFCORE
+[2.884s] -- Found PCL_OUTOFCORE: /usr/lib/x86_64-linux-gnu/libpcl_outofcore.so  
+[2.884s] -- looking for PCL_PEOPLE
+[2.885s] -- Found PCL_PEOPLE: /usr/lib/x86_64-linux-gnu/libpcl_people.so  
+[2.886s] -- Found PCL: pcl_common;pcl_kdtree;pcl_octree;pcl_search;pcl_sample_consensus;pcl_filters;pcl_io;pcl_features;pcl_ml;pcl_segmentation;pcl_visualization;pcl_surface;pcl_registration;pcl_keypoints;pcl_tracking;pcl_recognition;pcl_stereo;pcl_apps;pcl_outofcore;pcl_people;Boost::system;Boost::filesystem;Boost::date_time;Boost::iostreams;Boost::serialization;/usr/lib/libOpenNI.so;libusb::libusb;/usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb;VTK::ChartsCore;VTK::CommonColor;VTK::CommonComputationalGeometry;VTK::CommonCore;VTK::CommonDataModel;VTK::CommonExecutionModel;VTK::CommonMath;VTK::CommonMisc;VTK::CommonTransforms;VTK::FiltersCore;VTK::FiltersExtraction;VTK::FiltersGeneral;VTK::FiltersGeometry;VTK::FiltersModeling;VTK::FiltersSources;VTK::ImagingCore;VTK::ImagingSources;VTK::InteractionImage;VTK::InteractionStyle;VTK::InteractionWidgets;VTK::IOCore;VTK::IOGeometry;VTK::IOImage;VTK::IOLegacy;VTK::IOPLY;VTK::RenderingAnnotation;VTK::RenderingCore;VTK::RenderingContext2D;VTK::RenderingLOD;VTK::RenderingFreeType;VTK::ViewsCore;VTK::ViewsContext2D;VTK::RenderingOpenGL2;VTK::GUISupportQt;FLANN::FLANN;QHULL::QHULL (Required is at least version "1.12") 
+[2.886s] -- PCL_INCLUDE_DIRS:/usr/include/pcl-1.12/usr/include/eigen3/usr/include/usr/include/ni/usr/include/openni2
+[2.886s] -- PCL_LIBRARY_DIRS:/usr/lib/x86_64-linux-gnu
+[2.886s] -- PCL_DEFINITIONS:-DDISABLE_PCAP
+[3.113s] -- Found OpenMP_C: -fopenmp (found version "4.5") 
+[3.183s] -- Found OpenMP_CXX: -fopenmp (found version "4.5") 
+[3.183s] -- Found OpenMP: TRUE (found version "4.5")  
+[3.239s] -- Configuring done
+[3.264s] -- Generating done
+[3.272s] -- Build files have been written to: /home/dgut/code/Nazarite/build/ndt_omp_ros2
+[3.290s] Invoked command in '/home/dgut/code/Nazarite/build/ndt_omp_ros2' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/dgut/code/Nazarite/src/ndt_omp_ros2 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/dgut/code/Nazarite/install/ndt_omp_ros2
+[3.291s] Invoking command in '/home/dgut/code/Nazarite/build/ndt_omp_ros2': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/dgut/code/Nazarite/build/ndt_omp_ros2 -- -j16 -l16
+[3.340s] [ 50%] Building CXX object CMakeFiles/ndt_omp.dir/src/pclomp/ndt_omp.cpp.o
+[3.340s] [ 50%] Building CXX object CMakeFiles/ndt_omp.dir/src/pclomp/voxel_grid_covariance_omp.cpp.o
+[3.340s] [ 50%] Building CXX object CMakeFiles/ndt_omp.dir/src/pclomp/gicp_omp.cpp.o
+[20.572s] [ 66%] Linking CXX static library libndt_omp.a
+[20.634s] [ 66%] Built target ndt_omp
+[20.651s] [ 83%] Building CXX object CMakeFiles/align.dir/apps/align.cpp.o
+[47.568s] [100%] Linking CXX executable align
+[49.025s] [100%] Built target align
+[52.261s] Invoked command in '/home/dgut/code/Nazarite/build/ndt_omp_ros2' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/dgut/code/Nazarite/build/ndt_omp_ros2 -- -j16 -l16
+[52.262s] Invoking command in '/home/dgut/code/Nazarite/build/ndt_omp_ros2': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/dgut/code/Nazarite/build/ndt_omp_ros2
+[52.270s] -- Install configuration: "RELEASE"
+[52.271s] -- Execute custom install script
+[52.271s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/lib/ndt_omp_ros2/align
+[52.281s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/bin/align
+[52.292s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/include/pclomp/gicp_omp.h
+[52.302s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/include/pclomp/gicp_omp_impl.hpp
+[52.312s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/include/pclomp/ndt_omp.h
+[52.322s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/include/pclomp/ndt_omp_impl.hpp
+[52.333s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/include/pclomp/voxel_grid_covariance_omp.h
+[52.343s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/include/pclomp/voxel_grid_covariance_omp_impl.hpp
+[52.353s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ament_index/resource_index/package_run_dependencies/ndt_omp_ros2
+[52.364s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ament_index/resource_index/parent_prefix_path/ndt_omp_ros2
+[52.374s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ndt_omp_ros2/environment/ament_prefix_path.sh
+[52.384s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ndt_omp_ros2/environment/ament_prefix_path.dsv
+[52.395s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ndt_omp_ros2/environment/path.sh
+[52.405s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ndt_omp_ros2/environment/path.dsv
+[52.415s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ndt_omp_ros2/local_setup.bash
+[52.426s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ndt_omp_ros2/local_setup.sh
+[52.436s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ndt_omp_ros2/local_setup.zsh
+[52.447s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ndt_omp_ros2/local_setup.dsv
+[52.458s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ndt_omp_ros2/package.dsv
+[52.469s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ament_index/resource_index/packages/ndt_omp_ros2
+[52.480s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ndt_omp_ros2/cmake/ament_cmake_export_dependencies-extras.cmake
+[52.491s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ndt_omp_ros2/cmake/ament_cmake_export_include_directories-extras.cmake
+[52.502s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ndt_omp_ros2/cmake/ndt_omp_ros2Config.cmake
+[52.513s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ndt_omp_ros2/cmake/ndt_omp_ros2Config-version.cmake
+[52.523s] -- Symlinking: /home/dgut/code/Nazarite/install/ndt_omp_ros2/share/ndt_omp_ros2/package.xml
+[52.535s] Invoked command in '/home/dgut/code/Nazarite/build/ndt_omp_ros2' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/dgut/code/Nazarite/build/ndt_omp_ros2

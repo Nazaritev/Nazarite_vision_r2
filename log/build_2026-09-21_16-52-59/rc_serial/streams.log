@@ -1,0 +1,122 @@
+[0.033s] Invoking command in '/home/dgut/code/Nazarite/build/rc_serial': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/dgut/code/Nazarite/src/rc_serial -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/dgut/code/Nazarite/install/rc_serial
+[0.272s] -- The C compiler identification is GNU 11.4.0
+[0.272s] -- The CXX compiler identification is GNU 11.4.0
+[0.272s] -- Detecting C compiler ABI info
+[0.272s] -- Detecting C compiler ABI info - done
+[0.272s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.272s] -- Detecting C compile features
+[0.272s] -- Detecting C compile features - done
+[0.273s] -- Detecting CXX compiler ABI info
+[0.475s] -- Detecting CXX compiler ABI info - done
+[0.475s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.475s] -- Detecting CXX compile features
+[0.475s] -- Detecting CXX compile features - done
+[0.475s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.475s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.475s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.475s] -- Found rclcpp: 16.0.18 (/opt/ros/humble/share/rclcpp/cmake)
+[0.505s] -- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.509s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.516s] -- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.525s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.536s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.577s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.577s] -- Found rmw_cyclonedds_cpp: 1.3.4 (/opt/ros/humble/share/rmw_cyclonedds_cpp/cmake)
+[0.588s] -- Using RMW implementation 'rmw_cyclonedds_cpp' as default
+[0.595s] -- Looking for pthread.h
+[0.660s] -- Looking for pthread.h - found
+[0.661s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.724s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[0.725s] -- Found Threads: TRUE  
+[0.777s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: system filesystem 
+[0.839s] -- Configuring done
+[0.848s] -- Generating done
+[0.851s] -- Build files have been written to: /home/dgut/code/Nazarite/build/rc_serial
+[0.868s] Invoked command in '/home/dgut/code/Nazarite/build/rc_serial' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/dgut/code/Nazarite/src/rc_serial -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/dgut/code/Nazarite/install/rc_serial
+[0.869s] Invoking command in '/home/dgut/code/Nazarite/build/rc_serial': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/dgut/code/Nazarite/build/rc_serial -- -j16 -l16
+[0.917s] [ 66%] Building CXX object CMakeFiles/serial_test.dir/src/UsbConnect.cpp.o
+[0.917s] [ 66%] Building CXX object CMakeFiles/serial_test.dir/src/serial_test.cpp.o
+[2.553s] In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+[2.554s]                  from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+[2.554s]                  from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+[2.554s]                  from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+[2.554s]                  from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+[2.554s]                  from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+[2.554s]                  from /usr/include/boost/shared_ptr.hpp:17,
+[2.554s]                  from /usr/include/boost/date_time/time_clock.hpp:17,
+[2.554s]                  from /usr/include/boost/date_time/posix_time/posix_time_types.hpp:10,
+[2.554s]                  from /usr/include/boost/asio/time_traits.hpp:23,
+[2.554s]                  from /usr/include/boost/asio/detail/timer_queue_ptime.hpp:22,
+[2.554s]                  from /usr/include/boost/asio/detail/deadline_timer_service.hpp:29,
+[2.554s]                  from /usr/include/boost/asio/basic_deadline_timer.hpp:25,
+[2.554s]                  from /usr/include/boost/asio.hpp:25,
+[2.554s]                  from /home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h:4,
+[2.554s]                  from /home/dgut/code/Nazarite/src/rc_serial/src/UsbConnect.cpp:1:
+[2.554s] /usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+[2.554s]    36 | BOOST_PRAGMA_MESSAGE(
+[2.554s]       | ^~~~~~~~~~~~~~~~~~~~
+[2.829s] In file included from /home/dgut/code/Nazarite/src/rc_serial/src/UsbConnect.cpp:1:
+[2.829s] /home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h: In member function ‘float DOGUART::getArrayElement(int) const’:
+[2.829s] /home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h:48:33: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<float>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+[2.829s]    48 |         if (index >= 0 && index < result.size()) {
+[2.829s]       |                           ~~~~~~^~~~~~~~~~~~~~~
+[2.834s] /home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h: In member function ‘void DOGUART::handle_error(const boost::system::error_code&)’:
+[2.834s] /home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h:82:56: warning: unused parameter ‘ec’ [-Wunused-parameter]
+[2.834s]    82 |     void handle_error(const boost::system::error_code& ec) {
+[2.834s]       |                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+[2.851s] /home/dgut/code/Nazarite/src/rc_serial/src/UsbConnect.cpp: In member function ‘std::string DOGUART::get_port_info(const string&)’:
+[2.851s] /home/dgut/code/Nazarite/src/rc_serial/src/UsbConnect.cpp:149:21: warning: unused variable ‘syspath’ [-Wunused-variable]
+[2.851s]   149 |         const char* syspath = udev_device_get_syspath(dev);
+[2.851s]       |                     ^~~~~~~
+[4.501s] In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+[4.501s]                  from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+[4.501s]                  from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+[4.502s]                  from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+[4.502s]                  from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+[4.502s]                  from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+[4.502s]                  from /usr/include/boost/shared_ptr.hpp:17,
+[4.502s]                  from /usr/include/boost/date_time/time_clock.hpp:17,
+[4.502s]                  from /usr/include/boost/date_time/posix_time/posix_time_types.hpp:10,
+[4.502s]                  from /usr/include/boost/asio/time_traits.hpp:23,
+[4.502s]                  from /usr/include/boost/asio/detail/timer_queue_ptime.hpp:22,
+[4.502s]                  from /usr/include/boost/asio/detail/deadline_timer_service.hpp:29,
+[4.502s]                  from /usr/include/boost/asio/basic_deadline_timer.hpp:25,
+[4.502s]                  from /usr/include/boost/asio.hpp:25,
+[4.502s]                  from /home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h:4,
+[4.502s]                  from /home/dgut/code/Nazarite/src/rc_serial/src/serial_test.cpp:2:
+[4.502s] /usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+[4.502s]    36 | BOOST_PRAGMA_MESSAGE(
+[4.502s]       | ^~~~~~~~~~~~~~~~~~~~
+[4.730s] In file included from /home/dgut/code/Nazarite/src/rc_serial/src/serial_test.cpp:2:
+[4.730s] /home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h: In member function ‘float DOGUART::getArrayElement(int) const’:
+[4.730s] /home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h:48:33: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<float>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+[4.730s]    48 |         if (index >= 0 && index < result.size()) {
+[4.730s]       |                           ~~~~~~^~~~~~~~~~~~~~~
+[4.735s] /home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h: In member function ‘void DOGUART::handle_error(const boost::system::error_code&)’:
+[4.735s] /home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h:82:56: warning: unused parameter ‘ec’ [-Wunused-parameter]
+[4.735s]    82 |     void handle_error(const boost::system::error_code& ec) {
+[4.735s]       |                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+[5.987s] [100%] Linking CXX executable serial_test
+[6.342s] [100%] Built target serial_test
+[6.447s] Invoked command in '/home/dgut/code/Nazarite/build/rc_serial' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/dgut/code/Nazarite/build/rc_serial -- -j16 -l16
+[6.448s] Invoking command in '/home/dgut/code/Nazarite/build/rc_serial': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/dgut/code/Nazarite/build/rc_serial
+[6.465s] -- Install configuration: ""
+[6.465s] -- Execute custom install script
+[6.465s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/lib/rc_serial/serial_test
+[6.492s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/include/rc_serial/rc_usb.h
+[6.523s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/ament_index/resource_index/package_run_dependencies/rc_serial
+[6.550s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/ament_index/resource_index/parent_prefix_path/rc_serial
+[6.573s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/rc_serial/environment/ament_prefix_path.sh
+[6.597s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/rc_serial/environment/ament_prefix_path.dsv
+[6.622s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/rc_serial/environment/path.sh
+[6.648s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/rc_serial/environment/path.dsv
+[6.668s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/rc_serial/local_setup.bash
+[6.689s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/rc_serial/local_setup.sh
+[6.709s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/rc_serial/local_setup.zsh
+[6.731s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/rc_serial/local_setup.dsv
+[6.742s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/rc_serial/package.dsv
+[6.766s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/ament_index/resource_index/packages/rc_serial
+[6.788s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/rc_serial/cmake/rc_serialConfig.cmake
+[6.811s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/rc_serial/cmake/rc_serialConfig-version.cmake
+[6.823s] -- Symlinking: /home/dgut/code/Nazarite/install/rc_serial/share/rc_serial/package.xml
+[6.853s] Invoked command in '/home/dgut/code/Nazarite/build/rc_serial' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/dgut/code/Nazarite/build/rc_serial

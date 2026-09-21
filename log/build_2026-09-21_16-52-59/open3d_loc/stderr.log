@@ -1,0 +1,97 @@
+CMake Warning (dev) at CMakeLists.txt:37 (find_package):
+  Policy CMP0074 is not set: find_package uses <PackageName>_ROOT variables.
+  Run "cmake --help-policy CMP0074" for policy details.  Use the cmake_policy
+  command to set the policy and suppress this warning.
+
+  CMake variable PCL_ROOT is set to:
+
+    /usr
+
+  For compatibility, CMake is ignoring the variable.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Deprecation Warning at /home/dgut/open3d141/lib/cmake/Open3D/Open3DConfig.cmake:18 (cmake_policy):
+  The OLD behavior for policy CMP0072 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+Call Stack (most recent call first):
+  CMakeLists.txt:47 (find_package)
+
+
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_registration/open3d_registration.cpp: In lambda function:
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_registration/open3d_registration.cpp:114:18: warning: unused variable ‘preprocess_cost’ [-Wunused-variable]
+  114 |             auto preprocess_cost = std::chrono::duration_cast<std::chrono::milliseconds>(preprocess_e - preprocess_s).count();
+      |                  ^~~~~~~~~~~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_registration/open3d_registration.cpp: In function ‘Eigen::Matrix4d pcd_tools::RegistrationMultiScaleIcp(std::shared_ptr<open3d::geometry::PointCloud>, std::shared_ptr<open3d::geometry::PointCloud>, double, int, std::vector<double>)’:
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_registration/open3d_registration.cpp:127:14: warning: unused variable ‘preprocess_all_cost’ [-Wunused-variable]
+  127 |         auto preprocess_all_cost = std::chrono::duration_cast<std::chrono::milliseconds>(preprocess_all_e - preprocess_all_s).count();
+      |              ^~~~~~~~~~~~~~~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_registration/open3d_registration.cpp:147:14: warning: unused variable ‘icp_cost’ [-Wunused-variable]
+  147 |         auto icp_cost = std::chrono::duration_cast<std::chrono::milliseconds>(icp_e - icp_s).count();
+      |              ^~~~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_registration/open3d_registration.cpp: In member function ‘bool pcd_tools::Open3dRegistration::RegistrationPipeline()’:
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_registration/open3d_registration.cpp:340:60: warning: variable ‘fpfh_time_s’ set but not used [-Wunused-but-set-variable]
+  340 |             std::chrono::high_resolution_clock::time_point fpfh_time_s = std::chrono::high_resolution_clock::now();
+      |                                                            ^~~~~~~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_registration/open3d_registration.cpp:349:60: warning: variable ‘fpfh_time_e’ set but not used [-Wunused-but-set-variable]
+  349 |             std::chrono::high_resolution_clock::time_point fpfh_time_e = std::chrono::high_resolution_clock::now();
+      |                                                            ^~~~~~~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_registration/open3d_registration.cpp:354:60: warning: variable ‘icp_time_s’ set but not used [-Wunused-but-set-variable]
+  354 |             std::chrono::high_resolution_clock::time_point icp_time_s = std::chrono::high_resolution_clock::now();
+      |                                                            ^~~~~~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_registration/open3d_registration.cpp:358:60: warning: variable ‘icp_time_e’ set but not used [-Wunused-but-set-variable]
+  358 |             std::chrono::high_resolution_clock::time_point icp_time_e = std::chrono::high_resolution_clock::now();
+      |                                                            ^~~~~~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_registration/open3d_registration.cpp:335:56: warning: variable ‘start_time’ set but not used [-Wunused-but-set-variable]
+  335 |         std::chrono::high_resolution_clock::time_point start_time = std::chrono::high_resolution_clock::now();
+      |                                                        ^~~~~~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_registration/open3d_registration.cpp:364:56: warning: variable ‘total_time’ set but not used [-Wunused-but-set-variable]
+  364 |         std::chrono::high_resolution_clock::time_point total_time = std::chrono::high_resolution_clock::now();
+      |                                                        ^~~~~~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_conversions/open3d_conversions.cpp: In function ‘void open3d_conversions::open3dToRos(const open3d::t::geometry::PointCloud&, sensor_msgs::msg::PointCloud2&, std::string, int, ...)’:
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_conversions/open3d_conversions.cpp:160:30: warning: comparison of integer expressions of different signedness: ‘size_t’ {aka ‘long unsigned int’} and ‘__gnu_cxx::__alloc_traits<std::allocator<long int>, long int>::value_type’ {aka ‘long int’} [-Wsign-compare]
+  160 |         for (size_t i = 0; i < o3d_TensorList_points.GetShape()[0]; i++, ++ros_pc2_x, ++ros_pc2_y, ++ros_pc2_z)
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_conversions/open3d_conversions.cpp:174:30: warning: comparison of integer expressions of different signedness: ‘size_t’ {aka ‘long unsigned int’} and ‘__gnu_cxx::__alloc_traits<std::allocator<long int>, long int>::value_type’ {aka ‘long int’} [-Wsign-compare]
+  174 |         for (size_t i = 0; i < o3d_TensorList_points.GetShape()[0]; i++, ++ros_pc2_r, ++ros_pc2_g, ++ros_pc2_b)
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_conversions/open3d_conversions.cpp:190:32: warning: comparison of integer expressions of different signedness: ‘size_t’ {aka ‘long unsigned int’} and ‘__gnu_cxx::__alloc_traits<std::allocator<long int>, long int>::value_type’ {aka ‘long int’} [-Wsign-compare]
+  190 |           for (size_t i = 0; i < o3d_TensorList_points.GetShape()[0];
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_conversions/open3d_conversions.cpp:204:32: warning: comparison of integer expressions of different signedness: ‘size_t’ {aka ‘long unsigned int’} and ‘__gnu_cxx::__alloc_traits<std::allocator<long int>, long int>::value_type’ {aka ‘long int’} [-Wsign-compare]
+  204 |           for (size_t i = 0; i < o3d_TensorList_points.GetShape()[0];
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_conversions/open3d_conversions.cpp:184:37: warning: unused variable ‘o3d_TensorList_fields’ [-Wunused-variable]
+  184 |         const open3d::core::Tensor &o3d_TensorList_fields = pointcloud.GetPointAttr(*field_name);
+      |                                     ^~~~~~~~~~~~~~~~~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_conversions/open3d_conversions.cpp: In function ‘void open3d_conversions::rosToOpen3d(const std::shared_ptr<const sensor_msgs::msg::PointCloud2_<std::allocator<void> > >&, open3d::t::geometry::PointCloud&, bool)’:
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_conversions/open3d_conversions.cpp:229:41: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<sensor_msgs::msg::PointField_<std::allocator<void> >, std::allocator<sensor_msgs::msg::PointField_<std::allocator<void> > > >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+  229 |     for (int num_fields = 0; num_fields < ros_pc2->fields.size(); num_fields++)
+      |                              ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/open3d_conversions/open3d_conversions.cpp:225:25: warning: variable ‘dtype_lf’ set but not used [-Wunused-but-set-variable]
+  225 |     open3d::core::Dtype dtype_lf = open3d::core::Dtype::Float64;
+      |                         ^~~~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/global_localization.cpp: In member function ‘void GloabalLocalization::CallbackBaselink2Odom(nav_msgs::msg::Odometry_<std::allocator<void> >::SharedPtr)’:
+/home/dgut/code/Nazarite/src/open3d_loc/src/global_localization.cpp:548:10: warning: variable ‘odom_cbk_s’ set but not used [-Wunused-but-set-variable]
+  548 |     auto odom_cbk_s = std::chrono::high_resolution_clock::now();
+      |          ^~~~~~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/global_localization.cpp: In member function ‘void GloabalLocalization::CallbackScan(sensor_msgs::msg::PointCloud2_<std::allocator<void> >::SharedPtr)’:
+/home/dgut/code/Nazarite/src/open3d_loc/src/global_localization.cpp:676:10: warning: variable ‘cbk_s’ set but not used [-Wunused-but-set-variable]
+  676 |     auto cbk_s = std::chrono::high_resolution_clock::now();
+      |          ^~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/global_localization.cpp:706:10: warning: variable ‘cbk_e’ set but not used [-Wunused-but-set-variable]
+  706 |     auto cbk_e = std::chrono::high_resolution_clock::now();
+      |          ^~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/global_localization.cpp: In member function ‘void GloabalLocalization::LocalizationInitialize()’:
+/home/dgut/code/Nazarite/src/open3d_loc/src/global_localization.cpp:768:18: warning: variable ‘reg0_s’ set but not used [-Wunused-but-set-variable]
+  768 |             auto reg0_s = std::chrono::high_resolution_clock::now();
+      |                  ^~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/global_localization.cpp: In member function ‘void GloabalLocalization::Localization()’:
+/home/dgut/code/Nazarite/src/open3d_loc/src/global_localization.cpp:1001:18: warning: variable ‘reg0_s’ set but not used [-Wunused-but-set-variable]
+ 1001 |             auto reg0_s = std::chrono::high_resolution_clock::now();
+      |                  ^~~~~~
+/home/dgut/code/Nazarite/src/open3d_loc/src/global_localization.cpp:890:12: warning: unused variable ‘fitness’ [-Wunused-variable]
+  890 |     double fitness = 0;
+      |            ^~~~~~~
+/usr/bin/ld: /home/dgut/open3d141/lib/libOpen3D_3rdparty_blas_mkl_merged.a(dgetsqr_tbb.o): warning: relocation against `_ZN3tbb10interface98internal9start_forINS_13blocked_rangeImEENS_8internal17parallel_for_bodyIZ18mkl_lapack_dgetsqrEUlmE0_mEENS_20affinity_partitionerEED1Ev' in read-only section `.rodata._ZTVN3tbb10interface98internal9start_forINS_13blocked_rangeImEENS_8internal17parallel_for_bodyIZ18mkl_lapack_dgetsqrEUlmE0_mEENS_20affinity_partitionerEEE[_ZTVN3tbb10interface98internal9start_forINS_13blocked_rangeImEENS_8internal17parallel_for_bodyIZ18mkl_lapack_dgetsqrEUlmE0_mEENS_20affinity_partitionerEEE]'
+/usr/bin/ld: warning: creating DT_TEXTREL in a PIE

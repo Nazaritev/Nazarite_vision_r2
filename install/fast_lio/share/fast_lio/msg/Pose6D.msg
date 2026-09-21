@@ -1,0 +1,1 @@
+/home/dgut/code/Nazarite/src/fast_lio/msg/Pose6D.msg

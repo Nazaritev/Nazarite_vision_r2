@@ -1,0 +1,1 @@
+/home/dgut/code/Nazarite/build/rc_serial/ament_cmake_environment_hooks/local_setup.sh

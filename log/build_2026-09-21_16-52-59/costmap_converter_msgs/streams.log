@@ -1,0 +1,236 @@
+[0.027s] Invoking command in '/home/dgut/code/Nazarite/build/costmap_converter_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/dgut/code/Nazarite/src/costmap_converter/costmap_converter_msgs -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/dgut/code/Nazarite/install/costmap_converter_msgs
+[0.285s] -- The C compiler identification is GNU 11.4.0
+[0.285s] -- The CXX compiler identification is GNU 11.4.0
+[0.285s] -- Detecting C compiler ABI info
+[0.285s] -- Detecting C compiler ABI info - done
+[0.285s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.285s] -- Detecting C compile features
+[0.285s] -- Detecting C compile features - done
+[0.285s] -- Detecting CXX compiler ABI info
+[0.285s] -- Detecting CXX compiler ABI info - done
+[0.286s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.286s] -- Detecting CXX compile features
+[0.286s] -- Detecting CXX compile features - done
+[0.286s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.493s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.494s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.494s] -- Found builtin_interfaces: 1.2.2 (/opt/ros/humble/share/builtin_interfaces/cmake)
+[0.502s] -- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.508s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.517s] -- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.528s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.540s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.550s] -- Found geometry_msgs: 4.9.1 (/opt/ros/humble/share/geometry_msgs/cmake)
+[0.573s] -- Found rosidl_default_generators: 1.2.1 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[0.848s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[1.214s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.369s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.391s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[1.405s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[1.414s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[1.415s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[1.415s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[1.415s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[1.440s] -- Found PythonExtra: .so  
+[1.566s] -- Configuring done
+[1.599s] -- Generating done
+[1.611s] -- Build files have been written to: /home/dgut/code/Nazarite/build/costmap_converter_msgs
+[1.628s] Invoked command in '/home/dgut/code/Nazarite/build/costmap_converter_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/dgut/code/Nazarite/src/costmap_converter/costmap_converter_msgs -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/dgut/code/Nazarite/install/costmap_converter_msgs
+[1.628s] Invoking command in '/home/dgut/code/Nazarite/build/costmap_converter_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/dgut/code/Nazarite/build/costmap_converter_msgs -- -j16 -l16
+[1.664s] [  2%] Generating C code for ROS interfaces
+[1.675s] [  5%] Generating Rust code for ROS interfaces
+[1.675s] [  7%] Generating C++ code for ROS interfaces
+[1.683s] [  7%] Built target ament_cmake_python_symlink_costmap_converter_msgs
+[1.943s] [  7%] Built target costmap_converter_msgs__rs
+[1.961s] running egg_info
+[1.962s] creating costmap_converter_msgs.egg-info
+[1.962s] writing costmap_converter_msgs.egg-info/PKG-INFO
+[1.962s] writing dependency_links to costmap_converter_msgs.egg-info/dependency_links.txt
+[1.962s] writing top-level names to costmap_converter_msgs.egg-info/top_level.txt
+[1.963s] writing manifest file 'costmap_converter_msgs.egg-info/SOURCES.txt'
+[1.968s] reading manifest file 'costmap_converter_msgs.egg-info/SOURCES.txt'
+[1.968s] writing manifest file 'costmap_converter_msgs.egg-info/SOURCES.txt'
+[2.003s] [ 12%] Building C object CMakeFiles/costmap_converter_msgs__rosidl_generator_c.dir/rosidl_generator_c/costmap_converter_msgs/msg/detail/obstacle_array_msg__functions.c.o
+[2.003s] [ 12%] Building C object CMakeFiles/costmap_converter_msgs__rosidl_generator_c.dir/rosidl_generator_c/costmap_converter_msgs/msg/detail/obstacle_msg__functions.c.o
+[2.011s] [ 12%] Built target costmap_converter_msgs__cpp
+[2.013s] [ 12%] Built target ament_cmake_python_build_costmap_converter_msgs_egg
+[2.026s] [ 20%] Generating C++ type support for eProsima Fast-RTPS
+[2.026s] [ 20%] Generating C++ introspection for ROS interfaces
+[2.026s] [ 20%] Generating C++ type support dispatch for ROS interfaces
+[2.058s] [ 22%] Linking C shared library libcostmap_converter_msgs__rosidl_generator_c.so
+[2.103s] [ 22%] Built target costmap_converter_msgs__rosidl_generator_c
+[2.115s] [ 27%] Generating C introspection for ROS interfaces
+[2.115s] [ 27%] Generating C type support for eProsima Fast-RTPS
+[2.115s] [ 30%] Generating C type support dispatch for ROS interfaces
+[2.369s] [ 32%] Building CXX object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/costmap_converter_msgs/msg/detail/dds_fastrtps/obstacle_msg__type_support.cpp.o
+[2.371s] [ 35%] Building CXX object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/costmap_converter_msgs/msg/detail/dds_fastrtps/obstacle_array_msg__type_support.cpp.o
+[2.371s] [ 37%] Building CXX object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/costmap_converter_msgs/msg/obstacle_msg__type_support.cpp.o
+[2.377s] [ 40%] Building CXX object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/costmap_converter_msgs/msg/obstacle_array_msg__type_support.cpp.o
+[2.406s] [ 42%] Building CXX object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/costmap_converter_msgs/msg/detail/obstacle_msg__type_support.cpp.o
+[2.410s] [ 45%] Building CXX object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/costmap_converter_msgs/msg/detail/obstacle_array_msg__type_support.cpp.o
+[2.510s] [ 50%] Building CXX object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/costmap_converter_msgs/msg/detail/obstacle_msg__type_support_c.cpp.o
+[2.510s] [ 50%] Building CXX object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/costmap_converter_msgs/msg/obstacle_array_msg__type_support.cpp.o
+[2.511s] [ 52%] Building CXX object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/costmap_converter_msgs/msg/obstacle_msg__type_support.cpp.o
+[2.527s] [ 55%] Building CXX object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/costmap_converter_msgs/msg/detail/obstacle_array_msg__type_support_c.cpp.o
+[2.578s] [ 57%] Building C object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/costmap_converter_msgs/msg/detail/obstacle_array_msg__type_support.c.o
+[2.589s] [ 60%] Building C object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/costmap_converter_msgs/msg/detail/obstacle_msg__type_support.c.o
+[2.600s] [ 62%] Linking CXX shared library libcostmap_converter_msgs__rosidl_typesupport_c.so
+[2.663s] [ 65%] Linking C shared library libcostmap_converter_msgs__rosidl_typesupport_introspection_c.so
+[2.667s] [ 67%] Linking CXX shared library libcostmap_converter_msgs__rosidl_typesupport_cpp.so
+[2.676s] [ 67%] Built target costmap_converter_msgs__rosidl_typesupport_c
+[2.716s] [ 67%] Built target costmap_converter_msgs__rosidl_typesupport_introspection_c
+[2.729s] [ 67%] Built target costmap_converter_msgs__rosidl_typesupport_cpp
+[2.894s] [ 70%] Linking CXX shared library libcostmap_converter_msgs__rosidl_typesupport_fastrtps_cpp.so
+[2.909s] [ 72%] Linking CXX shared library libcostmap_converter_msgs__rosidl_typesupport_fastrtps_c.so
+[2.921s] [ 75%] Linking CXX shared library libcostmap_converter_msgs__rosidl_typesupport_introspection_cpp.so
+[2.986s] [ 75%] Built target costmap_converter_msgs__rosidl_typesupport_fastrtps_cpp
+[2.994s] [ 75%] Built target costmap_converter_msgs__rosidl_typesupport_fastrtps_c
+[3.013s] [ 75%] Built target costmap_converter_msgs__rosidl_typesupport_introspection_cpp
+[3.031s] [ 75%] Built target costmap_converter_msgs
+[3.049s] [ 77%] Generating Python code for ROS interfaces
+[3.433s] [ 77%] Built target costmap_converter_msgs__py
+[3.450s] [ 80%] Building C object CMakeFiles/costmap_converter_msgs__rosidl_generator_py.dir/rosidl_generator_py/costmap_converter_msgs/msg/_obstacle_msg_s.c.o
+[3.452s] [ 82%] Building C object CMakeFiles/costmap_converter_msgs__rosidl_generator_py.dir/rosidl_generator_py/costmap_converter_msgs/msg/_obstacle_array_msg_s.c.o
+[3.551s] [ 85%] Linking C shared library rosidl_generator_py/costmap_converter_msgs/libcostmap_converter_msgs__rosidl_generator_py.so
+[3.595s] [ 85%] Built target costmap_converter_msgs__rosidl_generator_py
+[3.617s] [ 87%] Building C object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/costmap_converter_msgs/_costmap_converter_msgs_s.ep.rosidl_typesupport_introspection_c.c.o
+[3.617s] [ 90%] Building C object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/costmap_converter_msgs/_costmap_converter_msgs_s.ep.rosidl_typesupport_c.c.o
+[3.618s] [ 92%] Building C object CMakeFiles/costmap_converter_msgs__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/costmap_converter_msgs/_costmap_converter_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o
+[3.727s] [100%] Linking C shared library rosidl_generator_py/costmap_converter_msgs/costmap_converter_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[3.727s] [100%] Linking C shared library rosidl_generator_py/costmap_converter_msgs/costmap_converter_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[3.727s] [100%] Linking C shared library rosidl_generator_py/costmap_converter_msgs/costmap_converter_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[3.773s] [100%] Built target costmap_converter_msgs__rosidl_typesupport_introspection_c__pyext
+[3.773s] [100%] Built target costmap_converter_msgs__rosidl_typesupport_c__pyext
+[3.773s] [100%] Built target costmap_converter_msgs__rosidl_typesupport_fastrtps_c__pyext
+[3.790s] Invoked command in '/home/dgut/code/Nazarite/build/costmap_converter_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/dgut/code/Nazarite/build/costmap_converter_msgs -- -j16 -l16
+[3.790s] Invoking command in '/home/dgut/code/Nazarite/build/costmap_converter_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/dgut/code/Nazarite/build/costmap_converter_msgs
+[3.798s] -- Install configuration: ""
+[3.799s] -- Execute custom install script
+[3.799s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/ament_index/resource_index/rosidl_interfaces/costmap_converter_msgs
+[3.810s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_array_msg__functions.h
+[3.820s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_array_msg__struct.h
+[3.832s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_array_msg__type_support.h
+[3.842s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_msg__functions.h
+[3.852s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_msg__struct.h
+[3.862s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_msg__type_support.h
+[3.873s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/obstacle_array_msg.h
+[3.887s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/obstacle_msg.h
+[3.897s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/rosidl_generator_c__visibility_control.h
+[3.907s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/environment/library_path.sh
+[3.918s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/environment/library_path.dsv
+[3.929s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_array_msg__rosidl_typesupport_fastrtps_c.h
+[3.941s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_msg__rosidl_typesupport_fastrtps_c.h
+[3.952s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[3.962s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_array_msg__builder.hpp
+[3.972s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_array_msg__struct.hpp
+[3.982s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_array_msg__traits.hpp
+[3.991s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_array_msg__type_support.hpp
+[4.001s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_msg__builder.hpp
+[4.011s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_msg__struct.hpp
+[4.024s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_msg__traits.hpp
+[4.032s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_msg__type_support.hpp
+[4.042s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/obstacle_array_msg.hpp
+[4.052s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/obstacle_msg.hpp
+[4.063s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[4.073s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_array_msg__rosidl_typesupport_fastrtps_cpp.hpp
+[4.084s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_msg__rosidl_typesupport_fastrtps_cpp.hpp
+[4.094s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[4.106s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_array_msg__rosidl_typesupport_introspection_c.h
+[4.117s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_msg__rosidl_typesupport_introspection_c.h
+[4.128s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[4.139s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_array_msg__rosidl_typesupport_introspection_cpp.hpp
+[4.149s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/include/costmap_converter_msgs/costmap_converter_msgs/msg/detail/obstacle_msg__rosidl_typesupport_introspection_cpp.hpp
+[4.161s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/environment/pythonpath.sh
+[4.171s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/environment/pythonpath.dsv
+[4.183s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs-0.1.2-py3.10.egg-info/PKG-INFO
+[4.194s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs-0.1.2-py3.10.egg-info/SOURCES.txt
+[4.205s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs-0.1.2-py3.10.egg-info/dependency_links.txt
+[4.215s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs-0.1.2-py3.10.egg-info/top_level.txt
+[4.227s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/__init__.py
+[4.237s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/_costmap_converter_msgs_s.ep.rosidl_typesupport_c.c
+[4.249s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/_costmap_converter_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+[4.260s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/_costmap_converter_msgs_s.ep.rosidl_typesupport_introspection_c.c
+[4.271s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/costmap_converter_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[4.284s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/costmap_converter_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[4.295s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/costmap_converter_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[4.306s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/libcostmap_converter_msgs__rosidl_generator_py.so
+[4.317s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/msg/__init__.py
+[4.329s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/msg/_obstacle_array_msg.py
+[4.340s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/msg/_obstacle_array_msg_s.c
+[4.351s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/msg/_obstacle_msg.py
+[4.362s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/msg/_obstacle_msg_s.c
+[4.374s] -- Up-to-date symlink: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/costmap_converter_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[4.375s] -- Up-to-date symlink: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/costmap_converter_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[4.375s] -- Up-to-date symlink: /home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/costmap_converter_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[4.375s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/ament_index/resource_index/rust_packages/costmap_converter_msgs
+[4.387s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/rust/Cargo.toml
+[4.398s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/rust/build.rs
+[4.410s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/rust/src/lib.rs
+[4.421s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/rust/src/msg.rs
+[4.433s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/rust/src/msg/rmw.rs
+[4.445s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/msg/ObstacleMsg.idl
+[4.456s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/msg/ObstacleArrayMsg.idl
+[4.468s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/msg/ObstacleMsg.msg
+[4.481s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/msg/ObstacleArrayMsg.msg
+[4.492s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/ament_index/resource_index/package_run_dependencies/costmap_converter_msgs
+[4.499s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/ament_index/resource_index/parent_prefix_path/costmap_converter_msgs
+[4.510s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/environment/ament_prefix_path.sh
+[4.522s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/environment/ament_prefix_path.dsv
+[4.534s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/environment/path.sh
+[4.546s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/environment/path.dsv
+[4.559s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/local_setup.bash
+[4.574s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/local_setup.sh
+[4.586s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/local_setup.zsh
+[4.598s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/local_setup.dsv
+[4.609s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/package.dsv
+[4.621s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/ament_index/resource_index/packages/costmap_converter_msgs
+[4.632s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/rosidl_cmake-extras.cmake
+[4.643s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[4.654s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[4.666s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[4.677s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[4.688s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[4.704s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[4.714s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/costmap_converter_msgsConfig.cmake
+[4.731s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/costmap_converter_msgsConfig-version.cmake
+[4.747s] -- Symlinking: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/package.xml
+[4.762s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_generator_c.so
+[4.762s] -- Set runtime path of "/home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_generator_c.so" to ""
+[4.762s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_typesupport_fastrtps_c.so
+[4.762s] -- Set runtime path of "/home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_typesupport_fastrtps_c.so" to ""
+[4.763s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_typesupport_fastrtps_cpp.so
+[4.763s] -- Set runtime path of "/home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""
+[4.763s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_typesupport_introspection_c.so
+[4.763s] -- Set runtime path of "/home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_typesupport_introspection_c.so" to ""
+[4.763s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_typesupport_c.so
+[4.763s] -- Set runtime path of "/home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_typesupport_c.so" to ""
+[4.763s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_typesupport_introspection_cpp.so
+[4.763s] -- Set runtime path of "/home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_typesupport_introspection_cpp.so" to ""
+[4.763s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_typesupport_cpp.so
+[4.763s] -- Set runtime path of "/home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_typesupport_cpp.so" to ""
+[4.798s] Listing '/home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs'...
+[4.798s] Compiling '/home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/__init__.py'...
+[4.798s] Listing '/home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/msg'...
+[4.798s] Compiling '/home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/msg/__init__.py'...
+[4.798s] Compiling '/home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/msg/_obstacle_array_msg.py'...
+[4.798s] Compiling '/home/dgut/code/Nazarite/install/costmap_converter_msgs/local/lib/python3.10/dist-packages/costmap_converter_msgs/msg/_obstacle_msg.py'...
+[4.804s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_generator_py.so
+[4.805s] -- Set runtime path of "/home/dgut/code/Nazarite/install/costmap_converter_msgs/lib/libcostmap_converter_msgs__rosidl_generator_py.so" to ""
+[4.805s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/export_costmap_converter_msgs__rosidl_generator_cExport.cmake
+[4.806s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/export_costmap_converter_msgs__rosidl_generator_cExport-noconfig.cmake
+[4.806s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/export_costmap_converter_msgs__rosidl_typesupport_fastrtps_cExport.cmake
+[4.806s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/export_costmap_converter_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[4.807s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/export_costmap_converter_msgs__rosidl_generator_cppExport.cmake
+[4.807s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/export_costmap_converter_msgs__rosidl_typesupport_fastrtps_cppExport.cmake
+[4.807s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/export_costmap_converter_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[4.808s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/costmap_converter_msgs__rosidl_typesupport_introspection_cExport.cmake
+[4.808s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/costmap_converter_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[4.808s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/costmap_converter_msgs__rosidl_typesupport_cExport.cmake
+[4.808s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/costmap_converter_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[4.809s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/costmap_converter_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[4.809s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/costmap_converter_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[4.810s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/costmap_converter_msgs__rosidl_typesupport_cppExport.cmake
+[4.810s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/costmap_converter_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[4.810s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/export_costmap_converter_msgs__rosidl_generator_pyExport.cmake
+[4.811s] -- Installing: /home/dgut/code/Nazarite/install/costmap_converter_msgs/share/costmap_converter_msgs/cmake/export_costmap_converter_msgs__rosidl_generator_pyExport-noconfig.cmake
+[4.929s] Invoked command in '/home/dgut/code/Nazarite/build/costmap_converter_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/dgut/code/Nazarite/build/costmap_converter_msgs

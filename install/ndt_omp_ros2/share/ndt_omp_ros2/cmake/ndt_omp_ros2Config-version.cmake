@@ -1,0 +1,1 @@
+/home/dgut/code/Nazarite/build/ndt_omp_ros2/ament_cmake_core/ndt_omp_ros2Config-version.cmake

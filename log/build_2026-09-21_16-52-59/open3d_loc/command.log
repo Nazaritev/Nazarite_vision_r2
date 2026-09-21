@@ -1,0 +1,6 @@
+Invoking command in '/home/dgut/code/Nazarite/build/open3d_loc': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/dgut/code/Nazarite/src/open3d_loc -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/dgut/code/Nazarite/install/open3d_loc
+Invoked command in '/home/dgut/code/Nazarite/build/open3d_loc' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/dgut/code/Nazarite/src/open3d_loc -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/dgut/code/Nazarite/install/open3d_loc
+Invoking command in '/home/dgut/code/Nazarite/build/open3d_loc': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/dgut/code/Nazarite/build/open3d_loc -- -j16 -l16
+Invoked command in '/home/dgut/code/Nazarite/build/open3d_loc' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/dgut/code/Nazarite/build/open3d_loc -- -j16 -l16
+Invoking command in '/home/dgut/code/Nazarite/build/open3d_loc': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/dgut/code/Nazarite/build/open3d_loc
+Invoked command in '/home/dgut/code/Nazarite/build/open3d_loc' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/dgut/code/Nazarite/build/open3d_loc

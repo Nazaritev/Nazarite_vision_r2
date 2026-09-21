@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="arm-new23">
+  <link
+    name="motion_link">
+    <inertial>
+      <origin
+        xyz="-0.1104 0.025935 0.29003"
+        rpy="0 0 0" />
+      <mass
+        value="21.895" />
+      <inertia
+        ixx="0.032315"
+        ixy="-0.0074415"
+        ixz="-1.378E-05"
+        iyy="0.08195"
+        iyz="-8.6185E-06"
+        izz="0.078666" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://arm-new23/meshes/mode_link_visual.obj" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://arm-new23/meshes/mode_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="link1">
+    <inertial>
+      <origin
+        xyz="-0.25553 -0.0083446 0.10722"
+        rpy="0 0 0" />
+      <mass
+        value="0.72847" />
+      <inertia
+        ixx="0.000458"
+        ixy="-1.2722E-07"
+        ixz="0.00022349"
+        iyy="0.0013914"
+        iyz="1.196E-07"
+        izz="0.00098718" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://arm-new23/meshes/link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.37255 0.37255 0.37255 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://arm-new23/meshes/link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint1"
+    type="continuous">
+    <origin
+      xyz="0.15389 0.063662 0.228"
+      rpy="0 0 0" />
+    <parent
+      link="motion_link" />
+    <child
+      link="link1" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="link2">
+    <inertial>
+      <origin
+        xyz="0.21709 -0.017332 -0.060896"
+        rpy="0 0 0" />
+      <mass
+        value="0.23746" />
+      <inertia
+        ixx="0.00015235"
+        ixy="7.9141E-08"
+        ixz="0.00031828"
+        iyy="0.0012626"
+        iyz="-2.2802E-08"
+        izz="0.0011545" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://arm-new23/meshes/link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.37255 0.37255 0.37255 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://arm-new23/meshes/link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint2"
+    type="continuous">
+    <origin
+      xyz="-0.29285 -0.0373 0.12059"
+      rpy="0 0 0" />
+    <parent
+      link="link1" />
+    <child
+      link="link2" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      effort="12.0"
+      velocity="3" />
+  </joint>
+  <link
+    name="link3">
+    <inertial>
+      <origin
+        xyz="0.02987 0.037507 5.8072E-12"
+        rpy="0 0 0" />
+      <mass
+        value="0.10789" />
+      <inertia
+        ixx="4.4714E-05"
+        ixy="8.6802E-08"
+        ixz="-1.4223E-15"
+        iyy="3.7572E-05"
+        iyz="-4.6372E-15"
+        izz="2.9045E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://arm-new23/meshes/link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://arm-new23/meshes/link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint3"
+    type="revolute">
+    <origin
+      xyz="0.47819 -0.063175 -0.13902"
+      rpy="0 0 0" />
+    <parent
+      link="link2" />
+    <child
+      link="link3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.90"
+      effort="10"
+      velocity="2" />
+  </joint>
+</robot>

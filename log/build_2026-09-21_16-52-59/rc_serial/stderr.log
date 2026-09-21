@@ -1,0 +1,60 @@
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /usr/include/boost/date_time/time_clock.hpp:17,
+                 from /usr/include/boost/date_time/posix_time/posix_time_types.hpp:10,
+                 from /usr/include/boost/asio/time_traits.hpp:23,
+                 from /usr/include/boost/asio/detail/timer_queue_ptime.hpp:22,
+                 from /usr/include/boost/asio/detail/deadline_timer_service.hpp:29,
+                 from /usr/include/boost/asio/basic_deadline_timer.hpp:25,
+                 from /usr/include/boost/asio.hpp:25,
+                 from /home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h:4,
+                 from /home/dgut/code/Nazarite/src/rc_serial/src/UsbConnect.cpp:1:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+In file included from /home/dgut/code/Nazarite/src/rc_serial/src/UsbConnect.cpp:1:
+/home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h: In member function ‘float DOGUART::getArrayElement(int) const’:
+/home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h:48:33: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<float>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+   48 |         if (index >= 0 && index < result.size()) {
+      |                           ~~~~~~^~~~~~~~~~~~~~~
+/home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h: In member function ‘void DOGUART::handle_error(const boost::system::error_code&)’:
+/home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h:82:56: warning: unused parameter ‘ec’ [-Wunused-parameter]
+   82 |     void handle_error(const boost::system::error_code& ec) {
+      |                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+/home/dgut/code/Nazarite/src/rc_serial/src/UsbConnect.cpp: In member function ‘std::string DOGUART::get_port_info(const string&)’:
+/home/dgut/code/Nazarite/src/rc_serial/src/UsbConnect.cpp:149:21: warning: unused variable ‘syspath’ [-Wunused-variable]
+  149 |         const char* syspath = udev_device_get_syspath(dev);
+      |                     ^~~~~~~
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /usr/include/boost/date_time/time_clock.hpp:17,
+                 from /usr/include/boost/date_time/posix_time/posix_time_types.hpp:10,
+                 from /usr/include/boost/asio/time_traits.hpp:23,
+                 from /usr/include/boost/asio/detail/timer_queue_ptime.hpp:22,
+                 from /usr/include/boost/asio/detail/deadline_timer_service.hpp:29,
+                 from /usr/include/boost/asio/basic_deadline_timer.hpp:25,
+                 from /usr/include/boost/asio.hpp:25,
+                 from /home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h:4,
+                 from /home/dgut/code/Nazarite/src/rc_serial/src/serial_test.cpp:2:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+In file included from /home/dgut/code/Nazarite/src/rc_serial/src/serial_test.cpp:2:
+/home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h: In member function ‘float DOGUART::getArrayElement(int) const’:
+/home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h:48:33: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<float>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+   48 |         if (index >= 0 && index < result.size()) {
+      |                           ~~~~~~^~~~~~~~~~~~~~~
+/home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h: In member function ‘void DOGUART::handle_error(const boost::system::error_code&)’:
+/home/dgut/code/Nazarite/src/rc_serial/include/rc_serial/rc_usb.h:82:56: warning: unused parameter ‘ec’ [-Wunused-parameter]
+   82 |     void handle_error(const boost::system::error_code& ec) {
+      |                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~

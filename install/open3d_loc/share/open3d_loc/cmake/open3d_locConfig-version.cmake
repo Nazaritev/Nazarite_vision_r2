@@ -1,0 +1,1 @@
+/home/dgut/code/Nazarite/build/open3d_loc/ament_cmake_core/open3d_locConfig-version.cmake

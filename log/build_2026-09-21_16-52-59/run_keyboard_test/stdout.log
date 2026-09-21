@@ -1,0 +1,25 @@
+running develop
+running egg_info
+creating run_keyboard_test.egg-info
+writing run_keyboard_test.egg-info/PKG-INFO
+writing dependency_links to run_keyboard_test.egg-info/dependency_links.txt
+writing entry points to run_keyboard_test.egg-info/entry_points.txt
+writing requirements to run_keyboard_test.egg-info/requires.txt
+writing top-level names to run_keyboard_test.egg-info/top_level.txt
+writing manifest file 'run_keyboard_test.egg-info/SOURCES.txt'
+reading manifest file 'run_keyboard_test.egg-info/SOURCES.txt'
+writing manifest file 'run_keyboard_test.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/dgut/code/Nazarite/install/run_keyboard_test/lib/python3.10/site-packages/run-keyboard-test.egg-link (link to .)
+Installing camera script to /home/dgut/code/Nazarite/install/run_keyboard_test/lib/run_keyboard_test
+Installing get_and_pub script to /home/dgut/code/Nazarite/install/run_keyboard_test/lib/run_keyboard_test
+
+Installed /home/dgut/code/Nazarite/build/run_keyboard_test
+running symlink_data
+creating /home/dgut/code/Nazarite/install/run_keyboard_test/share/ament_index
+creating /home/dgut/code/Nazarite/install/run_keyboard_test/share/ament_index/resource_index
+creating /home/dgut/code/Nazarite/install/run_keyboard_test/share/ament_index/resource_index/packages
+symbolically linking /home/dgut/code/Nazarite/build/run_keyboard_test/resource/run_keyboard_test -> /home/dgut/code/Nazarite/install/run_keyboard_test/share/ament_index/resource_index/packages
+symbolically linking /home/dgut/code/Nazarite/build/run_keyboard_test/package.xml -> /home/dgut/code/Nazarite/install/run_keyboard_test/share/run_keyboard_test
+creating /home/dgut/code/Nazarite/install/run_keyboard_test/share/run_keyboard_test/launch
+symbolically linking /home/dgut/code/Nazarite/build/run_keyboard_test/launch/teleop_run.launch.py -> /home/dgut/code/Nazarite/install/run_keyboard_test/share/run_keyboard_test/launch
