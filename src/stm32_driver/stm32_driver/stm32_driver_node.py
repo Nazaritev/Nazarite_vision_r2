@@ -462,7 +462,7 @@ class STM32Driver(Node):
             
         try:
             # 下层暂不接收角速度，所有发往 STM32 的 Vw 统一清零。
-            vw = 0.0
+            # vw = 0.0
             # 1. 浮点数转换为整型 (m/s -> mm/s, rad/s -> mrad/s)
             vx_int = int(vx * 1000)
             vy_int = int(vy * 1000)
