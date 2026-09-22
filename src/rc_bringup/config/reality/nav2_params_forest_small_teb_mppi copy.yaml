@@ -129,7 +129,7 @@ local_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 12.0
-        inflation_radius: 0.18
+        inflation_radius: 0.25
 
 global_costmap:
   global_costmap:
@@ -162,7 +162,7 @@ global_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 6.0
-        inflation_radius: 0.22
+        inflation_radius: 0.34
 
 controller_server:
   ros__parameters:
@@ -235,7 +235,7 @@ controller_server:
       include_costmap_obstacles: true
       costmap_obstacles_behind_robot_dist: 0.6
       obstacle_poses_affected: 10
-      include_dynamic_obstacles: false
+      include_dynamic_obstacles: true
 
       no_inner_iterations: 4
       no_outer_iterations: 3

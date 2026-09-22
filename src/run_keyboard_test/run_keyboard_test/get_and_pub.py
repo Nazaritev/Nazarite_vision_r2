@@ -44,11 +44,19 @@ class GetAndPub(Node):
         return crc
 
     def sub_callback(self,msg):
-        self.time_start = time.time()
-        self.pub_bool += 1
         self.vx = msg.linear.x
         self.vy = msg.linear.y
         self.vw = msg.angular.z
+        if self.time_start != None:
+            if self.time_start - time.time() < 0.05 :
+                if self.vx == 0 and self.vy == 0 and self.vw == 0:
+                    pass
+                else:
+                    return
+
+        self.time_start = time.time()
+
+        self.pub_bool += 1
         if self.vx < 0.0 and self.vw != 0.0:
             if self.vw <= 0.0 :
                 self.vy = -self.vx
