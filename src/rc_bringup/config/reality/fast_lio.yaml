@@ -1,9 +1,9 @@
 /**:
     ros__parameters:
         feature_extract_enable: false
-        point_filter_num: 1
+        point_filter_num: 2
         max_iteration: 6
-        filter_size_surf: 0.03
+        filter_size_surf: 0.05
         filter_size_map: 0.06
         cube_side_length: 24.0
         runtime_pos_log_enable: false
@@ -19,7 +19,7 @@
         preprocess:
             lidar_type: 1                # 1 for Livox serials LiDAR, 2 for Velodyne LiDAR, 3 for ouster LiDAR, 4 for any other pointcloud input
             scan_line:  6
-            blind: 0.3
+            blind: 0.6
             timestamp_unit: 3
             scan_rate: 10
 
@@ -38,10 +38,10 @@
             plane_fit_threshold: 0.12    # Keep enough planar correspondences for startup recovery
             max_match_sq_dist: 5.0       # Avoid rejecting valid correspondences while the map is sparse
             max_plane_normal_z: 1.1      # Keep ground for z/roll/pitch observability; tighten by config only if yaw still slides
-            body_min_xy_range: 0.0       # Keep near-field returns while diagnosing sparse features
-            body_max_xy_range: 6.0       # Widen the local tracking volume
-            body_z_min: -3.0
-            body_z_max: 3.0              # Accommodate the inverted LiDAR Z axis and lower world-frame returns
+            body_min_xy_range: 0.25      # Reject chassis/self-hit returns close to the upside-down sensor
+            body_max_xy_range: 5.2       # Keep the local tracker focused on one half-field worth of stable structure
+            body_z_min: -1.60
+            body_z_max: 0.80             # Upside-down MID360 at 0.6m: keep ground and block-top returns, still reject far-below outliers
             skip_map_update_on_degeneracy: false # Keep updating the map so FAST-LIO can recover from sparse startup matches
 
         publish:
@@ -50,7 +50,7 @@
             map_en: false                # The full accumulated map is not needed by the runtime stack
             scan_publish_en:  true       # false: close all the point cloud output
             laser_map_publish_en: true  # Keep internal accumulation but stop publishing the full map cloud during competition
-            dense_publish_en: true       # Publish the denser undistorted cloud for inspection and costmap input.
+            dense_publish_en: false      # false: low down the points number in a global-frame point clouds scan.
             scan_bodyframe_pub_en: false # IMU-body-frame cloud is only for debugging and adds extra publication load
 
         diagnostics:

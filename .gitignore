@@ -1,7 +1,0 @@
-/build/
-/install/
-/log/
-**/__pycache__/
-*.pyc
-/src.zip
-/src/fast_lio/PCD/scans.pcd
