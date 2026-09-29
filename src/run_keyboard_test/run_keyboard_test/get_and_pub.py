@@ -16,12 +16,12 @@ class GetAndPub(Node):
         # /dev/ttyUSB0
         # /dev/pts/6
         # /dev/usbv
-        self.ser = serial.Serial('/dev/ttyUSB1',961200,timeout=1.0)
+        self.ser = serial.Serial('/dev/ttyUSB0',961200,timeout=1.0)
         self.vx = 0.0
         self.vy = 0.0
         self.vw = 0.0
-        self.a = 0.2 # 每次减少10%
-        self.a_time = 0.12 #每次减少的时间间隔
+        self.a = 0.2 # 每次减少  %
+        self.a_time = 0.1 #每次减少的时间间隔
         self.get_logger().info(f'当前停车缓冲时间{1/self.a*self.a_time}')
 
     def calc_crc8(self, data: bytes, poly: int = 0x07, init_value: int = 0x00) -> int:
@@ -43,36 +43,116 @@ class GetAndPub(Node):
                 crc &= 0xFF  # 确保始终是8位
         return crc
 
+    def stop2(self):
+        self.pub_bool = 0
+        vx_int = int(self.vx * 1000)
+        vy_int = int(self.vy * 1000)
+        vw_int = int(self.vw * 10)
+        flag = int(0)
+        mode = int(0)
+        bool_vx = 1
+        bool_vy = 1
+        bool_vw = 1
+        if vx_int < 0:
+            bool_vx = -1
+        if vy_int < 0:
+            bool_vy = -1
+        if vw_int < 0:
+            bool_vw = -1
+        
+        reserved = 0  # 保留字，当前固定填 0
+        a = self.a
+        a_vx = vx_int * a
+        a_vy = vy_int * a
+        a_vw = vw_int * a
+        while (vx_int*bool_vx > 0 or vy_int*bool_vy > 0 or vw_int*bool_vw >0):
+                                            
+            vx_int -= a_vx
+            vy_int -= a_vy
+            vw_int -= a_vw
+                                            
+            if vx_int*bool_vx < 0:
+                vx_int = 0
+            if vy_int*bool_vy < 0:
+                vy_int = 0
+            if vw_int*bool_vw < 0:
+                   vw_int = 0
+                                            
+            vx_int = int(vx_int)
+            vy_int = int(vy_int)
+            vw_int = int(vw_int)
+            self.get_logger().info(f'(vx={vx_int/1000},vy={vy_int/1000},vw={vw_int/10})')
+            # self.get_logger().info(f'{vw_int}')
+            frame_head = struct.pack('<B h h h B B B', 
+                                         0xA5,       # SOF (帧头，1字节)
+                                         vx_int,     # Vx (2字节)
+                                         vy_int,     # Vy (2字节)
+                                         vw_int,     # Vw (2字节)
+                                         flag,       # Flag (1字节)
+                                         reserved,   # Reserved (1字节)
+                                         mode)       # Mode (1字节)
+            data_to_crc = frame_head[1:]
+            crc = self.calc_crc8(data_to_crc)
+                                                                
+            full_frame = frame_head + struct.pack('<B B', crc, 0xFF)
+            # self.get_logger().info(f'{full_frame}')
+            self.ser.write(full_frame)
+            if (vx_int == 0 and vy_int == 0 and vw_int == 0 ):
+                time.sleep(0.03)
+                break
+            time.sleep(self.a_time/2)
+
+
+
     def sub_callback(self,msg):
+        
+        # if self.time_start != None:
+        #     if time.time() - self.time_start < 0.05 :
+        #         if msg.linear.x == 0 and msg.linear.y == 0 and msg.angular.z == 0:
+        #             pass
+        #         else:
+        #             return
+        if msg.linear.x < 0.0 and msg.angular.z != 0.0:
+            if msg.angular.z <= 0.0 :
+                msg.linear.y = -msg.linear.x
+                msg.linear.x = 0.0
+                msg.angular.z = 0.0
+            else:
+                msg.linear.y = msg.linear.x
+                msg.linear.x = 0.0
+                msg.angular.z = 0.0
+        if self.vx == 0 and self.vy == 0 and self.vw == 0:
+                pass
+        else:
+            if self.vx != msg.linear.x or self.vy != msg.linear.y or self.vw != msg.angular.z:
+                if (msg.linear.x == 0 and msg.linear.y == 0 and msg.angular.z == 0):
+                    pass
+                else:
+                    # self.get_logger().info(f'{self.a_time/2}')
+                    self.stop2()
         self.vx = msg.linear.x
         self.vy = msg.linear.y
         self.vw = msg.angular.z
-        if self.time_start != None:
-            if self.time_start - time.time() < 0.05 :
-                if self.vx == 0 and self.vy == 0 and self.vw == 0:
-                    pass
-                else:
-                    return
-
         self.time_start = time.time()
 
         self.pub_bool += 1
-        if self.vx < 0.0 and self.vw != 0.0:
-            if self.vw <= 0.0 :
-                self.vy = -self.vx
-                self.vx = 0.0
-                self.vw = 0.0
-            else:
-                self.vy = self.vx
-                self.vx = 0.0
-                self.vw = 0.0
+        
+        # if self.vx < 0.0 and self.vw != 0.0:
+        #     if self.vw <= 0.0 :
+        #         self.vy = -self.vx
+        #         self.vx = 0.0
+        #         self.vw = 0.0
+        #     else:
+        #         self.vy = self.vx
+        #         self.vx = 0.0
+        #         self.vw = 0.0
 
         # print((self.vx,self.vy,self.vw))
-        self.get_logger().info(f'(vx={self.vx},vy={self.vy},vw={self.vw})')
 
         vx_int = int(self.vx * 1000)
         vy_int = int(self.vy * 1000)
         vw_int = int(self.vw * 10)
+        self.get_logger().info(f'(vx={vx_int/1000},vy={vy_int/1000},vw={vw_int/10})')
         flag = int(0)
         mode = int(0)
         reserved = 0  # 保留字，当前固定填 0
@@ -93,7 +173,7 @@ class GetAndPub(Node):
 
         full_frame = frame_head + struct.pack('<B B', crc, 0xFF)
         # print(full_frame)
-        self.get_logger().info(f'{full_frame}')
+        # self.get_logger().info(f'{full_frame}')
         self.ser.write(full_frame)
         # self.ser.write(b'aa')
 
@@ -138,10 +218,10 @@ class GetAndPub(Node):
                         if vw_int*bool_vw < 0:
                                vw_int = 0
                                             
-                        self.get_logger().info(f'(vx={vx_int/1000},vy={vy_int/1000},vw={vw_int/10})')
                         vx_int = int(vx_int)
                         vy_int = int(vy_int)
                         vw_int = int(vw_int)
+                        self.get_logger().info(f'(vx={vx_int/1000},vy={vy_int/1000},vw={vw_int/10})')
                         # self.get_logger().info(f'{vw_int}')
                         frame_head = struct.pack('<B h h h B B B', 
                                                      0xA5,       # SOF (帧头，1字节)
@@ -155,8 +235,11 @@ class GetAndPub(Node):
                         crc = self.calc_crc8(data_to_crc)
                                                                 
                         full_frame = frame_head + struct.pack('<B B', crc, 0xFF)
-                        self.get_logger().info(f'{full_frame}')
+                        # self.get_logger().info(f'{full_frame}')
                         self.ser.write(full_frame)
+                        self.vx = 0
+                        self.vy = 0
+                        self.vw = 0
                         time.sleep(self.a_time)
                 else:
                     pass
@@ -197,10 +280,10 @@ class GetAndPub(Node):
                         if vw_int*bool_vw < 0:
                             vw_int = 0
                         
-                        self.get_logger().info(f'(vx={vx_int/1000},vy={vy_int/1000},vw={vw_int/10})')
                         vx_int = int(vx_int)
                         vy_int = int(vy_int)
                         vw_int = int(vw_int)
+                        self.get_logger().info(f'(vx={vx_int/1000},vy={vy_int/1000},vw={vw_int/10})')
                         # self.get_logger().info(f'{vw_int}')
                         frame_head = struct.pack('<B h h h B B B', 
                                                      0xA5,       # SOF (帧头，1字节)
@@ -214,8 +297,11 @@ class GetAndPub(Node):
                         crc = self.calc_crc8(data_to_crc)
                                             
                         full_frame = frame_head + struct.pack('<B B', crc, 0xFF)
-                        self.get_logger().info(f'{full_frame}')
+                        # self.get_logger().info(f'{full_frame}')
                         self.ser.write(full_frame)
+                        self.vx = 0
+                        self.vy = 0
+                        self.vw = 0
                         time.sleep(self.a_time)
 
                             
