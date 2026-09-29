@@ -112,8 +112,9 @@ class GetAndPub(Node):
         #             pass
         #         else:
         #             return
+        msg.angular.z = -msg.angular.z
         if msg.linear.x < 0.0 and msg.angular.z != 0.0:
-            if msg.angular.z <= 0.0 :
+            if msg.angular.z >= 0.0 :
                 msg.linear.y = -msg.linear.x
                 msg.linear.x = 0.0
                 msg.angular.z = 0.0
