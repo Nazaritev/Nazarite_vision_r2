@@ -1,6 +1,6 @@
 # yolo_detect_box
 
-ROS 2 Humble 独立功能包，直接使用 `cv2.VideoCapture(0)` 读取普通摄像头，使用 Ultralytics `.pt` 检测模型，固定 CPU 推理。
+ROS 2 Humble 独立功能包，直接使用 `cv2.VideoCapture(camera_index)` 读取普通摄像头，摄像头编号默认 `0`；使用 Ultralytics `.pt` 检测模型，固定 CPU 推理。
 
 ## 模型和依赖
 
@@ -64,8 +64,29 @@ ros2 launch yolo_detect_box yolo_detect.launch.py
 节点首行是 `#!/usr/bin/env python3`，使用启动终端中 `PATH` 找到的 `python3`；因此必须先激活上述环境。
 这里只加载本功能包的安装环境，避免整个工作空间内其他旧包的失效安装路径影响启动。
 
-launch 只启动检测节点，节点直接打开摄像头 0，不需要另外启动相机 ROS 驱动。
-摄像头在节点退出时释放。默认检测置信度阈值为 `0.25`。
+launch 只启动检测节点，节点直接打开指定摄像头，不需要另外启动相机 ROS 驱动。
+不传 `camera_index` 时默认使用摄像头 `0`；例如使用摄像头 `1`：
+
+```bash
+ros2 launch yolo_detect_box yolo_detect.launch.py camera_index:=1
+```
+
+摄像头在节点退出时释放。默认检测置信度阈值为 `0.6`，每帧最多保留置信度最高的一个框。
+显示和目标出现/丢失判断都使用过滤后的结果；仅限制框数量不能保证消除高置信度误检。
+
+如果仍有误检，可以在启动时进一步提高阈值（提高后也可能漏掉真实目标）：
+
+```bash
+ros2 launch yolo_detect_box yolo_detect.launch.py conf:=0.75
+```
+
+两个参数可以一起传入：
+
+```bash
+ros2 launch yolo_detect_box yolo_detect.launch.py camera_index:=1 conf:=0.75
+```
+
+修改脚本或 launch 后需重新编译，并重启节点才能生效。
 
 ## 服务调用
 
@@ -102,6 +123,6 @@ ros2 service call /camara_use yolo_detect_box/srv/CameraUse "{use: 1}"
 运行时激活目标电脑已有的兼容 ROS 和 YOLO 的 Python 环境，加载 ROS 和目标工作空间的安装环境，再运行 launch。
 环境名不必叫 `yolo-dev`，上面的绝对路径需替换为目标电脑的实际路径。
 
-先确认该环境能导入 `rclpy`、`cv2`、`torch`、`ultralytics`，然后测试摄像头 0、CPU 推理和完整服务返回。
+先确认该环境能导入 `rclpy`、`cv2`、`torch`、`ultralytics`，然后测试指定摄像头、CPU 推理和完整服务返回。
 使用相同模型和 Ultralytics 源码版本更便于复现；若模型训练涉及自定义源码，也需携带相同源码并安装到目标环境。
 `requirements.txt` 当前只声明 Ultralytics，未固定版本，不会自动创建或激活 Python 环境。
