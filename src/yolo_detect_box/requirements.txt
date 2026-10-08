@@ -1,0 +1,2 @@
+# 使用 CPU 推理的 PyTorch 和 Ultralytics 检测接口。
+ultralytics
