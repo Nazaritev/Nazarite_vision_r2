@@ -1,1 +1,0 @@
-/home/dgut/code/Nazarite/src/teb_local_planner/teb_local_planner/include/teb_local_planner/distance_calculations.h

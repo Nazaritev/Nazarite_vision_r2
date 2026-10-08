@@ -1,1 +1,0 @@
-/home/dgut/code/Nazarite/src/rc_bringup/launch/navigation_combined_new23.launch.py
