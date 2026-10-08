@@ -1,1 +1,0 @@
-/home/dgut/code/Nazarite/src/open3d_loc/launch/localization_3d_g1.launch.py

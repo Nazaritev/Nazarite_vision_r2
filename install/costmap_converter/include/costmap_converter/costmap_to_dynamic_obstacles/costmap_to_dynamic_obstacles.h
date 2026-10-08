@@ -1,1 +1,0 @@
-/home/dgut/code/Nazarite/src/costmap_converter/costmap_converter/include/costmap_converter/costmap_to_dynamic_obstacles/costmap_to_dynamic_obstacles.h
