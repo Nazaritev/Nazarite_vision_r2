@@ -1,0 +1,10 @@
+# ROS 编译、安装和日志
+/build/
+/install/
+/log/
+
+# Python 缓存和本地虚拟环境
+__pycache__/
+*.py[cod]
+/.venv/
+/venv/
