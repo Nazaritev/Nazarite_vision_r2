@@ -1,1 +1,0 @@
-/home/dgut/code/Nazarite/src/rc_bringup/launch/mapping2.launch.py

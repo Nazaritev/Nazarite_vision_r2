@@ -1,1 +1,0 @@
-/home/dgut/code/Nazarite/build/costmap_converter_msgs/rosidl_generator_py/costmap_converter_msgs/_costmap_converter_msgs_s.ep.rosidl_typesupport_introspection_c.c

@@ -1,1 +1,0 @@
-/home/dgut/code/Nazarite/src/costmap_converter/costmap_converter_msgs/msg/ObstacleArrayMsg.msg
