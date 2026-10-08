@@ -19,11 +19,13 @@ class YoloDetectNode(Node):
     def __init__(self):
         super().__init__('yolo_detect_box')
         model_path = Path(get_package_share_directory('yolo_detect_box')) / 'model' / 'best.pt'
-        self.declare_parameter('conf', 0.25)
+        self.declare_parameter('conf', 0.6)
         self.conf = self.get_parameter('conf').value
         self.model = YOLO(str(model_path), task='detect')
-        # 直接打开普通摄像头 0；待机期间不读取画面。
-        self.cap = cv2.VideoCapture(0)
+        self.declare_parameter('camera_index', 0)
+        camera_index = self.get_parameter('camera_index').value
+        # 直接打开指定摄像头；待机期间不读取画面。
+        self.cap = cv2.VideoCapture(camera_index)
         self.active = False
         self.seen_target = False
         self.missing_since = None
@@ -61,7 +63,8 @@ class YoloDetectNode(Node):
         if not ret:
             return
         result = self.model.predict(
-            frame, device='cpu', conf=self.conf, verbose=False)[0]
+            # 过滤低置信度结果，每帧最多保留置信度最高的一个框。
+            frame, device='cpu', conf=self.conf, max_det=1, verbose=False)[0]
         cv2.imshow('YOLO Detection', result.plot())
         cv2.waitKey(1)
 
