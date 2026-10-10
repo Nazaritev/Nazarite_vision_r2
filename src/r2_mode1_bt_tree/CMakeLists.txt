@@ -40,6 +40,7 @@ ament_target_dependencies(ros_node_lib
     tf2
     tf2_ros
     tf2_geometry_msgs
+    serial
 )
 
 # Create library for BT nodes
@@ -74,6 +75,11 @@ target_link_libraries(r2_mode1_bt_node
 
 target_link_libraries(serial_region1_mode0_test
     ${serial_LIBRARIES}
+)
+
+# serial must be an ament dependency so its exported include dirs are applied.
+ament_target_dependencies(serial_region1_mode0_test
+    serial
 )
 
 ament_target_dependencies(r2_mode1_bt_node

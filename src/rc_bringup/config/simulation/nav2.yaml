@@ -4,7 +4,7 @@ planner_server:
         expected_planner_frequency: 10.0                 # 如果没有达到频率就输出警告，并不能真正改变频率
         planner_plugins: [ "GridBased" ]                 # 路径规划器的映射名
         GridBased:
-            plugin: "navfn_planner/NavfnPlanner"
+            plugin: "nav2_navfn_planner/NavfnPlanner"
             tolerance: 1.0                               # 终点偏差的容忍值
             use_astar: false                             # 是否使用A*算法，否则使用Dijkstra算法
             allow_unknown: true                          # 是否允许在未知区域规划路径
@@ -40,37 +40,18 @@ controller_server:
             yaw_goal_tolerance: 3.1416
 
         FollowPath:
-            plugin: "pb_omni_pid_pursuit_controller::OmniPidPursuitController"
-            translation_kp: 6.0                               # 移动速度pid
-            translation_ki: 0.1                               # 移动速度pid
-            translation_kd: 0.3                               # 移动速度pid
-            enable_head_rotation: false                       # true-头朝向路径 false-头边导自转
-            rotation_speed: -2.0                              # 导航的自转速度
-            rotation_kp: 3.0                                  # 旋转速度pid
-            rotation_ki: 0.1                                  # 旋转速度pid
-            rotation_kd: 0.3                                  # 旋转速度pid
+            plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
+            desired_linear_vel: 1.0                           # 期望线速度
+            lookahead_dist: 0.6                               # 前瞻点距离，use_velocity_scaled_lookahead_dist为false时有效
+            use_velocity_scaled_lookahead_dist: true          # 是否根据速度控制前瞻点距离
+            lookahead_time: 1.5                               # 前瞻点距离倍数，前瞻点距离=速度大小*lookahead_time
+            min_lookahead_dist: 0.3                           # 最小前瞻点距离
+            max_lookahead_dist: 0.9                           # 最大前瞻点距离
             transform_tolerance: 0.1                          # 坐标转换超时阈值，单位为秒
-            min_max_sum_error: 1.0                            # 没用的
-            lookahead_dist: 0.3                               # 前瞻点距离，use_velocity_scaled_lookahead_dist为false时有效
-            use_velocity_scaled_lookahead_dist: false         # 是否根据速度控制前瞻点距离
-            lookahead_time: 0.35                              # 前瞻点距离倍数，前瞻点距离=速度大小*lookahead_time，use_velocity_scaled_lookahead_dist为true时有效
-            min_lookahead_dist: 0.3                           # 最小前瞻点距离，use_velocity_scaled_lookahead_dist为true时有效
-            max_lookahead_dist: 0.5                           # 最大前瞻点距离，use_velocity_scaled_lookahead_dist为true时有效
-            use_interpolation: false                          # 寻找前瞻点是否使用插值
-            use_rotate_to_heading: false                      # 是否调整好朝向再移动
-            use_rotate_to_heading_treshold: 0.1               # 好像低于这个阈值就当作调整好了，use_rotate_to_heading为true时有效
-            min_approach_linear_velocity: 0.5                 # 最小速度大小
-            approach_velocity_scaling_dist: 1.0               # 距离终点多远开始减速
-            v_linear_min: -1.5                                # 最小速度
-            v_linear_max: 1.5                                 # 最大速度
-            v_angular_min: -3.0                               # 最小旋转速度
-            v_angular_max: 3.0                                # 最大旋转速度
-            curvature_min: 0.4                                # 低曲率阈值，低于此值不减速。
-            curvature_max: 0.7                                # 高曲率阈值，高于此值大幅减速。
-            reduction_ratio_at_high_curvature: 0.7            # 高曲率时的速度降低比例。 0.5 (即减速 50%)
-            curvature_forward_dist: 0.7                       # 前向距离，用于曲率计算
-            curvature_backward_dist: 0.3                      # 后向距离，用于曲率计算
-            max_velocity_scaling_factor_rate: 0.9             # 速度缩放因子的最大变化率
+            use_rotate_to_heading: false                      # 是否调整好朝向再移动（全向底盘可关）
+            allow_reversing: false                            # 是否允许倒车
+            use_collision_detection: true                     # 是否使用局部代价地图做碰撞检测
+            max_angular_accel: 3.2                            # 最大角加速度
 
 velocity_smoother:
     ros__parameters:
@@ -100,51 +81,10 @@ global_costmap:
             track_unknown_space: true
             transform_tolerance: 2.0
             always_send_full_costmap: False
-            plugins: [ "static_layer", "terrain_analysis_layer", "denoise_layer", "inflation_layer" ]
+            plugins: [ "static_layer", "denoise_layer", "inflation_layer" ]
             static_layer:
                 plugin: "nav2_costmap_2d::StaticLayer"
                 map_subscribe_transient_local: True
-            terrain_analysis_layer:
-                plugin: "terrain_analysis_layer::TerrainAnalysisLayer"
-                enabled: true
-                footprint_clearing_enabled: true
-                point_cloud_topic1: "/livox/lidar"
-                point_cloud_topic2: ""
-                combined_point_cloud_topic: ""
-                # combined_point_cloud_topic: "/combined_point_cloud"
-                obstacle_point_cloud_topic: "/segmentation/obstacle"
-                ground_point_cloud_topic: ""
-                # ground_point_cloud_topic: "/segmentation/ground"
-                max_interval_duration: 0.15
-                sensor_frame: "livox_frame"
-                min_intensity: 0.1
-                max_intensity: 2.0
-                scan_voxel_size: 0.05               # 点云下采样
-                decay_time: 0.5                     # 点云时间差阈值 大于则不会被处理
-                no_decay_dis: 0.0                   # 点云距离阈值 小于该阈值不考虑时间差
-                clearing_dis: 0.0                   # 该距离外的点会被清除
-                use_sorting: True                   # 这个参数开起来就能上坡了；如果 use_sorting,那么就以周围点中的分位点作为地面点，否则以最低点作为地面点；周围其余点相对于地面点的高度作为通过代价，所以对于坡面，有的点的代价是正，有的是负，就相互抵消了；不要与 consider_drop 同时开启，计算上会有冲突
-                quantile_z: 0.2                     # useful if use_sorting is enabled.
-                consider_drop: False                # 考虑凹下去的地面,开启则将相对于地面点的高度取绝对值
-                limit_ground_lift: False            # useful if use_sorting is enabled
-                max_ground_lift: 0.3                # useful if use_sorting is enabled
-                clear_dy_obs: True                  # 清除动态物体的话，有动态物体走过的地方就走不了了
-                min_dy_obs_dis: 0.3                 # 以下参数都是在 clear_dy_obs 的情况下才有用的
-                min_dy_obs_angle: 0.0
-                min_dy_obs_rel_z: -0.3
-                abs_dy_obs_rel_z_thre: 0.2
-                min_dy_obs_vfov: -28.0
-                max_dy_obs_vfov: 33.0
-                min_dy_obs_point_num: 1
-                no_data_obstacle: False             # treat no data as obstacle
-                no_data_block_skip_num: 0
-                min_block_point_num: 10
-                vehicle_height: 0.5                 # 小于车辆高度的点才会进行处理
-                voxel_point_update_thre: 100
-                voxel_time_update_thre: 1.0
-                min_rel_z: -1.5                     # min_rel_z 以及 max_rel_z 限制了有效点云点的Z值范围，用于对天花板和地板进行处理
-                max_rel_z: 1.0
-                dis_ratio_z: 0.2                    # Z 值的最大最小范围由这两个值决定，但是并不等于这两个值，是有一个比例关系的，距离机器人越远，限定范围就越大，这其中考虑了坡度
             denoise_layer:
                 plugin: "nav2_costmap_2d::DenoiseLayer"
                 enabled: true
@@ -247,7 +187,6 @@ bt_navigator:
             - nav2_assisted_teleop_cancel_bt_node
             - nav2_drive_on_heading_cancel_bt_node
             - nav2_is_battery_charging_condition_bt_node
-            - costmap_updated_controller_bt_node
 
 bt_navigator_navigate_through_poses_rclcpp_node:
     ros__parameters:

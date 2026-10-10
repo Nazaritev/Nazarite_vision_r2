@@ -50,6 +50,9 @@ find_package(livox_ros_driver2 REQUIRED)
 find_package(rosidl_typesupport_cpp REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(PCL REQUIRED COMPONENTS common io)
+# date_time is pulled in transitively by pcl_ros's exported interface on Humble;
+# request it explicitly so the Boost::date_time imported target exists.
+find_package(Boost REQUIRED COMPONENTS date_time)
 
 
 # OpenMP

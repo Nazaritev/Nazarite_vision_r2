@@ -36,7 +36,9 @@ pkg_check_modules(YAMLCPP REQUIRED yaml-cpp)
 
 find_package(PCL REQUIRED)
 find_package(OpenCV REQUIRED)
-find_package(Boost REQUIRED COMPONENTS filesystem system)
+# date_time is pulled in transitively by pcl_ros's exported interface on Humble;
+# request it explicitly so the Boost::date_time imported target exists.
+find_package(Boost REQUIRED COMPONENTS filesystem system date_time)
 
 # Prefer the local Open3D 0.14.1 install tree when no explicit path is provided.
 set(_default_open3d_dir "/home/dgut/open3d141/lib/cmake/Open3D")

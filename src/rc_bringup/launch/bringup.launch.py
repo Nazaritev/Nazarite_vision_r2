@@ -73,22 +73,23 @@ def generate_launch_description():
     initialpose_preset = LaunchConfiguration("initialpose_preset")
     active_region = LaunchConfiguration("active_region")
     use_relocalization = LaunchConfiguration("use_relocalization")
+    map_yaml = LaunchConfiguration("map_yaml")
+    use_nav2_navigation = LaunchConfiguration("use_nav2_navigation")
     # 获取配置文件路径
     use_sim_time = PythonExpression(["'", environment, "' != 'reality'"])
     package_dir = get_package_share_directory("rc_bringup")
     open3d_loc_dir = get_package_share_directory("open3d_loc")
     config_dir = PathJoinSubstitution([package_dir, "config"])
 
+    # 定位 + 导航共用：map_server 加载 2D 栅格图，导航侧 global_costmap 的
+    # static_layer 订阅同一个 /map。
     nav2_params = RewrittenYaml(
         source_file=PathJoinSubstitution([config_dir, environment, "nav2.yaml"]),
         root_key="",
         param_rewrites={
             "use_sim_time": use_sim_time,
             # 'robot_base_frame': 'base_link_fake',
-            "yaml_filename": (
-                PathJoinSubstitution([package_dir, "map", world]),
-                ".yaml",
-            ),
+            "yaml_filename": PathJoinSubstitution([package_dir, "map", map_yaml]),
         },
         convert_types=True,
     )
@@ -109,7 +110,13 @@ def generate_launch_description():
     declare_world_cmd = DeclareLaunchArgument(
         "world",
         default_value="RMUC2025",
-        description="Select world (map file, pcd file, world file share the same name prefix as the this parameter)",
+        description="Select world (world file and pcd file share the same name prefix as this parameter)",
+    )
+
+    declare_map_yaml_cmd = DeclareLaunchArgument(
+        "map_yaml",
+        default_value="my_2d_map.yaml",
+        description="2D occupancy grid map yaml under rc_bringup/map, loaded by nav2 map_server",
     )
 
     declare_loc_map_cmd = DeclareLaunchArgument(
@@ -146,6 +153,12 @@ def generate_launch_description():
         "use_relocalization",
         default_value="True",
         description="whether use relocalization when bring up",
+    )
+
+    declare_use_nav2_navigation_cmd = DeclareLaunchArgument(
+        "use_nav2_navigation",
+        default_value="True",
+        description="whether to start the nav2 navigation stack in mode: nav",
     )
 
     # 声明启动节点
@@ -407,6 +420,26 @@ def generate_launch_description():
         ],
     )
 
+    # nav2 导航栈（planner/controller/behavior/bt_navigator/velocity_smoother）。
+    # 复用同一个 /nav2_container，参数与 map_server 同源（<environment>/nav2.yaml）。
+    nav2_bringup_dir = get_package_share_directory("nav2_bringup")
+    start_nav2_navigation = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(nav2_bringup_dir, "launch", "navigation_launch.py")
+        ),
+        launch_arguments={
+            "use_sim_time": use_sim_time,
+            "params_file": nav2_params,
+            "autostart": "true",
+            # 注意：use_composition 会被 nav2_bringup 用 PythonExpression 求值，
+            # 必须是 Python 字面量 True/False（小写 "true" 会抛 name 'true' is not defined）
+            "use_composition": "True",
+            "container_name": "nav2_container",
+            "log_level": "info",
+        }.items(),
+        condition=IfCondition(use_nav2_navigation),
+    )
+
 
     start_gazebo_client = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -549,7 +582,7 @@ def generate_launch_description():
                     start_map2odom,
                     start_nav2_container,
                     start_nav2_localization,
-                    # start_nav2_navigation,
+                    start_nav2_navigation,
                     start_rviz,
                 ]
             ),
@@ -574,12 +607,14 @@ def generate_launch_description():
 
     ld.add_action(declare_environment_cmd)
     ld.add_action(declare_world_cmd)
+    ld.add_action(declare_map_yaml_cmd)
     ld.add_action(declare_loc_map_cmd)
     ld.add_action(declare_initialpose_preset_cmd)
     ld.add_action(declare_active_region_cmd)
     ld.add_action(declare_mode_cmd)
     ld.add_action(declare_lio_cmd)
     ld.add_action(declare_use_relocalization_cmd)
+    ld.add_action(declare_use_nav2_navigation_cmd)
 
     ld.add_action(start_mapping)
     ld.add_action(start_nav)
