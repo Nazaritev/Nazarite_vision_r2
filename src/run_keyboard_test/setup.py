@@ -27,6 +27,7 @@ setup(
         'console_scripts': [
             'get_and_pub=run_keyboard_test.get_and_pub:main',
             'camera=run_keyboard_test.camera:main',
+            'run_slope=run_keyboard_test.run_slope:main',
         ],
     },
 )
