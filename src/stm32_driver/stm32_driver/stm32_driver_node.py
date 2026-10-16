@@ -46,7 +46,7 @@ class STM32Driver(Node):
         self.slope_curve_last_log_time = 0.0
 
         # 1. 配置串口参数（与STM32一致）
-        self.declare_parameter('serial_port', '/dev/ttyUSB0')
+        self.declare_parameter('serial_port', '/dev/ttyUSB1')
         self.declare_parameter('baudrate', 961200)
         self.declare_parameter('timeout', 1.0)
         self.declare_parameter('spin_angular_speed', 1.5)
