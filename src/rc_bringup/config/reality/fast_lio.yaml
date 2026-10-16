@@ -2,7 +2,7 @@
     ros__parameters:
         feature_extract_enable: false
         point_filter_num: 3
-        max_iteration: 6
+        max_iteration: 5
         filter_size_surf: 0.03
         filter_size_map: 0.06
         cube_side_length: 24.0

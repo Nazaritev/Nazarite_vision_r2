@@ -96,14 +96,14 @@ controller_server:
     use_sim_time: false
     grab_goal_checker:
       plugin: nav2_controller::SimpleGoalChecker
-      xy_goal_tolerance: 0.05
-      yaw_goal_tolerance: 0.524
+      xy_goal_tolerance: 0.20
+      yaw_goal_tolerance: 3.15
       stateful: true
     MPPI_Long:
-      vx_max: 0.35
-      vx_min: -0.35
-      vy_max: 0.35
-      vy_min: -0.35
+      vx_max: 1.0
+      vx_min: -1.0
+      vy_max: 1.0
+      vy_min: -1.0
       wz_max: 0.25
 
     TEB_Short:
@@ -137,8 +137,8 @@ velocity_smoother:
   ros__parameters:
     use_sim_time: false
     feedback: OPEN_LOOP
-    max_velocity: [0.35, 0.35, 0.25]
-    min_velocity: [-0.35, -0.35, -0.25]
-    max_accel: [3.5, 3.5, 0.5]
-    max_decel: [-4.0, -4.0, -0.5]
+    max_velocity: [0.5, 0.5, 0.0]
+    min_velocity: [-0.5, -0.5, 0.0]
+    max_accel: [0.5, 0.5, 0.0]
+    max_decel: [-4.0, -4.0, -0.0]
     velocity_timeout: 1.0

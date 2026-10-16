@@ -9,6 +9,7 @@ find_package(ament_cmake_auto REQUIRED)
 
 install(PROGRAMS
   scripts/amcl_pose_counter.py
+  scripts/goal_distance_stop.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
