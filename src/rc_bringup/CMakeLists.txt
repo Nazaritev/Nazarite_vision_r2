@@ -7,6 +7,11 @@ endif()
 
 find_package(ament_cmake_auto REQUIRED)
 
+install(PROGRAMS
+  scripts/amcl_pose_counter.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   set(ament_cmake_copyright_FOUND TRUE)

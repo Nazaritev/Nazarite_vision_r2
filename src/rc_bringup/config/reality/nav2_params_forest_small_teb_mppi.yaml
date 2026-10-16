@@ -129,7 +129,7 @@ local_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 12.0
-        inflation_radius: 0.5
+        inflation_radius: 0.13
 
 global_costmap:
   global_costmap:
@@ -162,7 +162,7 @@ global_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 6.0
-        inflation_radius: 0.6
+        inflation_radius: 0.16
 
 controller_server:
   ros__parameters:
@@ -182,12 +182,12 @@ controller_server:
 
     grab_goal_checker:
       plugin: "nav2_controller::PositionGoalChecker"
-      xy_goal_tolerance: 0.25 #0.10 0.30
+      xy_goal_tolerance: 0.20
       stateful: true
 
     shift_goal_checker:
       plugin: "nav2_controller::PositionGoalChecker"
-      xy_goal_tolerance: 0.05
+      xy_goal_tolerance: 0.20
       stateful: true
 
     area3_goal_checker:
@@ -197,7 +197,7 @@ controller_server:
 
     pose_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.05  #0.10 #0.30
+      xy_goal_tolerance: 0.20
       yaw_goal_tolerance: 0.524
       stateful: true
 
@@ -220,18 +220,18 @@ controller_server:
       publish_feedback: false
 
       max_vel_x: 1.0
-      max_vel_x_backwards: 0.6
+      max_vel_x_backwards: 1.0
       max_vel_y: 1.0
       max_vel_theta: 0.10
-      acc_lim_x: 1.2
-      acc_lim_y: 1.2
+      acc_lim_x: 0.45
+      acc_lim_y: 0.45
       acc_lim_theta: 0.20
 
       footprint_model:
         type: "polygon"
         vertices: "[[0.144, 0.494], [0.144, -0.128], [-0.534, -0.128], [-0.534, 0.494]]"
 
-      xy_goal_tolerance: 0.05
+      xy_goal_tolerance: 0.20
       yaw_goal_tolerance: 0.524
       free_goal_vel: false
 
@@ -303,10 +303,10 @@ controller_server:
       vx_std: 0.45
       vy_std: 0.45
       wz_std: 0.25
-      vx_max: 2.60
-      vx_min: -2.0
-      vy_max: 2.80
-      vy_min: -2.80
+      vx_max: 1.0
+      vx_min: -1.0
+      vy_max: 1.0
+      vy_min: -1.0
       wz_max: 0.45
       iteration_count: 1
       prune_distance: 1.2
@@ -377,8 +377,8 @@ velocity_smoother:
     odom_topic: "/nav2_odom"
     odom_duration: 0.1
     smoothing_frequency: 100.0
-    max_velocity: [2.60, 2.80, 0.0]
-    min_velocity: [-2.80, -2.80, -0.0]
+    max_velocity: [1.0, 1.0, 0.0]
+    min_velocity: [-1.0, -1.0, -0.0]
     max_accel: [3.5, 3.5, 0.0]
     max_decel: [-4.0, -4.0, 0.0]
     feedback: "OPEN_LOOP"

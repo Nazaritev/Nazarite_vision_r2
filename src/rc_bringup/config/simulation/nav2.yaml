@@ -6,7 +6,7 @@ planner_server:
         GridBased:
             plugin: "navfn_planner/NavfnPlanner"
             tolerance: 1.0                               # 终点偏差的容忍值
-            use_astar: false                             # 是否使用A*算法，否则使用Dijkstra算法
+            use_astar: false q                            # 是否使用A*算法，否则使用Dijkstra算法
             allow_unknown: true                          # 是否允许在未知区域规划路径
             use_final_approach_orientation: false        # 终点是否使用设定的朝向
 

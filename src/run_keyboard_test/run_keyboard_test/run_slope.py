@@ -20,7 +20,7 @@ class ImuYawListener(Node):
         )
         self.ser = serial.Serial('/dev/ttyUSB1',961200,timeout=1.0)
         self.continue_time = 0.3
-        self.start = True
+        self.start = False
         # self.next()
         self.pitch_init = 0
         self.pitch_init_bool = False
@@ -83,7 +83,7 @@ class ImuYawListener(Node):
         flag = int(0)
         mode = int(0)
         reserved = 0  # 保留字，当前固定填 0
-        self.get_logger().info(f'(vx={vx_int/1000},vy={vy_int/1000},vw={vw_int/10})')
+        #self.get_logger().info(f'(vx={vx_int/1000},vy={vy_int/1000},vw={vw_int/10})')
         # self.get_logger().info(f'{vw_int}')
         frame_head = struct.pack('<B h h h B B B', 
                                      0xA5,       # SOF (帧头，1字节)
@@ -172,9 +172,9 @@ class ImuYawListener(Node):
         
 
         # self.get_logger().info(f'四元数: x={q.x:.4f}, y={q.y:.4f}, z={q.z:.4f}, w={q.w:.4f}')
-        if time.time() - self.start_time > 0.2:
+        if time.time() - self.start_time > 0.1:
             # self.get_logger().info(f'{self.pitch} = {pitch} - {self.pitch_init}')
-            #self.get_logger().info(f'rool={rotation_euler[0]:.3f},pithch={self.pitch:.3f},yaw={rotation_euler[2]:.3f}')
+            self.get_logger().info(f'rool={rotation_euler[0]:.3f},pithch={self.pitch:.3f},yaw={rotation_euler[2]:.3f}')
             self.start_time = time.time()
         # self.get_logger().info(f'Yaw: {yaw:.4f} rad ({yaw * 180.0 / 3.141592653589793:.2f} deg)')
 
