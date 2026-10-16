@@ -5,3 +5,6 @@
 *.pyc
 /src.zip
 /src/fast_lio/PCD/scans.pcd
+install/
+log/
+build/
