@@ -4,11 +4,19 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.conditions import IfCondition
-from launch.substitutions import Command, LaunchConfiguration
+from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.descriptions import ParameterFile
 from nav2_common.launch import RewrittenYaml
-
+from launch.actions import (
+    DeclareLaunchArgument,
+    ExecuteProcess,
+    TimerAction,
+)
+import launch_ros
+import launch
+from launch_ros.substitutions import FindPackageShare
+import math
 
 def generate_launch_description():
     pkg_dir = get_package_share_directory('rc_bringup')
@@ -103,12 +111,12 @@ def generate_launch_description():
             parameters=[{
                 'use_sim_time': use_sim_time,
                 'target_frame': 'base_link',
-                'transform_tolerance': 2.0,
+                'transform_tolerance': 0.1,
                 'min_height': -0.15,
                 'max_height': 4.0,
                 'angle_min': -3.14159,
                 'angle_max': 3.14159,
-                'angle_increment': 0.0043,
+                'angle_increment': 0.0023,
                 'scan_time': 0.05,
                 'range_min': 0.45,
                 'range_max': 10.0,
@@ -180,6 +188,22 @@ def generate_launch_description():
             remappings=remappings,
         ))
 
+    action1= launch_ros.actions.Node(
+            package='run_keyboard_test',
+            executable='nav_to_pose',
+            output='screen'
+        )
+    action2= launch_ros.actions.Node(
+            package='run_keyboard_test',
+            executable='run_slope',
+            output='screen'
+        )
+    action_group = launch.actions.GroupAction([
+        # 动作5-定时器
+        launch.actions.TimerAction(period=3.0, actions=[action1]), #2秒后执行
+        # launch.actions.TimerAction(period=3.0, actions=[action2]) #4秒后执行
+        ])
+
     actions.extend([
         Node(
             package='nav2_lifecycle_manager',
@@ -202,4 +226,4 @@ def generate_launch_description():
             condition=IfCondition(use_rviz),
         ),
     ])
-    return LaunchDescription(actions)
+    return LaunchDescription(actions + [action_group])

@@ -116,7 +116,7 @@ def generate_launch_description():
                 'max_height': 4.0,
                 'angle_min': -3.14159,
                 'angle_max': 3.14159,
-                'angle_increment': 0.0043,
+                'angle_increment': 0.0023,
                 'scan_time': 0.05,
                 'range_min': 0.45,
                 'range_max': 10.0,
@@ -226,7 +226,7 @@ def generate_launch_description():
             condition=IfCondition(use_rviz),
         ),
     ])
-    return LaunchDescription(
+    return LaunchDescription([
         actions,
-        action_group,
-        )
+        # action_group,
+        ])

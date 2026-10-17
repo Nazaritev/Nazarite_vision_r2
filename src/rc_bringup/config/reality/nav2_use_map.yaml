@@ -148,15 +148,15 @@ local_costmap:
   local_costmap:
     ros__parameters:
       update_frequency: 15.0
-      publish_frequency: 5.0
+      publish_frequency: 15.0
       global_frame: odom
       robot_base_frame: base_link
-      transform_tolerance: 0.15
+      transform_tolerance: 0.3 #0.15
       use_sim_time: false
       rolling_window: true
       width: 6
       height: 6
-      resolution: 0.005
+      resolution: 0.03 #0.005
       footprint: "[ [0.144, 0.494], [0.144, -0.128], [-0.534, -0.128], [-0.534, 0.494] ]"
       plugins: ["obstacle_layer", "inflation_layer"]
       obstacle_layer:
@@ -184,7 +184,7 @@ global_costmap:
       update_frequency: 5.0
       publish_frequency: 2.0
       global_frame: odom
-      transform_tolerance: 0.2
+      transform_tolerance: 0.3
       robot_base_frame: base_link
       use_sim_time: false
       rolling_window: true
