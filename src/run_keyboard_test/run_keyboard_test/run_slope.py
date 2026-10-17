@@ -20,7 +20,7 @@ class ImuYawListener(Node):
         )
         self.ser = serial.Serial('/dev/ttyUSB1',961200,timeout=1.0)
         self.continue_time = 0.3
-        self.start = False
+        self.start = True
         # self.next()
         self.pitch_init = 0
         self.pitch_init_bool = False

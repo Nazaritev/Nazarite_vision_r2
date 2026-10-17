@@ -16,7 +16,8 @@ bt_navigator:
     robot_base_frame: base_link
     odom_topic: /nav2_odom
     bt_loop_duration: 10
-    default_nav_to_pose_bt_xml: "/home/dgut/Nazarite/src/rc_bringup/config/reality/navigate_to_pose_teb_mppi_selector.xml"
+    default_nav_to_pose_bt_xml: "/home/dgut/code/Nazarite/src/rc_bringup/config/reality/navigate_to_pose_teb_mppi_selector.xml"
+    default_nav_through_poses_bt_xml: "/home/dgut/code/Nazarite/src/rc_bringup/config/reality/nav2_mult.xml"
     plugin_lib_names:
       - nav2_compute_path_to_pose_action_bt_node
       - nav2_compute_path_through_poses_action_bt_node
@@ -53,29 +54,41 @@ bt_navigator:
       - nav2_spin_cancel_bt_node
       - nav2_back_up_cancel_bt_node
       - nav2_drive_on_heading_cancel_bt_node
+      - nav2_navigate_through_poses_action_bt_node
 
+#planner_server:
+#  ros__parameters:
+#    use_sim_time: false
+#    planner_plugins: ["GridBased"]
+#    GridBased:
+#      plugin: "nav2_smac_planner/SmacPlanner2D"
+#      tolerance: 0.00
+#      max_iterations: 500000
+#      max_on_approach_iterations: 500
+#      allow_unknown: true
+#      use_final_approach_orientation: false
+#      motion_model: "OMNI"
+#      radius: 0.20
+#      analytical_expansion: false
+#      analytical_expansion_max_length: 1.5
+#      min_turning_radius: 0.0
+#      lookup_table_size: 50
+#      cost_scaling_factor: 5.0
+#      reverse_penalty: 1.0
+#      change_penalty: 0.0
+#      non_straight_penalty: 1.05
+#      cost_quizzie_window: 5
 planner_server:
   ros__parameters:
-    use_sim_time: false
+    expected_planner_frequency: 20.0
+    use_sim_time: True
     planner_plugins: ["GridBased"]
     GridBased:
-      plugin: "nav2_smac_planner/SmacPlanner2D"
-      tolerance: 0.00
-      max_iterations: 500000
-      max_on_approach_iterations: 500
+      plugin: "nav2_navfn_planner/NavfnPlanner"
+      tolerance: 0.0
+      use_astar: true
       allow_unknown: true
-      use_final_approach_orientation: false
-      motion_model: "OMNI"
-      radius: 0.20
-      analytical_expansion: true
-      analytical_expansion_max_length: 1.5
-      min_turning_radius: 0.0
-      lookup_table_size: 50
-      cost_scaling_factor: 5.0
-      reverse_penalty: 1.0
-      change_penalty: 0.0
-      non_straight_penalty: 1.05
-      cost_quizzie_window: 5
+
 
 behavior_server:
   ros__parameters:
@@ -171,7 +184,7 @@ controller_server:
     controller_frequency: 50.0
     failure_tolerance: 1.0
     progress_checker_plugin: "progress_checker"
-    goal_checker_plugins: ["grab_goal_checker", "shift_goal_checker", "area3_goal_checker", "pose_goal_checker"]
+    goal_checker_plugins: ["grab_goal_checker", "shift_goal_checker", "area3_goal_checker", "pose_goal_checker","stopped_goal_checker"]
     min_x_velocity_threshold: 0.01
     min_y_velocity_threshold: 0.01
     min_theta_velocity_threshold: 0.01
@@ -199,6 +212,13 @@ controller_server:
       plugin: "nav2_controller::SimpleGoalChecker"
       xy_goal_tolerance: 0.05
       yaw_goal_tolerance: 3.15
+      stateful: true
+    stopped_goal_checker:
+      plugin: "nav2_controller::StoppedGoalChecker"
+      xy_goal_tolerance: 0.15    # 你想要的 0.15 米范围
+      yaw_goal_tolerance: 3.15    # 约 30 度，按需调整
+      trans_stopped_velocity: 0.02 # 线速度低于此值视为“已停止”，默认 0.25 偏松
+      rot_stopped_velocity: 0.02   # 角速度低于此值视为“已停止”，默认 0.25 偏松
       stateful: true
 
     controller_plugins: ["TEB_Short", "MPPI_Long"]

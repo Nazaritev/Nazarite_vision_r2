@@ -6,7 +6,7 @@
                     default_controller="MPPI_Long"
                     selected_controller="{selected_controller}" />
                 <GoalCheckerSelector topic_name="goal_checker_selector"
-                    default_goal_checker="grab_goal_checker"
+                    default_goal_checker="stopped_goal_checker"
                     selected_goal_checker="{selected_goal_checker}" />
                 <RateController hz="1.0">
                     <RecoveryNode number_of_retries="1" name="ComputePathToPose">
