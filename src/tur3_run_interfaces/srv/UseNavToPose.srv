@@ -1,0 +1,4 @@
+int32 use_nav
+float32 continue_time
+---
+bool success
