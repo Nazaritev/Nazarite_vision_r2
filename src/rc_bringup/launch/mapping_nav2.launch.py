@@ -201,7 +201,7 @@ def generate_launch_description():
     action_group = launch.actions.GroupAction([
         # 动作5-定时器
         launch.actions.TimerAction(period=3.0, actions=[action1]), #2秒后执行
-        # launch.actions.TimerAction(period=3.0, actions=[action2]) #4秒后执行
+        launch.actions.TimerAction(period=3.0, actions=[action2]) #4秒后执行
         ])
 
     actions.extend([
@@ -226,4 +226,5 @@ def generate_launch_description():
             condition=IfCondition(use_rviz),
         ),
     ])
-    return LaunchDescription(actions + [action_group])
+    # return LaunchDescription(actions + [action_group])
+    return LaunchDescription(actions)

@@ -46,7 +46,7 @@ class STM32Driver(Node):
         self.slope_curve_last_log_time = 0.0
 
         # 1. 配置串口参数（与STM32一致）
-        self.declare_parameter('serial_port', '/dev/ttyUSB1')
+        self.declare_parameter('serial_port', '/dev/ttyUSB0')
         self.declare_parameter('baudrate', 961200)
         self.declare_parameter('timeout', 1.0)
         self.declare_parameter('spin_angular_speed', 1.5)
@@ -464,7 +464,7 @@ class STM32Driver(Node):
             # 下层暂不接收角速度，所有发往 STM32 的 Vw 统一清零。
             vw = 0.0
             # 1. 浮点数转换为整型 (m/s -> mm/s, rad/s -> mrad/s)
-            vy = vy + vx*0.04
+            #vy = vy + vx*-0.04
             vx_int = int(vx * 1000)
             vy_int = int(vy * 1000)
             vw_int = int(vw * 10)

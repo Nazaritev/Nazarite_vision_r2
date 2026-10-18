@@ -5,20 +5,24 @@ from geometry_msgs.msg import Twist
 from tf_transformations import euler_from_quaternion  # 四元数转欧拉角函数
 import time
 from nav_msgs.msg import Odometry
+import threading
 import serial
 import struct
+from tur3_run_interfaces.msg import Slope
 # -0.162
 # ros2 run tur3_run_test run_slope
 class ImuYawListener(Node):
     def __init__(self):
         super().__init__('imu_yaw_listener')
+        thread = threading.Thread(target=self.nav_service)
+        thread.start()
         self.subscription = self.create_subscription(
             Odometry,
             '/Odometry',
             self.imu_callback,
             10
         )
-        self.ser = serial.Serial('/dev/ttyUSB1',961200,timeout=1.0)
+        self.ser = serial.Serial('/dev/ttyUSB0',961200,timeout=1.0)
         self.continue_time = 0.0
         self.start = False
         self.start_first = True
@@ -29,7 +33,7 @@ class ImuYawListener(Node):
         self.bool_slope = 0
         self.get_logger().info('imu_yaw_listener started, waiting for /imu ...')
         self.start_time = time.time()
-        self.vx1 = 1.5
+        self.vx1 = 1.2
         self.vx2 = 0.2
         self.fix = 0.04
         self.bool_fix = True
@@ -39,9 +43,9 @@ class ImuYawListener(Node):
         self.bool_pitch = self.create_timer(0.1,self.bool_pitch_callback)
         self.bool_stop = self.create_timer(0.1,self.bool_stop_callback)
 
-    # def nav_service(self):
-    #     self.service = self.create_subscription(Slope,'/slope',self.go_slope,5)
-    #     self.pub = self.create_publisher(Slope,'/slope',5)
+    def nav_service(self):
+        self.service = self.create_subscription(Slope,'/slope',self.go_slope,5)
+        self.pub = self.create_publisher(Slope,'/slope',5)
 
     def calc_crc8(self, data: bytes, poly: int = 0x07, init_value: int = 0x00) -> int:
         """
@@ -103,8 +107,10 @@ class ImuYawListener(Node):
 
     def go_slope(self,msg):
         if msg.slope == 1:
+            self.get_logger().info(f'{1111111111111111111111}')
             self.start = True
             self.pitch_init_bool = False
+            self.start_first = True
             self.fix = 0.04
             # self.continue_time = 0.2
 
@@ -142,9 +148,9 @@ class ImuYawListener(Node):
             self.start_time_slop = None
             self.bool_slope = 0
             # self.next()
-            # sl = Slope()
-            # sl.slope = 2
-            # self.pub.publish(sl)
+            sl = Slope()
+            sl.slope = 2
+            self.pub.publish(sl)
             # while True:
             # 	self.get_logger().info(f'1111111111111111')
             # 	time.sleep(0.2)

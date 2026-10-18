@@ -31,8 +31,43 @@ class NavToPose(BasicNavigator):
         # self.run_slop(0.3)
 
         # thread.start()
-        self.pose_init(-4.55,-4.35,0)
+        self.pose_init(-0.4,3.2,3.1415626)
+        self.nav2_mult([[1.8,3.6],[7.3,3.6],[8.1,2.5]])
         
+        sl = Slope()
+        sl.slope = 1
+        self.slope_publisher.publish(sl)
+        
+        
+    def nav2_mult(self,poses):
+        self.waitUntilNav2Active()
+        goal_poses = []
+        for pose in poses:
+            goal_pose = PoseStamped()
+            goal_pose.header.frame_id = 'map'
+            goal_pose.header.stamp = self.get_clock().now().to_msg()
+            goal_pose.pose.position.x = pose[0]
+            goal_pose.pose.position.y = pose[1]
+            # goal_pose.pose.orientation.w = 1.0
+            goal_poses.append(goal_pose)
+        self.get_logger().info(f'{goal_poses}')
+        self.goThroughPoses(goal_poses)
+        # 判断结束及获取反馈
+        while not self.isTaskComplete():
+            feedback = self.getFeedback()
+            # self.get_logger().info(
+            #     f'当前目标编号：{feedback.current_waypoint}')
+        # 最终结果判断
+        result = self.getResult()
+        if result == TaskResult.SUCCEEDED:
+            self.get_logger().info('导航结果：成功')
+            
+        elif result == TaskResult.CANCELED:
+            self.get_logger().warn('导航结果：被取消')
+        elif result == TaskResult.FAILED:
+            self.get_logger().error('导航结果：失败')
+        else:
+            self.get_logger().error('导航结果：返回状态无效')   
 
     def slope_thread2(self):
         self.after_slop = self.create_subscription(Slope,'/slope',self.slope_callback,1)

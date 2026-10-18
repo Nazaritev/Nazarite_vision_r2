@@ -111,7 +111,7 @@ def generate_launch_description():
             parameters=[{
                 'use_sim_time': use_sim_time,
                 'target_frame': 'base_link',
-                'transform_tolerance': 2.0,
+                'transform_tolerance': 0.1,
                 'min_height': -0.15,
                 'max_height': 4.0,
                 'angle_min': -3.14159,
@@ -226,7 +226,7 @@ def generate_launch_description():
             condition=IfCondition(use_rviz),
         ),
     ])
-    return LaunchDescription([
+    return LaunchDescription(
         actions,
         # action_group,
-        ])
+        )
