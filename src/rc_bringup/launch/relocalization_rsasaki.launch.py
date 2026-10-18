@@ -106,7 +106,7 @@ def _build_localization(context):
                 "map_path": os.path.join(package_dir, "map", loc_map),
                 "global_frame_id": "map",
                 "odom_frame_id": "odom",
-                "base_frame_id": "base_link",
+                "base_frame_id": "footprint_link",
                 "enable_map_odom_tf": "true",
                 "set_initial_pose": "true",
                 "initial_pose_x": str(float(preset_pose[0])),

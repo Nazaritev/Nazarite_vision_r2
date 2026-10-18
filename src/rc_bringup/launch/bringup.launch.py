@@ -376,7 +376,7 @@ def generate_launch_description():
                 parameters=[
                     {
                         "use_sim_time": use_sim_time,
-                        "target_frame": "base_link",
+                        "target_frame": "footprint_link",
                         "transform_tolerance": 2.0,
                         "min_height": -2.0,
                         "max_height": 2.0,

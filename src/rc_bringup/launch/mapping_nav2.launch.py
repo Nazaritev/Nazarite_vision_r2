@@ -110,7 +110,7 @@ def generate_launch_description():
             remappings=[('cloud_in', '/cloud_registered'), ('scan', '/scan')],
             parameters=[{
                 'use_sim_time': use_sim_time,
-                'target_frame': 'base_link',
+                'target_frame': 'footprint_link',
                 'transform_tolerance': 0.1,
                 'min_height': -0.15,
                 'max_height': 4.0,
@@ -200,7 +200,7 @@ def generate_launch_description():
         )
     action_group = launch.actions.GroupAction([
         # 动作5-定时器
-        launch.actions.TimerAction(period=3.0, actions=[action1]), #2秒后执行
+        #launch.actions.TimerAction(period=3.0, actions=[action1]), #2秒后执行
         launch.actions.TimerAction(period=3.0, actions=[action2]) #4秒后执行
         ])
 
@@ -226,5 +226,5 @@ def generate_launch_description():
             condition=IfCondition(use_rviz),
         ),
     ])
-    # return LaunchDescription(actions + [action_group])
-    return LaunchDescription(actions)
+    return LaunchDescription(actions + [action_group])
+    #return LaunchDescription(actions)

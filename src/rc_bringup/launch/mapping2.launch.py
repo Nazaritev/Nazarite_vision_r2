@@ -145,7 +145,7 @@ def generate_launch_description():
         executable='pointcloud_to_laserscan_node',
         remappings=[('cloud_in', '/cloud_obstacles'), ('scan', '/scan')],
         parameters=[{
-            'target_frame': 'base_link', 'transform_tolerance': 2.0,
+            'target_frame': 'footprint_link', 'transform_tolerance': 2.0,
             'min_height': 0.15, 'max_height': 0.60,
             'angle_min': -3.14159, 'angle_max': 3.14159,
             'angle_increment': 0.0043, 'scan_time': 0.3333,

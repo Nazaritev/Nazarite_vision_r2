@@ -11,6 +11,9 @@
 
     <link name="base_link"/>
     <link name="chassis_link"/>
+    <!-- Navigation body frame at the vehicle footprint center, level with
+         base_link. -->
+    <link name="footprint_link"/>
     <link name="zed_camera_link"/>
     <link name="livox_frame"/>
     <link name="imu_link"/>
@@ -19,6 +22,13 @@
       <origin rpy="0 0 0" xyz="-0.256 -0.291 -0.576"/>
       <parent link="base_link"/>
       <child link="chassis_link"/>
+      <axis xyz="0 0 0"/>
+    </joint>
+
+    <joint name="base_to_footprint_link" type="fixed">
+      <origin rpy="0 0 0" xyz="-0.195 0.183 0"/>
+      <parent link="base_link"/>
+      <child link="footprint_link"/>
       <axis xyz="0 0 0"/>
     </joint>
 

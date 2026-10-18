@@ -158,7 +158,7 @@ def generate_launch_description():
         executable='pointcloud_to_laserscan_node',
         remappings=[('cloud_in', '/cloud_registered'), ('scan', '/scan')],
         parameters=[{
-            'target_frame': 'base_link', 'transform_tolerance': 2.0,
+            'target_frame': 'footprint_link', 'transform_tolerance': 2.0,
             # MID360 is mounted upside down; valid obstacle returns can be below
             # the base_link origin. Do not discard the complete scan at startup.
             'min_height': -0.15, 'max_height': 4.0,

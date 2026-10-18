@@ -9,6 +9,8 @@ from tf_transformations import quaternion_from_euler,euler_from_quaternion
 import threading
 from geometry_msgs.msg import Twist
 import time
+import serial
+import struct
 from tur3_run_interfaces.srv import UseNavToPose,NavOnce
 from tur3_run_interfaces.msg import Slope
 # ros2 run tur3_run_test nav_to_pose
@@ -23,6 +25,7 @@ class NavToPose(BasicNavigator):
         # thread = threading.Thread(target=self.get)
         self.get_pose = self.create_subscription(Odometry,'/odom',self.nav_pose_callback,1)
         self.after_slop = self.create_subscription(Slope,'/slope',self.slope_callback,1)
+        self.ser = serial.Serial('/dev/ttyUSB0',961200,timeout=1.0)
         # thread2 = threading.Thread(target=self.slope_thread2)
         # thread2.start()
         self.slope_publisher = self.create_publisher(Slope,'/slope',5)
@@ -31,12 +34,20 @@ class NavToPose(BasicNavigator):
         # self.run_slop(0.3)
 
         # thread.start()
-        self.pose_init(-0.4,3.2,3.1415626)
-        self.nav2_mult([[1.8,3.6],[7.3,3.6],[8.1,2.5]])
+        #self.pose_init(-0.4,3.2,3.1415626)
+
+        #self.nav2_mult([[1.8,3.6],[7.3,3.6],[8.1,2.2]])
+        # # time.sleep(1.0)
+        # #self.adj_angle(0,3.1415)
         
-        sl = Slope()
-        sl.slope = 1
-        self.slope_publisher.publish(sl)
+        #sl = Slope()
+        #sl.slope = 1
+        #self.slope_publisher.publish(sl)
+
+        #self.nav_pose(2.5,1.3)
+        #self.nav_pose(6.7,1.3)
+
+
         
         
     def nav2_mult(self,poses):
@@ -111,6 +122,50 @@ class NavToPose(BasicNavigator):
 
         self.setInitialPose(initial_pose)
 
+    def calc_crc8(self, data: bytes, poly: int = 0x07, init_value: int = 0x00) -> int:
+        """
+        计算标准 CRC-8
+        :param data: 需要计算的字节数据
+        :param poly: 多项式 (标准通常为 0x07)
+        :param init_value: 初始值
+        :return: 计算出的 CRC-8 校验值 (0-255)
+        """
+        crc = init_value
+        for byte in data:
+            crc ^= byte
+            for _ in range(8):
+                if crc & 0x80:
+                    crc = (crc << 1) ^ poly
+                else:
+                    crc <<= 1
+                crc &= 0xFF  # 确保始终是8位
+        return crc
+
+    def run(self,vx=0,vy0=0,vw0=0):
+        vy = 0
+        vx_int = int(vx * 1000)
+        vy_int = int((vy+vy0) * 1000)
+        vw_int = int(vw0*10)
+        flag = int(0)
+        mode = int(0)
+        reserved = 0  # 保留字，当前固定填 0
+        self.get_logger().info(f'(vx={vx_int/1000},vy={vy_int/1000},vw={vw_int/10})')
+        # self.get_logger().info(f'{vw_int}')
+        frame_head = struct.pack('<B h h h B B B', 
+                                     0xA5,       # SOF (帧头，1字节)
+                                     vx_int,     # Vx (2字节)
+                                     vy_int,     # Vy (2字节)
+                                     vw_int,     # Vw (2字节)
+                                     flag,       # Flag (1字节)
+                                     reserved,   # Reserved (1字节)
+                                     mode)       # Mode (1字节)
+        data_to_crc = frame_head[1:]
+        crc = self.calc_crc8(data_to_crc)
+                                                                
+        full_frame = frame_head + struct.pack('<B B', crc, 0xFF)
+        # self.get_logger().info(f'{full_frame}')
+        self.ser.write(full_frame)
+
     def adj_angle(self,yaw_now,yaw_goal):
         yaw = math.atan2(math.sin(yaw_goal - yaw_now), math.cos(yaw_goal - yaw_now))
         self.get_logger().info(f'修正角度{yaw}')
@@ -119,15 +174,18 @@ class NavToPose(BasicNavigator):
             twis.angular.z = -1.0
         else:
             twis.angular.z = 1.0
-        sleep_time = int(yaw/twis.angular.z*10000)/10000
-        time.sleep(1.5)
-        self.vw_publisher.publish(twis)
+        sleep_time = int(yaw/twis.angular.z*10000)*2/3/10000
+        time.sleep(0.1)
+        # self.run(vw0=twis.angular.z)
         self.get_logger().info(f'{sleep_time}')
         t = sleep_time-0.0
         if t < 0 :
             t = sleep_time
-        time.sleep(t)
-        self.vw_publisher.publish(Twist())
+        a = time.time()
+        while time.time() - a<=t*1.04:
+            self.run(vw0=twis.angular.z)
+            time.sleep(0.1)
+        self.run(0)
         self.get_logger().info(f'角度调节完成')
         time.sleep(0.5)
 
@@ -159,7 +217,7 @@ class NavToPose(BasicNavigator):
         # self.get_logger().info(f'{response}')
 
 
-    def nav_pose(self,x,y,yaw_goal,adjust_angle):
+    def nav_pose(self,x,y,yaw_goal = 0,adjust_angle = False):
         # navigator = BasicNavigator()
     
         # 等待导航启动完成

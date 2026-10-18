@@ -13,7 +13,7 @@ bt_navigator:
   ros__parameters:
     use_sim_time: false
     global_frame: odom
-    robot_base_frame: base_link
+    robot_base_frame: footprint_link
     odom_topic: /Odometry
     bt_loop_duration: 10
     default_bt_xml_filename: "/opt/ros/humble/share/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml"
@@ -79,7 +79,7 @@ planner_server:
 behavior_server:
   ros__parameters:
     use_sim_time: false
-    robot_base_frame: base_link
+    robot_base_frame: footprint_link
     recovery_plugins: ["spin", "backup", "wait"]
     spin:
       plugin: "nav2_behaviors/Spin"
@@ -102,7 +102,7 @@ local_costmap:
       update_frequency: 20.0
       publish_frequency: 5.0
       global_frame: odom
-      robot_base_frame: base_link
+      robot_base_frame: footprint_link
       transform_tolerance: 0.2
       use_sim_time: false
       rolling_window: true
@@ -139,7 +139,7 @@ global_costmap:
       publish_frequency: 1.0
       global_frame: map
       transform_tolerance: 1.0
-      robot_base_frame: base_link
+      robot_base_frame: footprint_link
       use_sim_time: false
       rolling_window: true
       width: 10
@@ -274,7 +274,7 @@ velocity_smoother:
     ode_solver: "RungeKutta2"
     smooth_time: 0.2
     # 坐标系（和你的配置保持一致）
-    frame_id: "base_link"
+    frame_id: "footprint_link"
  
     min_x_velocity_threshold: 0.001
     min_y_velocity_threshold: 0.001

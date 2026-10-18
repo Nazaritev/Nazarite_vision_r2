@@ -22,7 +22,7 @@ class ImuYawListener(Node):
             self.imu_callback,
             10
         )
-        self.ser = serial.Serial('/dev/ttyUSB0',961200,timeout=1.0)
+        self.ser = serial.Serial('/dev/ttyUSB1',961200,timeout=1.0)
         self.continue_time = 0.0
         self.start = False
         self.start_first = True
@@ -33,7 +33,7 @@ class ImuYawListener(Node):
         self.bool_slope = 0
         self.get_logger().info('imu_yaw_listener started, waiting for /imu ...')
         self.start_time = time.time()
-        self.vx1 = 1.2
+        self.vx1 = 1.0
         self.vx2 = 0.2
         self.fix = 0.04
         self.bool_fix = True
@@ -118,16 +118,6 @@ class ImuYawListener(Node):
     def bool_stop_callback(self):
         if self.start == False:
             return
-        if self.start == True and self.start_first == True:
-            self.start_first = False
-            a = self.vx1*0.2
-            v = 0
-            while v==self.vx1:
-                v += a
-                if v>=self.vx1:
-                    v= self.vx1
-                self.run(v)
-                time.sleep(0.1)
         if self.bool_slope == 2:
             # self.vx = 0.2
             # self.run(0.2)
@@ -166,7 +156,7 @@ class ImuYawListener(Node):
         if self.start_time_slop != None and time.time() - self.start_time_slop > 0.5:
             self.bool_slope = 1
             self.bool_fix = True
-            self.fix = 0.1
+            self.fix = 0.12
         if self.pitch < -0.12:
             if self.start_time_slop == None:
                 self.start_time_slop = time.time()

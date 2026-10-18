@@ -110,7 +110,7 @@ def generate_launch_description():
             remappings=[('cloud_in', '/cloud_registered'), ('scan', '/scan')],
             parameters=[{
                 'use_sim_time': use_sim_time,
-                'target_frame': 'base_link',
+                'target_frame': 'footprint_link',
                 'transform_tolerance': 0.1,
                 'min_height': -0.15,
                 'max_height': 4.0,

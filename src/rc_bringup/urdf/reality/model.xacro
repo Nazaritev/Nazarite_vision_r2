@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="sentry">
-    <!-- Keep base_link at the MID360 internal IMU origin for FAST-LIO, and expose
-         motion_link as the chassis-center body frame used by navigation. -->
+    <!-- Keep base_link at the MID360 internal IMU origin for FAST-LIO. The
+         footprint_link is the navigation body frame at the vehicle footprint
+         center, level with base_link. -->
     <xacro:property name="livox_mount_roll" value="0.0"/>
     <xacro:property name="livox_mount_pitch" value="3.1415926"/>
     <xacro:property name="livox_mount_yaw" value="0.0"/>
@@ -14,6 +15,7 @@
 
     <link name="base_link"/>
     <link name="motion_link"/>
+    <link name="footprint_link"/>
     <link name="camera_link1"/>
     <link name="camera_link2"/>
     <link name="zed_camera_link"/>
@@ -24,6 +26,15 @@
         <origin rpy="0 0 0" xyz="-0.198 0.175 -0.576"/>
         <parent link="base_link"/>
         <child link="motion_link"/>
+        <axis xyz="0 0 0"/>
+    </joint>
+
+    <!-- Keep the navigation body frame level with base_link at the vehicle
+         footprint center. -->
+    <joint name="base_to_footprint_link" type="fixed">
+        <origin rpy="0 0 0" xyz="-0.195 0.183 0"/>
+        <parent link="base_link"/>
+        <child link="footprint_link"/>
         <axis xyz="0 0 0"/>
     </joint>
 
