@@ -144,12 +144,26 @@ ros2 service call /camara_use yolo_detect_box/srv/CameraUse "{use: 1}"
    使用图像实际宽度，不写死分辨率。
 4. 框中心满足 `0.4 * image_width <= fx <= 0.6 * image_width` 即到位，含边界。
    例如宽度 `1080`，范围是 `[432, 648]` 像素。
-5. **每帧实时判断中心位置**：在范围内以默认 `20 Hz` 持续发送零速度；
+5. 默认 `lock_on_center=false`，**每帧实时判断中心位置**：在范围内以默认 `20 Hz` 持续发送零速度；
    一旦移出范围，就继续按照偏差横移追踪，再次进入范围时重新停车。
    整个过程持续到方块被拿走，不需要重新发送 `slope=3`。
 6. 首次识别后，连续 `missing_timeout` 秒无目标，服务返回 `success=1`。
    控制节点收到响应后继续发送 `stop_duration` 秒零速度，再关闭串口、回到待机。
    单纯进入中心范围不会返回成功。
+
+设置 `lock_on_center=true` 时，首次识别到框中心进入范围就停止横移追踪，
+连续发送 `lock_stop_duration` 秒零速度（默认 **1 秒**），然后关闭串口，结束本轮速度控制。
+此后方块移出范围也不会重新控制小车，YOLO 仍继续等待方块被拿走并返回整数状态。
+无论服务响应在这 1 秒内还是串口释放后到达，都不重新开始停车计时、不再次发送速度。
+本轮检测结束且串口释放后，新的 `/slope=3` 才能启动下一轮。
+
+```bash
+# 首次到位后发 1 秒零速度，随后释放串口控制
+ros2 launch run_keyboard_test yolo_control.launch.py lock_on_center:=true
+
+# 持续追踪：范围内停车，移出范围继续横移（默认）
+ros2 launch run_keyboard_test yolo_control.launch.py lock_on_center:=false
+```
 
 检测短暂丢失、结果过期时先发零速度；摄像头读图失败不算方块被拿走，
 连续失败达到 `camera_timeout` 时服务返回 `success=0`，控制节点同样停车。
@@ -211,13 +225,15 @@ ros2 topic pub --once /slope tur3_run_interfaces/msg/Slope "{slope: 3}"
 | `max_lateral_speed` | `0.3` | 唯一的最大横移速度参数，m/s，不能突破 `0.3` |
 | `lateral_gain` | `1.0` | 归一化水平偏差对应的速度增益 |
 | `center_left_ratio` / `center_right_ratio` | `0.4` / `0.6` | 到位范围占图像宽度的比例 |
+| `lock_on_center` | `false` | 是否首次到位后停车并结束本轮串口控制 |
+| `lock_stop_duration` | `1.0` | 首次到位锁车时连续发零速度的时长，秒 |
 | `lateral_direction` | `-1.0` | 图像偏差到 Vy 的符号；镜像安装可改为 `1.0` |
 | `control_rate` | `20.0` | 包含保持停车时的发帧频率，Hz |
 | `detection_timeout` | `0.5` | 过期检测结果的停车阈值，秒 |
 | `missing_timeout` | `1.0` | 首次识别后连续丢失的完成阈值，秒 |
 | `camera_timeout` | `2.0` | 连续读图失败的失败阈值，秒 |
 | `service_wait_timeout` | `5.0` | 等待服务上线的时长，秒 |
-| `stop_duration` | `0.5` | 服务结束后继续发零速度的时长，秒 |
+| `stop_duration` | `0.5` | 未锁定时服务结束后的零速度时长；首次到位锁车后不重复执行 |
 | `camera_index` / `conf` | `0` / `0.6` | 摄像头编号及检测阈值 |
 | `show_window` | `true` | 是否显示窗口；无桌面时设为 `false` |
 | `slope_topic` / `trigger_value` | `/slope` / `3` | 外部启动条件 |

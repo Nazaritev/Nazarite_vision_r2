@@ -1,4 +1,4 @@
-"""收到 /slope=3 后持续视觉追踪，框中心在目标范围内时发送零速度。"""
+"""收到 /slope=3 后视觉追踪，可选择首次到位后停车并释放串口控制。"""
 
 import math
 import time
@@ -123,6 +123,8 @@ class YoloControlNode(Node):
             'lateral_gain': 1.0,
             'center_left_ratio': 0.4,
             'center_right_ratio': 0.6,
+            'lock_on_center': False,
+            'lock_stop_duration': 1.0,
             'lateral_direction': -1.0,
             'control_rate': 20.0,
             'detection_timeout': 0.5,
@@ -146,10 +148,13 @@ class YoloControlNode(Node):
         self.control_rate = float(value('control_rate'))
         self.service_wait_timeout = float(value('service_wait_timeout'))
         self.stop_duration = float(value('stop_duration'))
+        self.lock_on_center = value('lock_on_center')
+        self.lock_stop_duration = float(value('lock_stop_duration'))
         for name, number in (
                 ('control_rate', self.control_rate),
                 ('service_wait_timeout', self.service_wait_timeout),
-                ('stop_duration', self.stop_duration)):
+                ('stop_duration', self.stop_duration),
+                ('lock_stop_duration', self.lock_stop_duration)):
             if not math.isfinite(number) or number <= 0.0:
                 raise ValueError(f'{name} 必须为有限正数')
         self.trigger_value = int(value('trigger_value'))
@@ -164,11 +169,15 @@ class YoloControlNode(Node):
         self.request_future = None
         self.service_deadline = None
         self.stop_until = None
+        self.center_locked = False
         self.get_logger().info(
             f'等待 {value("slope_topic")}={self.trigger_value}；'
             f'中心范围 [{self.alignment.left_ratio:.0%}, '
             f'{self.alignment.right_ratio:.0%}]；'
             f'横移速度上限 {self.alignment.max_speed:.3f} m/s，待机不打开串口')
+        if self.lock_on_center:
+            self.get_logger().info(
+                f'已开启首次到位锁车：连续发送 {self.lock_stop_duration:.2f} 秒零速度后释放串口')
 
     def slope_callback(self, message):
         """处理 /slope 消息，默认收到 3 时开始一轮 YOLO 横移追踪。
@@ -189,6 +198,7 @@ class YoloControlNode(Node):
             return
         # 非零编号贯穿服务和检测话题，避免其他客户端的检测驱动车辆。
         self.alignment.start(time.time_ns())
+        self.center_locked = False
         self.request_future = None
         self.service_deadline = time.monotonic() + self.service_wait_timeout
         self.get_logger().info('收到触发，已停车，等待 YOLO 服务就绪')
@@ -196,7 +206,7 @@ class YoloControlNode(Node):
     def detection_callback(self, message):
         """接收实时检测结果，过滤过期坐标并更新横移控制状态。
 
-        每次框中心进入停车范围时立即发零速度，其余速度由定时器持续发送。
+        进入中心范围时立即发零速度；锁车模式只处理首次到位，随后结束速度控制。
         """
         # 已经过期的推理结果不能用于启动横移。
         stamp = message.stamp.sec + message.stamp.nanosec / 1e9
@@ -207,6 +217,9 @@ class YoloControlNode(Node):
             message.session_id, detected, message.fx, message.fy,
             message.image_width, message.image_height, time.monotonic())
         if not was_in_center and self.alignment.in_center:
+            if self.lock_on_center:
+                self.lock_at_center()
+                return
             self.get_logger().info('方块在中心范围内，发送零速度；移出后继续横移追踪')
             # 到位当次回调立即发零，不必等下一个控制定时器。
             try:
@@ -214,11 +227,27 @@ class YoloControlNode(Node):
             except Exception as exc:
                 self.serial_failure(exc)
 
+    def lock_at_center(self):
+        """首次到位后停止追踪速度，连续发指定时长零速度，再由定时器关闭串口。
+
+        检测服务继续等待方块被拿走，但其结果不再触发串口发送或延长停车时间。
+        """
+        self.center_locked = True
+        self.alignment.finish()
+        self.stop_until = time.monotonic() + self.lock_stop_duration
+        self.get_logger().info(
+            f'首次到位，连续发送 {self.lock_stop_duration:.2f} 秒零速度后结束本轮串口控制')
+        try:
+            self.writer.send(0.0)
+        except Exception as exc:
+            self.serial_failure(exc)
+
     def control_tick(self):
         """按固定频率执行控制，默认每 50 ms 调用一次。
 
         每轮仅发送一次 YOLO 启动请求，之后持续计算并发送最新横移速度。
-        本轮结束后连续发送一段时间的零速度，再关闭串口、恢复待机。
+        本轮结束或锁车模式首次到位后，连续发送对应时长的零速度，再关闭串口。
+        串口释放后不再发送速度；检测服务可以继续等待方块被拿走。
         """
         now = time.monotonic()
         if self.alignment.active:
@@ -252,15 +281,25 @@ class YoloControlNode(Node):
     def service_done(self, future):
         """处理 YOLO 异步服务的最终响应，收到 success=1 时确认本轮识别完成。
 
-        返回 0、其他非完成状态或调用异常时同样进入停车流程，不继续横移。
+        未锁车时，返回 0、其他状态或异常也会进入停车流程。
+        已首次到位锁车时只记录检测结果，不重发速度，也不重置停车计时。
         """
-        if future is not self.request_future or not self.alignment.active:
+        if future is not self.request_future:
+            return
+        if not self.alignment.active and not self.center_locked:
             return
         try:
             response = future.result()
             success = response is not None and response.success == 1
         except Exception as exc:
+            if self.center_locked:
+                self.get_logger().warn(f'YOLO 服务异常: {exc}；已首次到位锁车，不重新接管串口')
+                return
             self.finish_round(False, f'YOLO 服务异常: {exc}')
+            return
+        if self.center_locked:
+            (self.get_logger().info if success else self.get_logger().warn)(
+                f'YOLO 检测结束，完成状态为 {int(success)}；已首次到位锁车，不重新接管串口')
             return
         self.finish_round(
             success, 'YOLO 返回 1，方块已消失，本轮完成' if success

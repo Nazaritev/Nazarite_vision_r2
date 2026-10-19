@@ -25,6 +25,8 @@ def generate_launch_description():
         'lateral_gain': ('1.0', float, '水平归一化偏差到横移速度的比例增益'),
         'center_left_ratio': ('0.4', float, '到位范围左边界占图像宽度的比例'),
         'center_right_ratio': ('0.6', float, '到位范围右边界占图像宽度的比例'),
+        'lock_on_center': ('false', bool, '首次到位后是否停车并结束本轮串口控制'),
+        'lock_stop_duration': ('1.0', float, '首次到位锁车时连续发零速度的时长，秒'),
         'lateral_direction': ('-1.0', float, '水平偏差到 Vy 的方向，取 -1 或 1'),
         'control_rate': ('20.0', float, '速度帧发送频率，Hz'),
         'detection_timeout': ('0.5', float, '检测结果过期多久停车，秒'),

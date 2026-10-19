@@ -177,6 +177,9 @@ def controller_harness(monkeypatch):
     node.service_wait_timeout = 5.0
     node.stop_duration = 0.5
     node.stop_until = None
+    node.lock_on_center = False
+    node.lock_stop_duration = 1.0
+    node.center_locked = False
     node.get_logger = Mock(return_value=Mock())
     node.get_clock = Mock(return_value=SimpleNamespace(
         now=lambda: SimpleNamespace(nanoseconds=int(now[0] * 1e9))))
@@ -184,8 +187,11 @@ def controller_harness(monkeypatch):
 
 
 @pytest.mark.parametrize('status', [1, 0, 2])
-def test_slope_trigger_service_result_and_repeated_stop_frames(monkeypatch, status):
+@pytest.mark.parametrize('lock_on_center', [False, True])
+def test_slope_trigger_service_result_and_repeated_stop_frames(
+        monkeypatch, status, lock_on_center):
     node, now = controller_harness(monkeypatch)
+    node.lock_on_center = lock_on_center
     for value in (1, 2):
         node.slope_callback(SimpleNamespace(slope=value))
     node.writer.open.assert_not_called()
@@ -278,6 +284,107 @@ def test_unavailable_service_and_serial_failure_do_not_start_motion(monkeypatch)
     node.slope_callback(SimpleNamespace(slope=3))
     assert not node.alignment.active
     node.client.call_async.assert_not_called()
+
+
+def centered_detection(node, now, fx=432.0, session_id=123, detected=True, age=0.0):
+    """构造本轮图像消息，驱动真实节点的检测回调。"""
+    message = BoxDetection()
+    message.session_id = session_id
+    message.detected = detected
+    message.image_width, message.image_height = 1080, 720
+    message.fx, message.fy = fx, 200.0
+    stamp = now - age
+    message.stamp.sec = int(stamp)
+    message.stamp.nanosec = int((stamp % 1.0) * 1e9)
+    node.detection_callback(message)
+
+
+def test_lock_mode_sends_zero_for_one_second_and_never_reclaims_released_serial(monkeypatch):
+    node, now = controller_harness(monkeypatch)
+    node.lock_on_center = True
+    node.alignment.start(123)
+    node.request_future = Future()
+    centered_detection(node, now[0], fx=100.0)
+    node.control_tick()
+    assert node.writer.send.call_args.args[0] > 0.0
+    node.writer.reset_mock()
+    centered_detection(node, now[0])
+    assert node.center_locked
+    assert not node.alignment.active
+    assert node.stop_until == 101.0
+    node.writer.send.assert_called_with(0.0)
+    for current in (100.05, 100.5, 100.95):
+        now[0] = current
+        centered_detection(node, now[0], fx=900.0)
+        node.control_tick()
+        node.writer.send.assert_called_with(0.0)
+        node.writer.close.assert_not_called()
+    assert all(invocation.args == (0.0,) for invocation in node.writer.send.call_args_list)
+    node.slope_callback(SimpleNamespace(slope=3))
+    node.writer.open.assert_not_called()
+    now[0] = 101.0
+    node.control_tick()
+    node.writer.close.assert_called_once()
+    assert node.stop_until is None
+    node.writer.reset_mock()
+    # 释放串口后，后续坐标、待完成服务期间的重复触发都不能产生速度帧。
+    now[0] = 102.0
+    centered_detection(node, now[0], fx=100.0)
+    node.slope_callback(SimpleNamespace(slope=3))
+    node.control_tick()
+    response = CameraUse.Response()
+    response.success = 1
+    node.request_future.set_result(response)
+    node.service_done(node.request_future)
+    node.control_tick()
+    node.writer.send.assert_not_called()
+    node.writer.close.assert_not_called()
+    node.writer.open.assert_not_called()
+    # 检测结束后，只有新的外部触发才开启下一轮，并清除上轮锁定。
+    node.slope_callback(SimpleNamespace(slope=3))
+    node.writer.open.assert_called_once()
+    assert node.alignment.active
+    assert not node.center_locked
+
+
+@pytest.mark.parametrize('result', [1, 0, 'exception'])
+def test_early_service_result_keeps_lock_stop_deadline(monkeypatch, result):
+    node, now = controller_harness(monkeypatch)
+    node.lock_on_center = True
+    node.alignment.start(123)
+    node.request_future = Future()
+    centered_detection(node, now[0])
+    now[0] = 100.2
+    if result == 'exception':
+        node.request_future.set_exception(RuntimeError('fake camera service failure'))
+    else:
+        response = CameraUse.Response()
+        response.success = result
+        node.request_future.set_result(response)
+    node.service_done(node.request_future)
+    assert node.stop_until == 101.0
+    now[0] = 100.95
+    node.control_tick()
+    node.writer.close.assert_not_called()
+    node.writer.send.assert_called_with(0.0)
+    now[0] = 101.0
+    node.control_tick()
+    node.writer.close.assert_called_once()
+    node.writer.reset_mock()
+    now[0] = 101.5
+    node.control_tick()
+    node.writer.send.assert_not_called()
+
+
+def test_lock_mode_ignores_missing_stale_and_foreign_center_detections(monkeypatch):
+    node, now = controller_harness(monkeypatch)
+    node.lock_on_center = True
+    node.alignment.start(123)
+    for options in ({'detected': False}, {'age': 1.0}, {'session_id': 999}, {'fx': 100.0}):
+        centered_detection(node, now[0], **options)
+        assert not node.center_locked
+        assert node.alignment.active
+        assert node.stop_until is None
 
 
 @pytest.fixture
