@@ -30,6 +30,7 @@ setup(
             'run_slope=run_keyboard_test.run_slope:main',
             'scan_get=run_keyboard_test.scan_get:main',
             'nav_to_pose=run_keyboard_test.nav_to_pose:main',
+            'yolo_control=run_keyboard_test.yolo_control:main',
         ],
     },
 )

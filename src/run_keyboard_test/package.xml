@@ -9,9 +9,15 @@
 
   <depend>rclpy</depend>
   <depend>geometry_msgs</depend>
-  <depend>turtlesim</depend>
   <depend>tf2_ros</depend>
-  <depend>tf2_transformatins</depend>
+  <depend>tf_transformations</depend>
+  <depend>tur3_run_interfaces</depend>
+  <depend>yolo_detect_box</depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>nav2_simple_commander</exec_depend>
+  <exec_depend>python3-serial</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

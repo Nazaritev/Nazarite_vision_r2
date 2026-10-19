@@ -3,10 +3,13 @@ project(yolo_detect_box)
 
 find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
+find_package(builtin_interfaces REQUIRED)
 
 # 生成同一功能包内的服务接口，供 Python 节点和客户端导入。
 rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/CameraUse.srv"
+  "msg/BoxDetection.msg"
+  DEPENDENCIES builtin_interfaces
 )
 ament_export_dependencies(rosidl_default_runtime)
 
