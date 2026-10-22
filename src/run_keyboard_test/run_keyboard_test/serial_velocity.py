@@ -1,4 +1,4 @@
-"""沿用 nav_to_pose.run 的串口速度协议，只允许低速横移。"""
+"""沿用 nav_to_pose.run 的串口速度协议，发送低速前后和横移指令。"""
 
 import math
 import struct
@@ -11,7 +11,7 @@ def speed_limit(value):
     """参数可以进一步降低上限，但不能突破用户指定的 0.3 m/s。"""
     value = float(value)
     if not math.isfinite(value) or value <= 0.0:
-        raise ValueError('横移速度上限必须为有限正数')
+        raise ValueError('平移速度上限必须为有限正数')
     return min(value, HARD_MAX_LATERAL_SPEED)
 
 
@@ -27,23 +27,33 @@ def crc8(data):
 
 def encode_lateral_velocity(velocity, max_speed=HARD_MAX_LATERAL_SPEED):
     """生成 12 字节小端帧；Vx、Vw 和三个标志字节始终为零。"""
-    velocity = float(velocity)
-    if not math.isfinite(velocity):
-        raise ValueError('横移速度必须为有限数值')
+    return encode_velocity(0.0, velocity, max_speed=max_speed)
+
+
+def encode_velocity(vx, vy, max_speed=HARD_MAX_LATERAL_SPEED,
+                    max_forward_speed=HARD_MAX_LATERAL_SPEED):
+    """生成前后 Vx、横移 Vy 的速度帧；角速度和三个标志字节为零。"""
+    vx, vy = float(vx), float(vy)
+    if not math.isfinite(vx) or not math.isfinite(vy):
+        raise ValueError('平移速度必须为有限数值')
     limit = speed_limit(max_speed)
-    velocity = max(-limit, min(limit, velocity))
+    forward_limit = speed_limit(max_forward_speed)
+    vx = max(-forward_limit, min(forward_limit, vx))
+    vy = max(-limit, min(limit, vy))
     # m/s 转 mm/s；向零取整，避免编码后超过速度上限。
-    frame = struct.pack('<BhhhBBB', 0xA5, 0, int(velocity * 1000), 0, 0, 0, 0)
+    frame = struct.pack('<BhhhBBB', 0xA5, int(vx * 1000), int(vy * 1000), 0, 0, 0, 0)
     return frame + bytes((crc8(frame[1:]), 0xFF))
 
 
 class SerialVelocity:
     """触发时打开串口，结束并发送停车帧后关闭，待机不占用设备。"""
 
-    def __init__(self, port, baudrate, max_speed, serial_factory=None):
+    def __init__(self, port, baudrate, max_speed, serial_factory=None,
+                 max_forward_speed=HARD_MAX_LATERAL_SPEED):
         self.port = port
         self.baudrate = baudrate
         self.max_speed = speed_limit(max_speed)
+        self.max_forward_speed = speed_limit(max_forward_speed)
         self.serial_factory = serial_factory
         self.connection = None
 
@@ -63,10 +73,11 @@ class SerialVelocity:
             port=self.port, baudrate=self.baudrate,
             timeout=0.05, write_timeout=0.2, exclusive=True)
 
-    def send(self, velocity):
+    def send(self, velocity, *, vx=0.0):
+        """发送横移速度和可选前后速度；单参数零速度会同时停止两轴。"""
         if not self.is_open:
             raise RuntimeError('串口尚未打开')
-        frame = encode_lateral_velocity(velocity, self.max_speed)
+        frame = encode_velocity(vx, velocity, self.max_speed, self.max_forward_speed)
         if self.connection.write(frame) != len(frame):
             raise OSError('串口速度帧未完整写出')
 

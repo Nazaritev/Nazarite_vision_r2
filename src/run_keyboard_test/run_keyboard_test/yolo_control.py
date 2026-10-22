@@ -1,4 +1,4 @@
-"""收到 /slope=3 后视觉追踪，可选择首次到位后停车并释放串口控制。"""
+"""收到 /slope=3 后左右对中、前后调整，可选择首次到位后释放串口。"""
 
 import math
 import time
@@ -104,6 +104,80 @@ class LateralAlignment:
         self.error = None
 
 
+class BoxAlignment(LateralAlignment):
+    """前视相机控制：先横移对中，再将框高占画面的比例调到指定范围。"""
+
+    def __init__(self, *, enable_forward=True, max_forward_speed=0.3,
+                 forward_gain=1.0, forward_direction=1.0,
+                 height_min_ratio=0.8, height_max_ratio=0.9, **kwargs):
+        super().__init__(**kwargs)
+        self.max_forward_speed = speed_limit(max_forward_speed)
+        values = (forward_gain, forward_direction, height_min_ratio, height_max_ratio)
+        if not all(math.isfinite(value) for value in values):
+            raise ValueError('前后控制参数必须为有限数值')
+        if forward_gain <= 0.0:
+            raise ValueError('forward_gain 必须大于零')
+        if forward_direction not in (-1.0, 1.0):
+            raise ValueError('forward_direction 只能为 -1 或 1')
+        if not 0.0 < height_min_ratio < height_max_ratio <= 1.0:
+            raise ValueError('框高比例必须满足 0 < min < max <= 1')
+        self.enable_forward = enable_forward
+        self.forward_gain = forward_gain
+        self.forward_direction = forward_direction
+        self.height_min_ratio = height_min_ratio
+        self.height_max_ratio = height_max_ratio
+        self.in_size = False
+        self.forward_error = None
+
+    @property
+    def in_position(self):
+        """左右对中且框高比例达标才算到位，不限制框的纵向位置。"""
+        return self.in_center and (not self.enable_forward or self.in_size)
+
+    def start(self, session_id):
+        super().start(session_id)
+        self.in_size = False
+        self.forward_error = None
+
+    def update(self, session_id, detected, fx, fy, width, height, now,
+               y1=None, y2=None):
+        if not self.active or session_id != self.session_id:
+            return
+        super().update(session_id, detected, fx, fy, width, height, now)
+        self.in_size = False
+        self.forward_error = None
+        if not self.enable_forward or self.error is None:
+            return
+        if (y1 is None or y2 is None
+                or not math.isfinite(y1) or not math.isfinite(y2)
+                or not 0.0 <= y1 <= fy <= y2 <= height or y1 == y2):
+            # 消息缺少有效框边界时，两轴都停车，不使用上一帧的前后偏差。
+            self.error = None
+            self.in_center = False
+            return
+        box_height = y2 - y1
+        self.in_size = (self.height_min_ratio * height <= box_height
+                        <= self.height_max_ratio * height)
+        target = (self.height_min_ratio + self.height_max_ratio) / 2.0
+        # 仅用框高判断远近：偏小为正（前进），偏大为负（后退）。
+        self.forward_error = target - box_height / height
+
+    def forward_velocity(self, now):
+        """框偏小时前进，偏大时后退；水平未对中、丢失或过期时为零。"""
+        if (not self.enable_forward or not self.active or not self.in_center
+                or self.forward_error is None or self.in_size
+                or self.last_received is None
+                or now - self.last_received > self.detection_timeout):
+            return 0.0
+        speed = min(self.max_forward_speed, self.forward_gain * abs(self.forward_error))
+        return self.forward_direction * math.copysign(speed, self.forward_error)
+
+    def finish(self):
+        super().finish()
+        self.in_size = False
+        self.forward_error = None
+
+
 class YoloControlNode(Node):
     def __init__(self, **kwargs):
         """读取 ROS 参数，创建检测订阅、服务客户端、串口对象和控制定时器。
@@ -123,6 +197,12 @@ class YoloControlNode(Node):
             'lateral_gain': 1.0,
             'center_left_ratio': 0.4,
             'center_right_ratio': 0.6,
+            'enable_forward_control': True,
+            'max_forward_speed': 0.3,
+            'forward_gain': 1.0,
+            'forward_direction': 1.0,
+            'box_height_min_ratio': 0.8,
+            'box_height_max_ratio': 0.9,
             'lock_on_center': False,
             'lock_stop_duration': 1.0,
             'lateral_direction': -1.0,
@@ -138,12 +218,18 @@ class YoloControlNode(Node):
             """按参数名读取已声明的 ROS 参数值，供初始化控制配置使用。"""
             return self.get_parameter(name).value
 
-        self.alignment = LateralAlignment(
+        self.alignment = BoxAlignment(
             max_speed=float(value('max_lateral_speed')),
             gain=float(value('lateral_gain')),
             left_ratio=float(value('center_left_ratio')),
             right_ratio=float(value('center_right_ratio')),
             direction=float(value('lateral_direction')),
+            enable_forward=value('enable_forward_control'),
+            max_forward_speed=float(value('max_forward_speed')),
+            forward_gain=float(value('forward_gain')),
+            forward_direction=float(value('forward_direction')),
+            height_min_ratio=float(value('box_height_min_ratio')),
+            height_max_ratio=float(value('box_height_max_ratio')),
             detection_timeout=float(value('detection_timeout')))
         self.control_rate = float(value('control_rate'))
         self.service_wait_timeout = float(value('service_wait_timeout'))
@@ -159,7 +245,8 @@ class YoloControlNode(Node):
                 raise ValueError(f'{name} 必须为有限正数')
         self.trigger_value = int(value('trigger_value'))
         self.writer = SerialVelocity(
-            value('serial_port'), int(value('baudrate')), self.alignment.max_speed)
+            value('serial_port'), int(value('baudrate')), self.alignment.max_speed,
+            max_forward_speed=self.alignment.max_forward_speed)
         self.client = self.create_client(CameraUse, value('camera_service'))
         self.slope_sub = self.create_subscription(
             Slope, value('slope_topic'), self.slope_callback, 10)
@@ -175,12 +262,18 @@ class YoloControlNode(Node):
             f'中心范围 [{self.alignment.left_ratio:.0%}, '
             f'{self.alignment.right_ratio:.0%}]；'
             f'横移速度上限 {self.alignment.max_speed:.3f} m/s，待机不打开串口')
+        if self.alignment.enable_forward:
+            self.get_logger().info(
+                f'前视相机前后控制已启用：先左右对中，再调节框高占画面高度为 '
+                f'{self.alignment.height_min_ratio:.0%}～'
+                f'{self.alignment.height_max_ratio:.0%}；'
+                f'前后速度上限 {self.alignment.max_forward_speed:.3f} m/s')
         if self.lock_on_center:
             self.get_logger().info(
                 f'已开启首次到位锁车：连续发送 {self.lock_stop_duration:.2f} 秒零速度后释放串口')
 
     def slope_callback(self, message):
-        """处理 /slope 消息，默认收到 3 时开始一轮 YOLO 横移追踪。
+        """处理 /slope 消息，默认收到 3 时开始一轮 YOLO 平移追踪。
 
         先打开串口并发零速度，再准备异步调用检测服务；忽略运行中的重复触发。
         """
@@ -204,23 +297,24 @@ class YoloControlNode(Node):
         self.get_logger().info('收到触发，已停车，等待 YOLO 服务就绪')
 
     def detection_callback(self, message):
-        """接收实时检测结果，过滤过期坐标并更新横移控制状态。
+        """接收实时检测结果，过滤过期坐标并更新左右和前后控制状态。
 
-        进入中心范围时立即发零速度；锁车模式只处理首次到位，随后结束速度控制。
+        水平中心和框高比例同时达标时立即停车；锁车模式只处理首次到位。
         """
         # 已经过期的推理结果不能用于启动横移。
         stamp = message.stamp.sec + message.stamp.nanosec / 1e9
         age = self.get_clock().now().nanoseconds / 1e9 - stamp
         detected = message.detected and 0.0 <= age <= self.alignment.detection_timeout
-        was_in_center = self.alignment.in_center
+        was_in_position = self.alignment.in_position
         self.alignment.update(
             message.session_id, detected, message.fx, message.fy,
-            message.image_width, message.image_height, time.monotonic())
-        if not was_in_center and self.alignment.in_center:
+            message.image_width, message.image_height, time.monotonic(),
+            y1=message.y1, y2=message.y2)
+        if not was_in_position and self.alignment.in_position:
             if self.lock_on_center:
                 self.lock_at_center()
                 return
-            self.get_logger().info('方块在中心范围内，发送零速度；移出后继续横移追踪')
+            self.get_logger().info('方块水平中心和框高比例已达标，发送零速度；移出后继续追踪')
             # 到位当次回调立即发零，不必等下一个控制定时器。
             try:
                 self.writer.send(0.0)
@@ -245,7 +339,7 @@ class YoloControlNode(Node):
     def control_tick(self):
         """按固定频率执行控制，默认每 50 ms 调用一次。
 
-        每轮仅发送一次 YOLO 启动请求，之后持续计算并发送最新横移速度。
+        每轮仅发送一次 YOLO 启动请求，之后持续发送横移或前后速度。
         本轮结束或锁车模式首次到位后，连续发送对应时长的零速度，再关闭串口。
         串口释放后不再发送速度；检测服务可以继续等待方块被拿走。
         """
@@ -265,7 +359,12 @@ class YoloControlNode(Node):
                     self.finish_round(False, '等待 YOLO 服务超时')
             if self.alignment.active:
                 try:
-                    self.writer.send(self.alignment.velocity(now))
+                    vy = self.alignment.velocity(now)
+                    vx = self.alignment.forward_velocity(now)
+                    if vx != 0.0:
+                        self.writer.send(vy, vx=vx)
+                    else:
+                        self.writer.send(vy)
                 except Exception as exc:
                     self.serial_failure(exc)
         elif self.stop_until is not None:
