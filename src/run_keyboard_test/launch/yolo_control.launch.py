@@ -1,4 +1,4 @@
-"""启动 YOLO 和直接串口横移控制，不启动其他串口写入节点。"""
+"""启动 YOLO 和直接串口前后、横移控制，不启动其他串口写入节点。"""
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
@@ -18,13 +18,19 @@ def generate_launch_description():
     }
     controller = {
         'slope_topic': ('/slope', str, '外部触发话题'),
-        'trigger_value': ('3', int, '启动一轮视觉横移的 slope 值'),
+        'trigger_value': ('3', int, '启动一轮视觉平移的 slope 值'),
         'serial_port': ('/dev/ttyUSB0', str, '底盘串口，需由本控制节点独占写入'),
         'baudrate': ('961200', int, '沿用现有速度协议的波特率'),
         'max_lateral_speed': ('0.3', float, '最大横移速度，m/s，硬限制不超过 0.3'),
         'lateral_gain': ('1.0', float, '水平归一化偏差到横移速度的比例增益'),
         'center_left_ratio': ('0.4', float, '到位范围左边界占图像宽度的比例'),
         'center_right_ratio': ('0.6', float, '到位范围右边界占图像宽度的比例'),
+        'enable_forward_control': ('true', bool, '前视相机按框高比例调整前后距离'),
+        'max_forward_speed': ('0.3', float, '最大前后速度，m/s，硬限制不超过 0.3'),
+        'forward_gain': ('1.0', float, '框高比例偏差到前后速度的比例增益'),
+        'forward_direction': ('1.0', float, '框偏小时前进对应 Vx 的符号，取 -1 或 1'),
+        'box_height_min_ratio': ('0.8', float, '到位时框高占图像高度的最小比例'),
+        'box_height_max_ratio': ('0.9', float, '到位时框高占图像高度的最大比例'),
         'lock_on_center': ('false', bool, '首次到位后是否停车并结束本轮串口控制'),
         'lock_stop_duration': ('1.0', float, '首次到位锁车时连续发零速度的时长，秒'),
         'lateral_direction': ('-1.0', float, '水平偏差到 Vy 的方向，取 -1 或 1'),

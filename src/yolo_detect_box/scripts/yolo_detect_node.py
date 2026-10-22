@@ -113,6 +113,7 @@ class YoloDetectNode(Node):
         message.image_height, message.image_width = frame.shape[:2]
         message.fx = -1.0
         message.fy = -1.0
+        message.x1 = message.y1 = message.x2 = message.y2 = -1.0
         try:
             result = self.model.predict(
                 # 过滤低置信度结果，每帧最多保留一个框。
@@ -124,6 +125,8 @@ class YoloDetectNode(Node):
             if message.detected:
                 # xyxy 是原图像素坐标，不使用归一化坐标或模型输入尺寸。
                 x1, y1, x2, y2 = result.boxes.xyxy[0].tolist()
+                message.x1, message.y1 = float(x1), float(y1)
+                message.x2, message.y2 = float(x2), float(y2)
                 message.fx = float((x1 + x2) / 2.0)
                 message.fy = float((y1 + y2) / 2.0)
         except Exception as exc:
