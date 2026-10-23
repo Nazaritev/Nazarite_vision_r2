@@ -16,6 +16,12 @@ def generate_launch_description():
         'camera_timeout': ('2.0', float, '连续读图失败的超时，秒'),
         'show_window': ('true', bool, '是否显示检测窗口'),
     }
+    alignment = {
+        'center_left_ratio': ('0.55', float, '到位范围左边界占图像宽度的比例'),
+        'center_right_ratio': ('0.65', float, '到位范围右边界占图像宽度的比例'),
+        'box_height_min_ratio': ('0.35', float, '到位时框高占图像高度的最小比例'),
+        'box_height_max_ratio': ('0.55', float, '到位时框高占图像高度的最大比例'),
+    }
     controller = {
         'slope_topic': ('/slope', str, '外部触发话题'),
         'trigger_value': ('3', int, '启动一轮视觉平移的 slope 值'),
@@ -46,7 +52,9 @@ def generate_launch_description():
     }
     arguments = [
         DeclareLaunchArgument(name, default_value=default, description=description)
-        for name, (default, _, description) in {**detector, **controller, **shared}.items()
+        for name, (default, _, description) in {
+            **detector, **alignment, **controller, **shared
+        }.items()
     ]
 
     def parameters(specification):
@@ -58,8 +66,8 @@ def generate_launch_description():
     return LaunchDescription(arguments + [
         Node(
             package='yolo_detect_box', executable='yolo_detect_node', output='screen',
-            parameters=[parameters({**detector, **shared})]),
+            parameters=[parameters({**detector, **alignment, **shared})]),
         Node(
             package='run_keyboard_test', executable='yolo_control', output='screen',
-            parameters=[parameters({**controller, **shared})]),
+            parameters=[parameters({**alignment, **controller, **shared})]),
     ])

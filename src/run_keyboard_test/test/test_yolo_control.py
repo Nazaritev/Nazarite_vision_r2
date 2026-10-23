@@ -342,7 +342,7 @@ def controller_harness(monkeypatch):
     node.writer = Mock()
     node.client = Mock()
     node.client.service_is_ready.return_value = True
-    node.client.call_async.return_value = Future()
+    node.client.call_async.side_effect = lambda _request: Future()
     node.request_future = None
     node.service_deadline = None
     node.service_wait_timeout = 5.0
@@ -385,8 +385,17 @@ def test_slope_trigger_service_result_and_repeated_stop_frames(
     response = CameraUse.Response()
     response.success = status
     node.finish_round = Mock(wraps=node.finish_round)
-    node.request_future.set_result(response)
-    node.service_done(node.request_future)
+    finished_future = node.request_future
+    finished_future.set_result(response)
+    node.service_done(finished_future)
+    if lock_on_center and status == 1:
+        assert not node.finish_round.called
+        assert node.alignment.active
+        assert node.request_future is None
+        node.control_tick()
+        assert node.client.call_async.call_count == 2
+        node.writer.close.assert_not_called()
+        return
     assert node.finish_round.call_args.args[0] is (status == 1)
     assert not node.alignment.active
     node.writer.send.assert_called_with(0.0)
@@ -578,7 +587,7 @@ def test_lock_mode_sends_zero_for_one_second_and_never_reclaims_released_serial(
     node.writer.send.assert_called_with(0.0)
     for current in (101.05, 101.5, 101.95):
         now[0] = current
-        centered_detection(node, now[0], fx=900.0)
+        centered_detection(node, now[0])
         node.control_tick()
         node.writer.send.assert_called_with(0.0)
         node.writer.close.assert_not_called()
@@ -593,12 +602,7 @@ def test_lock_mode_sends_zero_for_one_second_and_never_reclaims_released_serial(
     # 释放串口后，后续坐标、待完成服务期间的重复触发都不能产生速度帧。
     now[0] = 103.0
     centered_detection(node, now[0], fx=100.0)
-    node.slope_callback(SimpleNamespace(slope=3))
     node.control_tick()
-    response = CameraUse.Response()
-    response.success = 1
-    node.request_future.set_result(response)
-    node.service_done(node.request_future)
     node.control_tick()
     node.writer.send.assert_not_called()
     node.writer.close.assert_not_called()
@@ -611,7 +615,7 @@ def test_lock_mode_sends_zero_for_one_second_and_never_reclaims_released_serial(
 
 
 @pytest.mark.parametrize('result', [1, 0, 'exception'])
-def test_early_service_result_keeps_lock_stop_deadline(monkeypatch, result):
+def test_locked_mode_starts_final_stop_period_when_service_finishes(monkeypatch, result):
     node, now = controller_harness(monkeypatch)
     node.lock_on_center = True
     node.alignment.start(123)

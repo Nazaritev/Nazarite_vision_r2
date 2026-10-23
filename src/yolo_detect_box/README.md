@@ -174,8 +174,8 @@ ros2 service call /camara_use yolo_detect_box/srv/CameraUse "{use: 1}"
    一旦移出范围，就继续横移或前后追踪，再次全部达标时重新停车。
    整个过程持续到方块被拿走，不需要重新发送 `slope=3`。
 6. 首次识别后，连续 `missing_timeout` 秒无目标，服务返回 `success=1`。
-   控制节点收到响应后继续发送 `stop_duration` 秒零速度，再关闭串口、回到待机。
-   单纯进入中心范围不会返回成功。
+   锁车模式会一直发送零速度并保持串口占用，直到收到该响应；随后再发送
+   `stop_duration` 秒零速度、关闭串口并回到待机。单纯进入中心范围不会返回成功。
 
 通过 `center_top_ratio`、`center_bottom_ratio` 调整前后到位的两条水平边界；
 通过 `center_left_ratio`、`center_right_ratio` 调整左右到位的两条竖直边界。
@@ -302,7 +302,7 @@ ros2 topic pub --once /slope tur3_run_interfaces/msg/Slope "{slope: 3}"
 | `missing_timeout` | `1.0` | 首次识别后连续丢失的完成阈值，秒 |
 | `camera_timeout` | `2.0` | 连续读图失败的失败阈值，秒 |
 | `service_wait_timeout` | `5.0` | 等待服务上线的时长，秒 |
-| `stop_duration` | `0.5` | 未锁定时服务结束后的零速度时长；首次到位锁车后不重复执行 |
+| `stop_duration` | `0.5` | 服务结束后继续发送零速度的时长，然后释放串口 |
 | `camera_index` / `conf` | `0` / `0.6` | 摄像头编号及检测阈值 |
 | `show_window` | `true` | 是否显示窗口；无桌面时设为 `false` |
 | `slope_topic` / `trigger_value` | `/slope` / `3` | 外部启动条件 |

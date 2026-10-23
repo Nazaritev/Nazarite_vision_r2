@@ -25,13 +25,57 @@ class NavToPose(BasicNavigator):
         # thread = threading.Thread(target=self.get)
         self.get_pose = self.create_subscription(Odometry,'/odom',self.nav_pose_callback,1)
         self.after_slop = self.create_subscription(Slope,'/slope',self.slope_callback,1)
-        self.ser = serial.Serial('/dev/pts/11',961200,timeout=1.0)
+        self.ser = serial.Serial('/dev/ttyUSB1',961200,timeout=1.0)
         # thread2 = threading.Thread(target=self.slope_thread2)
         # thread2.start()
         self.slope_publisher = self.create_publisher(Slope,'/slope',5)
         self.vw_publisher = self.create_publisher(Twist,'/cmd_vel',10)
         self.nav_mode_client = self.create_client(UseNavToPose, '/nav_mode/slope')
-        # self.run_slop(0.3)
+        # 初始位置
+        self.pose_init(-0.4,3.2,3.1415626)
+        # # 上斜坡
+        self.nav2_mult([[1.8,3.6],[7.3,3.6],[8.1,2.2]])
+        time.sleep(1.0)
+        sl = Slope()
+        sl.slope = 2
+        self.slope_publisher.publish(sl)
+        while self.bool_slope != True:
+            rclpy.spin_once(self, timeout_sec=0.1)
+        self.bool_slope == False
+        # 等待位置
+        self.run_dir(vy=0.8,run_time=1.2,acc=0.2,acc_time=0.1)
+        self.adj_angle(0,3.1415/2)
+        # 调用摄像头
+        # self.camera_use()
+        # 点位1
+        time.sleep(1.0)
+        self.adj_angle(0,-3.1415/2)
+        #self.nav2_mult([[3.0,0.8],[2.3,1.4],[2.3,1.4]]) #!!!!!!!!!!!!!!
+        self.nav_pose(2.4,1.4)
+        time.sleep(1.0)
+        start = time.time()
+        while time.time() - start < 10:
+            time.sleep(0.1)
+        self.run_dir(vx=-0.4,vy=0.2,run_time=0.5)
+        # 交接区
+        self.nav2_mult([[3.0,0.8],[3.3,1.4]]) #!!!!!!!!!!!!!!
+        time.sleep(1.0)
+        self.adj_angle(0,3.1415/2)
+        # 调用摄像头
+        # self.camera_use()
+        # 点位2
+        time.sleep(1.0)
+        self.adj_angle(0,-3.0415)
+        self.nav2_mult([[2.5,0.8],[2.2,-0.9]]) #!!!!!!!!!!!!!!
+        time.sleep(1.0)
+        start = time.time()
+        while time.time() - start < 10:
+            time.sleep(0.1)
+        self.run_dir(vx=-0.4,run_time=0.5)
+        # 交接区
+        self.nav2_mult([[2.7,0.8],[3.2,1.4]]) #!!!!!!!!!!!!!!
+        time.sleep(1.0)
+        self.adj_angle(0,3.1415)
 
         # thread.start()
         #self.pose_init(-0.4,3.2,3.1415626)
@@ -44,8 +88,62 @@ class NavToPose(BasicNavigator):
         sl.slope = 3
         self.slope_publisher.publish(sl)
 
+        # self.camera_use()
         #self.nav_pose(2.5,1.3)
         #self.nav_pose(6.7,1.3)
+        #self.nav_pose(2.35,1.3)
+        #self.nav_pose(2.0,-0.9)
+        #self.nav_pose(3.2,1.5)
+        # self.run_dir(vx=-0.8,run_time=0.5,acc=0.2,acc_time=0.1)
+        # time.sleep(0.1)
+        # self.adj_angle(0,-3.1415/2)
+    def camera_use(self):
+        sl = Slope()
+        sl.slope = 3
+        self.slope_publisher.publish(sl)
+        while self.bool_slope != True:
+            rclpy.spin_once(self, timeout_sec=0.1)
+        self.bool_slope == False
+        # self.run_dir(vx=-0.6,run_time=0.7,acc=0.2,acc_time=0.1)
+
+
+    def run_dir(self,vx = 0,vy = 0,vw = 0,run_time = 0,acc = 0.0,acc_time = 0.0):
+        start = time.time()
+        while time.time() - start < run_time:
+            self.run(vx,vy,vw)
+            time.sleep(0.1)
+        if (acc == 0 or acc_time ==0):
+            self.get_logger().info(f'{acc},{acc_time}')
+            pass
+        else :
+            self.get_logger().info(f'11111111')
+            self.get_logger().info(f'{acc},{acc_time}')
+            ax = vx*acc
+            ay = vy*acc
+            aw = vw*acc
+            vx_bool = 1
+            vy_bool = 1
+            vw_bool = 1
+            if vx < 0:
+                vx_bool = -1
+            if vy < 0:
+                vy_bool = -1
+            if vw < 0:
+                vw_bool = -1
+            while vx != 0 or vy !=0 or vw != 0:
+                vx = vx - ax
+                vy = vy - ay
+                vw = vw - aw
+                if vx*vx_bool < 0:
+                    vx = 0
+                if vy*vy_bool < 0:
+                    vy = 0
+                if vw*vw_bool < 0:
+                    vw = 0
+                self.run(vx,vy,vw)
+                time.sleep(acc_time)
+        self.run()
+
 
 
         
@@ -85,7 +183,7 @@ class NavToPose(BasicNavigator):
 
     def slope_callback(self,msg):
         self.get_logger().info(f'{msg.slope}')
-        if msg.slope == 2:
+        if msg.slope == 1:
             self.bool_slope = True
             self.get_logger().info(f'1111111111111111')
 
@@ -141,11 +239,10 @@ class NavToPose(BasicNavigator):
                 crc &= 0xFF  # 确保始终是8位
         return crc
 
-    def run(self,vx=0,vy0=0,vw0=0):
-        vy = 0
+    def run(self,vx=0,vy=0,vw=0):
         vx_int = int(vx * 1000)
-        vy_int = int((vy+vy0) * 1000)
-        vw_int = int(vw0*10)
+        vy_int = int((vy) * 1000)
+        vw_int = int(vw*10)
         flag = int(0)
         mode = int(0)
         reserved = 0  # 保留字，当前固定填 0
@@ -183,7 +280,7 @@ class NavToPose(BasicNavigator):
             t = sleep_time
         a = time.time()
         while time.time() - a<=t*1.04:
-            self.run(vw0=twis.angular.z)
+            self.run(vw=twis.angular.z)
             time.sleep(0.1)
         self.run(0)
         self.get_logger().info(f'角度调节完成')
@@ -271,3 +368,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

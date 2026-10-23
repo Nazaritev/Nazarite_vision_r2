@@ -70,17 +70,17 @@ find_package(sensor_msgs REQUIRED)
 find_package(PCL REQUIRED)
 find_package(pcl_conversions REQUIRED)
 
-add_executable(slope_filter_node src/slope_filter_node.cpp)
+# add_executable(slope_filter_node src/slope_filter_node.cpp)
 
-target_include_directories(slope_filter_node PRIVATE ${PCL_INCLUDE_DIRS})
-target_link_libraries(slope_filter_node
-    ${PCL_LIBRARIES}
-    rclcpp::rclcpp
-    ${sensor_msgs_TARGETS}
-    pcl_conversions::pcl_conversions
-)
+#target_include_directories(slope_filter_node PRIVATE ${PCL_INCLUDE_DIRS})
+#target_link_libraries(slope_filter_node
+#    ${PCL_LIBRARIES}
+#    rclcpp::rclcpp
+#    ${sensor_msgs_TARGETS}
+#    pcl_conversions::pcl_conversions
+#)
 
-install(TARGETS slope_filter_node DESTINATION lib/${PROJECT_NAME})
+#install(TARGETS slope_filter_node DESTINATION lib/${PROJECT_NAME})
 set(dependencies
   rclcpp
   rclcpp_components
@@ -93,7 +93,7 @@ set(dependencies
   pcl_ros
   pcl_conversions
   livox_ros_driver2
-  libpcl-all-dev
+  # libpcl-all-dev
 )
 
 # Thirdparty libraries

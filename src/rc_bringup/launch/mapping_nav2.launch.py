@@ -112,7 +112,7 @@ def generate_launch_description():
                 'use_sim_time': use_sim_time,
                 'target_frame': 'footprint_link',
                 'transform_tolerance': 0.1,
-                'min_height': -0.15,
+                'min_height': -0.55,
                 'max_height': 4.0,
                 'angle_min': -3.14159,
                 'angle_max': 3.14159,
@@ -131,13 +131,13 @@ def generate_launch_description():
             output='screen',
             parameters=nav2_params + [{'yaml_filename': map_yaml_file}],
         ),
-        Node(
-            package='rc_bringup',
-            executable='amcl_pose_counter.py',
-            name='amcl_pose_counter',
-            output='screen',
-            parameters=[{'use_sim_time': use_sim_time}],
-        ),
+        #Node(
+        #    package='rc_bringup',
+        #    executable='amcl_pose_counter.py',
+        #    name='amcl_pose_counter',
+        #    output='screen',
+        #    parameters=[{'use_sim_time': use_sim_time}],
+        #),
         Node(
             package='nav2_amcl',
             executable='amcl',
@@ -200,7 +200,7 @@ def generate_launch_description():
         )
     action_group = launch.actions.GroupAction([
         # 动作5-定时器
-        #launch.actions.TimerAction(period=3.0, actions=[action1]), #2秒后执行
+        launch.actions.TimerAction(period=3.0, actions=[action1]), #2秒后执行
         launch.actions.TimerAction(period=3.0, actions=[action2]) #4秒后执行
         ])
 

@@ -114,9 +114,9 @@ class BoxAlignment(LateralAlignment):
         self.max_forward_speed = speed_limit(max_forward_speed)
         values = (forward_gain, forward_direction, top_ratio, bottom_ratio)
         if not all(math.isfinite(value) for value in values):
-            raise ValueError('前后控制参数必须为有限数值')
-        if forward_gain <= 0.0:
-            raise ValueError('forward_gain 必须大于零')
+            raise ValueError('前后控制参数和位置确认时长必须为有限数值')
+        if forward_gain <= 0.0 or position_confirm_duration <= 0.0:
+            raise ValueError('forward_gain 和位置确认时长必须大于零')
         if forward_direction not in (-1.0, 1.0):
             raise ValueError('forward_direction 只能为 -1 或 1')
         if not 0.0 <= top_ratio < bottom_ratio <= 1.0:
@@ -128,6 +128,8 @@ class BoxAlignment(LateralAlignment):
         self.bottom_ratio = bottom_ratio
         self.in_vertical = False
         self.forward_error = None
+        self.center_in_since = None
+        self.size_in_since = None
 
     @property
     def in_position(self):
@@ -138,14 +140,46 @@ class BoxAlignment(LateralAlignment):
         super().start(session_id)
         self.in_vertical = False
         self.forward_error = None
+        self.center_in_since = None
+        self.size_in_since = None
+
+    def _update_confirmation_timers(self, now):
+        """分别累计水平中心和框高连续处于允许范围内的时间。"""
+        if self.in_center:
+            if self.center_in_since is None:
+                self.center_in_since = now
+        else:
+            self.center_in_since = None
+        if self.enable_forward and self.in_size:
+            if self.size_in_since is None:
+                self.size_in_since = now
+        else:
+            self.size_in_since = None
+
+    def position_is_stable(self, now):
+        """水平中心和框高各自连续达标指定时长后返回 True。"""
+        if (not self.in_center or self.center_in_since is None
+                or now - self.center_in_since
+                < self.position_confirm_duration):
+            return False
+        if not self.enable_forward:
+            return True
+        return (self.in_size and self.size_in_since is not None
+                and now - self.size_in_since >= self.position_confirm_duration)
 
     def update(self, session_id, detected, fx, fy, width, height, now):
         if not self.active or session_id != self.session_id:
             return
+        # 长时间没有检测结果时，未知区间不能算作连续达标时间。
+        if (self.last_received is not None
+                and now - self.last_received > self.detection_timeout):
+            self.center_in_since = None
+            self.size_in_since = None
         super().update(session_id, detected, fx, fy, width, height, now)
         self.in_vertical = False
         self.forward_error = None
         if not self.enable_forward or self.error is None:
+            self._update_confirmation_timers(now)
             return
         fy_ratio = fy / height
         self.in_vertical = self.top_ratio <= fy_ratio <= self.bottom_ratio
@@ -167,6 +201,8 @@ class BoxAlignment(LateralAlignment):
         super().finish()
         self.in_vertical = False
         self.forward_error = None
+        self.center_in_since = None
+        self.size_in_since = None
 
 
 class YoloControlNode(Node):
@@ -282,7 +318,7 @@ class YoloControlNode(Node):
         """
         if message.slope != self.trigger_value:
             return
-        if (self.alignment.active or self.stop_until is not None
+        if (self.alignment.active or self.center_locked or self.stop_until is not None
                 or (self.request_future is not None and not self.request_future.done())):
             self.get_logger().warn('上一轮尚未结束，忽略重复触发')
             return
@@ -353,6 +389,7 @@ class YoloControlNode(Node):
         age = self.get_clock().now().nanoseconds / 1e9 - stamp
         detected = message.detected and 0.0 <= age <= self.alignment.detection_timeout
         was_in_position = self.alignment.in_position
+        now = time.monotonic()
         self.alignment.update(
             message.session_id, detected, message.fx, message.fy,
             message.image_width, message.image_height, now)
@@ -423,6 +460,11 @@ class YoloControlNode(Node):
                     self.send_velocity(vy, vx=vx)
                 except Exception as exc:
                     self.serial_failure(exc)
+        elif self.center_locked:
+            try:
+                self.writer.send(0.0)
+            except Exception as exc:
+                self.serial_failure(exc)
         elif self.stop_until is not None:
             try:
                 self.send_velocity(
@@ -438,7 +480,7 @@ class YoloControlNode(Node):
         """处理 YOLO 异步服务的最终响应，收到 success=1 时确认本轮识别完成。
 
         未锁车时，返回 0、其他状态或异常也会进入停车流程。
-        已首次到位锁车时只记录检测结果，不重发速度，也不重置停车计时。
+        已锁车时持续发零速度，直到服务结束后进入最终停车和串口释放流程。
         """
         if future is not self.request_future:
             return
@@ -448,14 +490,20 @@ class YoloControlNode(Node):
             response = future.result()
             success = response is not None and response.success == 1
         except Exception as exc:
-            if self.center_locked:
-                self.get_logger().warn(f'YOLO 服务异常: {exc}；已首次到位锁车，不重新接管串口')
-                return
             self.finish_round(False, f'YOLO 服务异常: {exc}')
             return
+        if success and self.lock_on_center and not self.center_locked:
+            self.get_logger().warn(
+                'YOLO 在锁车前已连续丢失目标，重新启动检测；'
+                '到位锁车后再等待目标消失')
+            self.request_future = None
+            self.service_deadline = time.monotonic() + self.service_wait_timeout
+            return
         if self.center_locked:
-            (self.get_logger().info if success else self.get_logger().warn)(
-                f'YOLO 检测结束，完成状态为 {int(success)}；已首次到位锁车，不重新接管串口')
+            self.finish_round(
+                success,
+                'YOLO 返回 1，方块已消失，本轮完成' if success
+                else '锁车后 YOLO 未返回完成状态 1，本轮未成功，停车')
             return
         self.finish_round(
             success, 'YOLO 返回 1，方块已消失，本轮完成' if success
