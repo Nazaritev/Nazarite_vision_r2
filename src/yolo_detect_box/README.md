@@ -151,13 +151,13 @@ ros2 service call /camara_use yolo_detect_box/srv/CameraUse "{use: 1}"
    小于 `0.8` 时前进，大于 `0.9` 时后退。
    例如图像高度 `720`，框高应在 `[576, 648]` 像素。
    框的 `cy` 不参与到位判定，不要求上、下边距分别达标。
-5. 只有水平中心和框高比例**同时满足**才算到位。默认 `lock_on_center=false`，
-   **每帧实时判断**：到位后以默认 `20 Hz` 持续发送零速度；
-   一旦移出范围，就继续横移或前后追踪，再次全部达标时重新停车。
-   整个过程持续到方块被拿走，不需要重新发送 `slope=3`。
+5. 水平中心和框高比例需要**分别连续达标 0.5 秒**才算锁车；任一项离开范围，
+   对应计时重新开始。`lock_on_center=true` 时，满足条件后速度保持为零，
+   串口保持打开，等待 YOLO 确认方块消失。设为 `false` 时则继续实时追踪，
+   到位后停车，移出范围后恢复调整。
 6. 首次识别后，连续 `missing_timeout` 秒无目标，服务返回 `success=1`。
-   控制节点收到响应后继续发送 `stop_duration` 秒零速度，再关闭串口、回到待机。
-   单纯进入中心范围不会返回成功。
+   锁车模式会一直发送零速度并保持串口占用，直到收到该响应；随后再发送
+   `stop_duration` 秒零速度、关闭串口并回到待机。单纯进入中心范围不会返回成功。
 
 默认框高范围 80%～90% 沿用之前“上下各留 5%～10%”所表达的大小，
 现在仅参考大小，不约束框的纵向位置。例如上边距 13%、下边距 2%，
@@ -167,17 +167,16 @@ ros2 service call /camara_use yolo_detect_box/srv/CameraUse "{use: 1}"
 这套前后判断适用于朝前看目标、前进时框变大的相机安装方式。
 朝下相机主要通过框的纵向位置判断前后，不能直接套用这里的缩放规则。
 
-设置 `lock_on_center=true` 时，首次识别到水平中心和框高比例全部达标就停止追踪，
-连续发送 `lock_stop_duration` 秒零速度（默认 **1 秒**），然后关闭串口，结束本轮速度控制。
-此后方块移出范围也不会重新控制小车，YOLO 仍继续等待方块被拿走并返回整数状态。
-无论服务响应在这 1 秒内还是串口释放后到达，都不重新开始停车计时、不再次发送速度。
+设置 `lock_on_center=true` 时，水平中心和框高比例分别连续达标 0.5 秒后停止追踪，
+并持续发送零速度。串口保持打开，直到 YOLO 连续 `missing_timeout` 秒没有识别到方块、
+返回 `success=1`；控制节点随后再发送 `stop_duration` 秒停车帧并释放串口。
 本轮检测结束且串口释放后，新的 `/slope=3` 才能启动下一轮。
 
 ```bash
-# 首次到位后发 1 秒零速度，随后释放串口控制
+# 连续到位后锁车，等待 YOLO 确认方块消失后释放串口
 ros2 launch run_keyboard_test yolo_control.launch.py lock_on_center:=true
 
-# 持续追踪：水平中心和框高比例达标后停车，移出范围继续调整（默认）
+# 持续追踪：水平中心和框高比例达标后停车，移出范围继续调整
 ros2 launch run_keyboard_test yolo_control.launch.py lock_on_center:=false
 
 # 将到位大小改为框高占画面高度的 60%～70%
@@ -260,15 +259,14 @@ ros2 topic pub --once /slope tur3_run_interfaces/msg/Slope "{slope: 3}"
 | `forward_gain` | `1.0` | 框高比例偏差对应的速度增益 |
 | `forward_direction` | `1.0` | 框偏小时发送 Vx 的符号，取 `-1.0` 或 `1.0` |
 | `box_height_min_ratio` / `box_height_max_ratio` | `0.8` / `0.9` | 到位时框高占图像高度的允许范围，满足 `0 < min < max <= 1` |
-| `lock_on_center` | `false` | 是否首次全部到位后停车并结束本轮串口控制 |
-| `lock_stop_duration` | `1.0` | 首次到位锁车时连续发零速度的时长，秒 |
+| `lock_on_center` | 启动文件为 `true` | 连续到位 0.5 秒后是否锁车并保持零速度，直到目标消失 |
 | `lateral_direction` | `-1.0` | 图像偏差到 Vy 的符号；镜像安装可改为 `1.0` |
 | `control_rate` | `20.0` | 包含保持停车时的发帧频率，Hz |
 | `detection_timeout` | `0.5` | 过期检测结果的停车阈值，秒 |
 | `missing_timeout` | `1.0` | 首次识别后连续丢失的完成阈值，秒 |
 | `camera_timeout` | `2.0` | 连续读图失败的失败阈值，秒 |
 | `service_wait_timeout` | `5.0` | 等待服务上线的时长，秒 |
-| `stop_duration` | `0.5` | 未锁定时服务结束后的零速度时长；首次到位锁车后不重复执行 |
+| `stop_duration` | `0.5` | 服务结束后继续发送零速度的时长，然后释放串口 |
 | `camera_index` / `conf` | `0` / `0.6` | 摄像头编号及检测阈值 |
 | `show_window` | `true` | 是否显示窗口；无桌面时设为 `false` |
 | `slope_topic` / `trigger_value` | `/slope` / `3` | 外部启动条件 |

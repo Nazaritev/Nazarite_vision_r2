@@ -22,7 +22,7 @@ class ImuYawListener(Node):
             self.imu_callback,
             10
         )
-        self.ser = serial.Serial('/dev/ttyUSB1',961200,timeout=1.0)
+        self.ser = serial.Serial('/dev/ttyUSB0',961200,timeout=1.0)
         self.continue_time = 0.0
         self.start = False
         self.start_first = True
@@ -102,11 +102,11 @@ class ImuYawListener(Node):
         crc = self.calc_crc8(data_to_crc)
                                                                 
         full_frame = frame_head + struct.pack('<B B', crc, 0xFF)
-        # self.get_logger().info(f'{full_frame}')
+        #self.get_logger().info(f'{full_frame}')
         self.ser.write(full_frame)
 
     def go_slope(self,msg):
-        if msg.slope == 1:
+        if msg.slope == 2:
             self.get_logger().info(f'{1111111111111111111111}')
             self.start = True
             self.pitch_init_bool = False
@@ -139,7 +139,7 @@ class ImuYawListener(Node):
             self.bool_slope = 0
             # self.next()
             sl = Slope()
-            sl.slope = 2
+            sl.slope = 1
             self.pub.publish(sl)
             # while True:
             # 	self.get_logger().info(f'1111111111111111')
@@ -156,7 +156,7 @@ class ImuYawListener(Node):
         if self.start_time_slop != None and time.time() - self.start_time_slop > 0.5:
             self.bool_slope = 1
             self.bool_fix = True
-            self.fix = 0.12
+            self.fix = 0.1
         if self.pitch < -0.12:
             if self.start_time_slop == None:
                 self.start_time_slop = time.time()
@@ -191,7 +191,7 @@ class ImuYawListener(Node):
         # self.get_logger().info(f'四元数: x={q.x:.4f}, y={q.y:.4f}, z={q.z:.4f}, w={q.w:.4f}')
         if time.time() - self.start_time > 0.1:
             # self.get_logger().info(f'{self.pitch} = {pitch} - {self.pitch_init}')
-            # self.get_logger().info(f'rool={rotation_euler[0]:.3f},pithch={self.pitch:.3f},yaw={rotation_euler[2]:.3f}')
+            #self.get_logger().info(f'rool={rotation_euler[0]:.3f},pithch={self.pitch:.3f},yaw={rotation_euler[2]:.3f}')
             self.start_time = time.time()
         # self.get_logger().info(f'Yaw: {yaw:.4f} rad ({yaw * 180.0 / 3.141592653589793:.2f} deg)')
 

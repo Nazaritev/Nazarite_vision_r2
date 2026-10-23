@@ -160,6 +160,40 @@ def test_position_requires_horizontal_center_and_height_band_including_boundarie
     assert control.forward_velocity(10.0) == 0.0
 
 
+def test_position_confirmation_tracks_each_condition_continuously():
+    control = BoxAlignment(position_confirm_duration=0.5)
+    control.start(123)
+
+    # 两项都从 10.0 秒开始达标，必须各自保持满 0.5 秒。
+    box_detection(control, now=10.0)
+    assert not control.position_is_stable(10.49)
+    assert control.position_is_stable(10.5)
+
+    # 水平离开时只重置水平计时；框高仍在范围内。
+    box_detection(control, fx=900.0, now=10.2)
+    assert control.center_in_since is None
+    assert control.size_in_since == 10.0
+    box_detection(control, now=10.3)
+    box_detection(control, now=10.7)
+    assert not control.position_is_stable(10.79)
+    assert control.position_is_stable(10.8)
+
+    # 框高离开时只重置框高计时；水平中心仍连续达标。
+    box_detection(control, now=10.9, top=0.2, bottom=0.2)
+    assert control.center_in_since == 10.3
+    assert control.size_in_since is None
+    box_detection(control, now=11.0)
+    box_detection(control, now=11.4)
+    assert not control.position_is_stable(11.49)
+    assert control.position_is_stable(11.5)
+
+    # 超过检测超时的空档也不能计入连续达标时间。
+    box_detection(control, now=12.0)
+    assert control.center_in_since == 12.0
+    assert control.size_in_since == 12.0
+    assert not control.position_is_stable(12.49)
+
+
 @pytest.mark.parametrize('top, bottom, expected', [
     (0.20, 0.20, 0.25), (0.075, 0.20, 0.125),
     (0.02, 0.02, -0.11), (0.02, 0.075, -0.055),
@@ -269,6 +303,8 @@ def test_forward_speed_cap_reversal_and_disabled_compatibility():
     {'height_max_ratio': 1.1},
     {'height_min_ratio': 0.8, 'height_max_ratio': 0.8},
     {'height_max_ratio': float('nan')},
+    {'position_confirm_duration': 0.0},
+    {'position_confirm_duration': float('nan')},
 ])
 def test_invalid_forward_configuration_is_rejected(options):
     with pytest.raises(ValueError):
@@ -341,14 +377,13 @@ def controller_harness(monkeypatch):
     node.writer = Mock()
     node.client = Mock()
     node.client.service_is_ready.return_value = True
-    node.client.call_async.return_value = Future()
+    node.client.call_async.side_effect = lambda _request: Future()
     node.request_future = None
     node.service_deadline = None
     node.service_wait_timeout = 5.0
     node.stop_duration = 0.5
     node.stop_until = None
     node.lock_on_center = False
-    node.lock_stop_duration = 1.0
     node.center_locked = False
     node.get_logger = Mock(return_value=Mock())
     node.get_clock = Mock(return_value=SimpleNamespace(
@@ -379,8 +414,17 @@ def test_slope_trigger_service_result_and_repeated_stop_frames(
     response = CameraUse.Response()
     response.success = status
     node.finish_round = Mock(wraps=node.finish_round)
-    node.request_future.set_result(response)
-    node.service_done(node.request_future)
+    finished_future = node.request_future
+    finished_future.set_result(response)
+    node.service_done(finished_future)
+    if lock_on_center and status == 1:
+        assert not node.finish_round.called
+        assert node.alignment.active
+        assert node.request_future is None
+        node.control_tick()
+        assert node.client.call_async.call_count == 2
+        node.writer.close.assert_not_called()
+        return
     assert node.finish_round.call_args.args[0] is (status == 1)
     assert not node.alignment.active
     node.writer.send.assert_called_with(0.0)
@@ -500,7 +544,14 @@ def test_full_position_controls_serial_and_locks_only_when_center_and_size_match
     node.writer.reset_mock()
     # 上下边距不对称、cy 偏移也能到位：只判断水平中心和框高 85%。
     centered_detection(node, now[0], top=0.13, bottom=0.02)
-    node.writer.send.assert_called_once_with(0.0)  # 到位回调立即停止两轴。
+    if lock_on_center:
+        node.writer.send.assert_not_called()
+        for offset in (0.25, 0.51):
+            now[0] = 100.0 + offset
+            centered_detection(node, now[0], top=0.13, bottom=0.02)
+        node.writer.send.assert_called_once_with(0.0)
+    else:
+        node.writer.send.assert_called_once_with(0.0)  # 到位回调立即停止两轴。
     assert node.center_locked is lock_on_center
     node.control_tick()
     node.writer.send.assert_called_with(0.0)
@@ -530,7 +581,7 @@ def test_node_stale_or_missing_boxes_stop_forward_commands(monkeypatch):
     node.writer.send.assert_called_with(0.0)
 
 
-def test_lock_mode_sends_zero_for_one_second_and_never_reclaims_released_serial(monkeypatch):
+def test_lock_mode_sends_zero_until_detection_completes_then_releases_serial(monkeypatch):
     node, now = controller_harness(monkeypatch)
     node.lock_on_center = True
     node.alignment.start(123)
@@ -540,33 +591,47 @@ def test_lock_mode_sends_zero_for_one_second_and_never_reclaims_released_serial(
     assert node.writer.send.call_args.args[0] > 0.0
     node.writer.reset_mock()
     centered_detection(node, now[0])
+    assert not node.center_locked
+    now[0] = 100.25
+    centered_detection(node, now[0])
+    assert not node.center_locked
+    now[0] = 100.51
+    centered_detection(node, now[0])
     assert node.center_locked
     assert not node.alignment.active
-    assert node.stop_until == 101.0
+    assert node.stop_until is None
     node.writer.send.assert_called_with(0.0)
-    for current in (100.05, 100.5, 100.95):
+    for current in (100.6, 101.0, 101.45, 102.0):
         now[0] = current
-        centered_detection(node, now[0], fx=900.0)
+        centered_detection(node, now[0])
         node.control_tick()
         node.writer.send.assert_called_with(0.0)
         node.writer.close.assert_not_called()
     assert all(invocation.args == (0.0,) for invocation in node.writer.send.call_args_list)
     node.slope_callback(SimpleNamespace(slope=3))
     node.writer.open.assert_not_called()
-    now[0] = 101.0
-    node.control_tick()
-    node.writer.close.assert_called_once()
-    assert node.stop_until is None
-    node.writer.reset_mock()
-    # 释放串口后，后续坐标、待完成服务期间的重复触发都不能产生速度帧。
-    now[0] = 102.0
-    centered_detection(node, now[0], fx=100.0)
-    node.slope_callback(SimpleNamespace(slope=3))
-    node.control_tick()
+
+    # YOLO 只有在目标连续丢失后返回 1，控制节点才结束锁车流程。
     response = CameraUse.Response()
     response.success = 1
     node.request_future.set_result(response)
     node.service_done(node.request_future)
+    assert not node.center_locked
+    assert node.stop_until == 102.5
+    assert node.get_logger.return_value.info.call_args_list[-1].args == (
+        'YOLO 返回 1，方块已消失，本轮完成',)
+    now[0] = 102.25
+    node.control_tick()
+    node.writer.close.assert_not_called()
+    now[0] = 102.5
+    node.control_tick()
+    node.writer.close.assert_called_once()
+    assert node.stop_until is None
+    node.writer.reset_mock()
+    # 释放串口后，后续坐标不再驱动速度；新的触发可以启动下一轮。
+    now[0] = 103.0
+    centered_detection(node, now[0], fx=100.0)
+    node.control_tick()
     node.control_tick()
     node.writer.send.assert_not_called()
     node.writer.close.assert_not_called()
@@ -579,13 +644,17 @@ def test_lock_mode_sends_zero_for_one_second_and_never_reclaims_released_serial(
 
 
 @pytest.mark.parametrize('result', [1, 0, 'exception'])
-def test_early_service_result_keeps_lock_stop_deadline(monkeypatch, result):
+def test_locked_mode_starts_final_stop_period_when_service_finishes(monkeypatch, result):
     node, now = controller_harness(monkeypatch)
     node.lock_on_center = True
     node.alignment.start(123)
     node.request_future = Future()
     centered_detection(node, now[0])
-    now[0] = 100.2
+    now[0] = 100.25
+    centered_detection(node, now[0])
+    now[0] = 100.51
+    centered_detection(node, now[0])
+    now[0] = 100.6
     if result == 'exception':
         node.request_future.set_exception(RuntimeError('fake camera service failure'))
     else:
@@ -593,16 +662,17 @@ def test_early_service_result_keeps_lock_stop_deadline(monkeypatch, result):
         response.success = result
         node.request_future.set_result(response)
     node.service_done(node.request_future)
-    assert node.stop_until == 101.0
-    now[0] = 100.95
+    assert not node.center_locked
+    assert node.stop_until == 101.1
+    now[0] = 101.05
     node.control_tick()
     node.writer.close.assert_not_called()
     node.writer.send.assert_called_with(0.0)
-    now[0] = 101.0
+    now[0] = 101.1
     node.control_tick()
     node.writer.close.assert_called_once()
     node.writer.reset_mock()
-    now[0] = 101.5
+    now[0] = 102.0
     node.control_tick()
     node.writer.send.assert_not_called()
 
