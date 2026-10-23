@@ -25,23 +25,30 @@ def generate_launch_description():
     controller = {
         'slope_topic': ('/slope', str, '外部触发话题'),
         'trigger_value': ('3', int, '启动一轮视觉平移的 slope 值'),
-        'serial_port': ('/dev/ttyUSB0', str, '底盘串口，需由本控制节点独占写入'),
+        'serial_port': ('/dev/pts/11', str, '底盘串口，需由本控制节点独占写入'),
         'baudrate': ('961200', int, '沿用现有速度协议的波特率'),
         'max_lateral_speed': ('0.3', float, '最大横移速度，m/s，硬限制不超过 0.3'),
         'lateral_gain': ('1.0', float, '水平归一化偏差到横移速度的比例增益'),
-        'enable_forward_control': ('true', bool, '前视相机按框高比例调整前后距离'),
         'max_forward_speed': ('0.3', float, '最大前后速度，m/s，硬限制不超过 0.3'),
-        'forward_gain': ('1.0', float, '框高比例偏差到前后速度的比例增益'),
-        'forward_direction': ('1.0', float, '框偏小时前进对应 Vx 的符号，取 -1 或 1'),
-        'lock_on_center': ('true', bool, '连续到位后锁车并保持零速度，直至 YOLO 确认目标消失'),
+        'forward_gain': ('1.0', float, '框中心纵向归一化偏差到前后速度的比例增益'),
+        'forward_direction': ('1.0', float, '框中心偏上时 Vx 的符号，取 -1 或 1'),
+        'lock_on_center': ('false', bool, '稳定到位后是否停车并结束本轮串口控制'),
+        'lock_stable_duration': ('1.0', float, '锁车前需连续到位的稳定时长，秒'),
+        'lock_stop_duration': ('1.0', float, '首次到位锁车时连续发零速度的时长，秒'),
         'lateral_direction': ('-1.0', float, '水平偏差到 Vy 的方向，取 -1 或 1'),
         'control_rate': ('20.0', float, '速度帧发送频率，Hz'),
+        'log_velocity': ('true', bool, '显示已写入串口的速度指令和控制状态，最多每控制周期一条'),
         'detection_timeout': ('0.5', float, '检测结果过期多久停车，秒'),
         'service_wait_timeout': ('5.0', float, '等待 YOLO 服务就绪的超时，秒'),
         'stop_duration': ('0.5', float, '服务结束后额外发送零速度的时长，秒'),
     }
     shared = {
         'detection_topic': ('/yolo/box_detection', str, '实时检测结果话题'),
+        'center_left_ratio': ('0.4', float, '到位范围左边界占图像宽度的比例'),
+        'center_right_ratio': ('0.6', float, '到位范围右边界占图像宽度的比例'),
+        'enable_forward_control': ('true', bool, '按框中心 cy 与上下边界调整前后距离'),
+        'center_top_ratio': ('0.5', float, 'cy 到位范围上边界占图像高度的比例，从顶部向下计算'),
+        'center_bottom_ratio': ('0.7', float, 'cy 到位范围下边界占图像高度的比例，从顶部向下计算'),
     }
     arguments = [
         DeclareLaunchArgument(name, default_value=default, description=description)

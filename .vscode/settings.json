@@ -1,3 +1,5 @@
 {
-    "cmake.sourceDirectory": "/home/tomato/code/Nazarite_vision_r2/src/arm-new23"
+    "cmake.sourceDirectory": "/home/tomato/code/Nazarite_vision_r2/src/arm-new23",
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda"
 }

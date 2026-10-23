@@ -77,6 +77,16 @@ class NavToPose(BasicNavigator):
         time.sleep(1.0)
         self.adj_angle(0,3.1415)
 
+        # thread.start()
+        #self.pose_init(-0.4,3.2,3.1415626)
+
+        #self.nav2_mult([[1.8,3.6],[7.3,3.6],[8.1,2.2]])
+        # # time.sleep(1.0)
+        # #self.adj_angle(0,3.1415)
+        
+        sl = Slope()
+        sl.slope = 3
+        self.slope_publisher.publish(sl)
 
         # self.camera_use()
         #self.nav_pose(2.5,1.3)

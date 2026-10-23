@@ -88,6 +88,24 @@ ros2 launch yolo_detect_box yolo_detect.launch.py camera_index:=1 conf:=0.75
 
 修改脚本或 launch 后需重新编译，并重启节点才能生效。
 
+### Debug 窗口
+
+`show_window=true` 时，`YOLO Detection` 窗口会在检测框上叠加判定参考：
+
+- 两条竖线：水平中心允许范围，默认画面宽度的 40%～60%，包含边界；框中心进入范围后变绿。
+- 白色十字：画面中心；灰色竖虚线：所配置水平范围的中点。
+- 实心圆点：当前检测框中心，全部条件达标时为绿色，否则为红色；无目标时不保留上一次的圆点。
+- 两条水平直线：框中心 `cy` 的上下边界，默认画面高度的 **50%～70%**，从顶部向下计算。
+  两条线固定在画面上，不随检测框移动；中心进入两线之间（含边界）时横线变绿。
+- 左上角实时显示中心横、纵坐标及状态：`IN POSITION`（全部到位）、
+  `ALIGN X`（需水平对中）、`ALIGN Y (ABOVE)` / `ALIGN Y (BELOW)`（中心偏上 / 偏下）、
+  `NO TARGET`（无目标）。
+
+使用 `yolo_control.launch.py` 时，窗口与控制节点共享 `center_left_ratio`、`center_right_ratio`、
+`center_top_ratio`、`center_bottom_ratio` 和 `enable_forward_control` 参数。
+关闭前后控制时隐藏上下横线，仅按水平范围显示到位状态。单独启动 `yolo_detect.launch.py`
+也可以传入这些参数设置显示范围。窗口状态表示当前图像是否满足到位条件。
+
 ## 服务调用
 
 接口：`yolo_detect_box/srv/CameraUse`，服务名：`/camara_use`。
@@ -145,42 +163,45 @@ ros2 service call /camara_use yolo_detect_box/srv/CameraUse "{use: 1}"
 3. 首次识别前保持零速度。识别后先调节横移 `Vy`，使框中心满足
    `0.4 * image_width <= fx <= 0.6 * image_width`；含边界，使用实际图像宽度。
    例如宽度 `1080`，范围是 `[432, 648]` 像素。
-4. 水平对中后再调节前后 `Vx`，**用框高占画面高度的比例判断目标大小**：
-   `height_ratio = (y2 - y1) / image_height`。
-   默认 `0.8 <= height_ratio <= 0.9` 时大小合适，含边界；
-   小于 `0.8` 时前进，大于 `0.9` 时后退。
-   例如图像高度 `720`，框高应在 `[576, 648]` 像素。
-   框的 `cy` 不参与到位判定，不要求上、下边距分别达标。
-5. 水平中心和框高比例需要**分别连续达标 0.5 秒**才算锁车；任一项离开范围，
-   对应计时重新开始。`lock_on_center=true` 时，满足条件后速度保持为零，
-   串口保持打开，等待 YOLO 确认方块消失。设为 `false` 时则继续实时追踪，
-   到位后停车，移出范围后恢复调整。
+4. 水平对中后再调节前后 `Vx`，**用框中心 `cy` 与两条水平边界判断**：
+   `center_top_ratio * image_height <= cy <= center_bottom_ratio * image_height`。
+   默认上下边界为 `0.5`、`0.7`，即画面高度的 **50%～70%**，含边界；
+   中心位于上边界以上时默认前进，位于下边界以下时默认后退。
+   例如图像高度 `720`，`cy` 应在 `[360, 504]` 像素。
+   判定与框高无关；参数和坐标均从画面顶部向下计算。
+5. 只有框中心的左右和上下范围**同时满足**才算到位。默认 `lock_on_center=false`，
+   **每帧实时判断**：到位后以默认 `20 Hz` 持续发送零速度；
+   一旦移出范围，就继续横移或前后追踪，再次全部达标时重新停车。
+   整个过程持续到方块被拿走，不需要重新发送 `slope=3`。
 6. 首次识别后，连续 `missing_timeout` 秒无目标，服务返回 `success=1`。
    锁车模式会一直发送零速度并保持串口占用，直到收到该响应；随后再发送
    `stop_duration` 秒零速度、关闭串口并回到待机。单纯进入中心范围不会返回成功。
 
-默认框高范围 80%～90% 沿用之前“上下各留 5%～10%”所表达的大小，
-现在仅参考大小，不约束框的纵向位置。例如上边距 13%、下边距 2%，
-框高仍为 85%，只要水平中心达标即可到位。
-可以通过 `box_height_min_ratio`、`box_height_max_ratio` 修改大小范围。
+通过 `center_top_ratio`、`center_bottom_ratio` 调整前后到位的两条水平边界；
+通过 `center_left_ratio`、`center_right_ratio` 调整左右到位的两条竖直边界。
+上下边界满足 `0 <= center_top_ratio < center_bottom_ratio <= 1`。
+例如把上下边界设为 `0.55` 和 `0.65`，图像高度 `720` 时对应 `[396, 468]` 像素。
 两轴分步调整，不同时发送非零 `Vx` 和 `Vy`；角速度 `Vw` 始终为 `0`。
-这套前后判断适用于朝前看目标、前进时框变大的相机安装方式。
-朝下相机主要通过框的纵向位置判断前后，不能直接套用这里的缩放规则。
+默认前进时目标中心在画面中向下移动；若实际相机安装方向相反，使用 `forward_direction:=-1.0`。
 
-设置 `lock_on_center=true` 时，水平中心和框高比例分别连续达标 0.5 秒后停止追踪，
-并持续发送零速度。串口保持打开，直到 YOLO 连续 `missing_timeout` 秒没有识别到方块、
-返回 `success=1`；控制节点随后再发送 `stop_duration` 秒停车帧并释放串口。
+设置 `lock_on_center=true` 时，框中心的左右和上下范围全部达标后先发零速度观察，
+需连续达标 `lock_stable_duration` 秒（默认 **1 秒**）才锁定到位。
+确认期间移出范围会恢复调整并重新计时；漏检、无效中心坐标、过期结果或检测间隔超过
+`detection_timeout` 也会清零稳定计时。只有新的有效到位帧才能完成确认，单帧跳变不会锁车。
+锁定后再连续发送 `lock_stop_duration` 秒零速度（默认 **1 秒**），然后关闭串口，结束本轮速度控制。
+此后方块移出范围也不会重新控制小车，YOLO 仍继续等待方块被拿走并返回整数状态。
+无论服务响应在锁定后的停车期间还是串口释放后到达，都不重新开始停车计时、不再次发送速度。
 本轮检测结束且串口释放后，新的 `/slope=3` 才能启动下一轮。
 
 ```bash
-# 连续到位后锁车，等待 YOLO 确认方块消失后释放串口
+# 连续到位 1 秒后锁定，再发 1 秒零速度，随后释放串口控制
 ros2 launch run_keyboard_test yolo_control.launch.py lock_on_center:=true
 
-# 持续追踪：水平中心和框高比例达标后停车，移出范围继续调整
+# 持续追踪：框中心进入左右和上下范围后停车，移出范围继续调整（默认）
 ros2 launch run_keyboard_test yolo_control.launch.py lock_on_center:=false
 
-# 将到位大小改为框高占画面高度的 60%～70%
-ros2 launch run_keyboard_test yolo_control.launch.py box_height_min_ratio:=0.6 box_height_max_ratio:=0.7
+# 调整两条水平边界到画面高度的 55% 和 65%
+ros2 launch run_keyboard_test yolo_control.launch.py center_top_ratio:=0.55 center_bottom_ratio:=0.65
 
 # 仅左右追踪，使用原来的 cx=40%～60% 到位条件
 ros2 launch run_keyboard_test yolo_control.launch.py enable_forward_control:=false
@@ -189,6 +210,19 @@ ros2 launch run_keyboard_test yolo_control.launch.py enable_forward_control:=fal
 检测短暂丢失、结果过期时先发零速度；摄像头读图失败不算方块被拿走，
 连续失败达到 `camera_timeout` 时服务返回 `success=0`，控制节点同样停车。
 服务和话题使用相同的 `session_id`，其他客户端的检测结果不会驱动本轮控制。
+
+运行控制节点的终端默认显示速度 INFO，例如：
+
+```text
+串口速度指令已写入 vx=+0.250 m/s，vy=+0.000 m/s，vw=0.000 rad/s；状态=前后调整
+串口速度指令已写入 vx=+0.000 m/s，vy=+0.000 m/s，vw=0.000 rad/s；状态=稳定确认 0.50/1.00 s
+```
+
+这是串口写入成功的速度指令，显示值与协议中的 mm/s 取整一致；车辆实测速度需另看里程计。
+状态同时区分横移、前后调整、等待检测、检测超时、无有效检测和锁车停车。
+默认 `control_rate=20.0`，即每 50 ms 发送一帧；速度日志最多每控制周期一条，额外停车帧不重复刷屏。
+串口释放后停止输出速度日志。这条控制路径直接写串口，`ros2 topic echo /cmd_vel`
+看不到这里的速度指令。可通过 `log_velocity:=false` 关闭速度 INFO。
 
 速度协议为 12 字节小端帧：
 
@@ -205,12 +239,11 @@ CRC8 使用多项式 `0x07`、初值 `0`，校验帧头之后的 9 字节。
 例如宽度 `1080` 时，`fx=100` 对应 `Vy=+0.3 m/s`，
 `fx=350` 对应约 `+0.176 m/s`，`fx=540` 在停车范围内、速度为 `0`。
 
-框高比例达标时前后速度为零，否则将框高比例与目标区间中点比较，默认中点为 `0.85`，
-速度大小为 `min(forward_gain * abs(0.85 - height_ratio), max_forward_speed)`。
-方向由 `0.85 - height_ratio` 的符号决定：框偏小为正，框偏大为负。
-默认 `forward_gain=1.0`，例如框高占 `60%` 时 `Vx=+0.25 m/s`，
-框高占 `96%` 时 `Vx=-0.11 m/s`；调整大小范围后，公式中的目标中点随之改变。
-`forward_direction=1.0` 表示框偏小时发送正 `Vx`；若相机/底盘方向相反，可改为 `-1.0`。
+框中心 `cy` 在上下边界之间时前后速度为零，否则将 `cy / image_height` 与区间中点比较，
+默认中点为 `0.6`，速度大小为 `min(forward_gain * abs(0.6 - cy / image_height), max_forward_speed)`。
+默认 `forward_direction=1.0`，中心偏上时发送正 `Vx`，偏下时发送负 `Vx`。
+例如 `cy` 位于画面高度的 `35%` 时 `Vx=+0.25 m/s`，位于 `85%` 时 `Vx=-0.25 m/s`；
+调整上下边界后，公式中的目标中点随之改变。相机/底盘方向相反时改为 `forward_direction:=-1.0`。
 本规则根据图像比例对齐，不输出实际距离。
 
 ### 编译和启动
@@ -254,14 +287,17 @@ ros2 topic pub --once /slope tur3_run_interfaces/msg/Slope "{slope: 3}"
 | `max_lateral_speed` | `0.3` | 最大横移速度，m/s，不能突破 `0.3` |
 | `lateral_gain` | `1.0` | 归一化水平偏差对应的速度增益 |
 | `center_left_ratio` / `center_right_ratio` | `0.4` / `0.6` | 水平中心范围占图像宽度的比例 |
-| `enable_forward_control` | `true` | 前视相机按框高比例控制前后；关闭时仅左右对中 |
+| `enable_forward_control` | `true` | 按框中心 cy 与上下边界控制前后；关闭时仅左右对中 |
 | `max_forward_speed` | `0.3` | 最大前后速度，m/s，不能突破 `0.3` |
-| `forward_gain` | `1.0` | 框高比例偏差对应的速度增益 |
-| `forward_direction` | `1.0` | 框偏小时发送 Vx 的符号，取 `-1.0` 或 `1.0` |
-| `box_height_min_ratio` / `box_height_max_ratio` | `0.8` / `0.9` | 到位时框高占图像高度的允许范围，满足 `0 < min < max <= 1` |
-| `lock_on_center` | 启动文件为 `true` | 连续到位 0.5 秒后是否锁车并保持零速度，直到目标消失 |
+| `forward_gain` | `1.0` | 框中心纵向归一化偏差对应的速度增益 |
+| `forward_direction` | `1.0` | 中心位于上边界以上时发送 Vx 的符号，取 `-1.0` 或 `1.0` |
+| `center_top_ratio` / `center_bottom_ratio` | `0.5` / `0.7` | cy 到位范围的两条水平边界，从画面顶部向下计算，满足 `0 <= top < bottom <= 1` |
+| `lock_on_center` | `false` | 是否稳定到位后停车并结束本轮串口控制 |
+| `lock_stable_duration` | `1.0` | 锁车前需连续全部到位的时长，秒；跳出、丢失或过期重新计时 |
+| `lock_stop_duration` | `1.0` | 首次到位锁车时连续发零速度的时长，秒 |
 | `lateral_direction` | `-1.0` | 图像偏差到 Vy 的符号；镜像安装可改为 `1.0` |
 | `control_rate` | `20.0` | 包含保持停车时的发帧频率，Hz |
+| `log_velocity` | `true` | 显示已成功写入串口的速度指令和控制状态，最多每控制周期一条 |
 | `detection_timeout` | `0.5` | 过期检测结果的停车阈值，秒 |
 | `missing_timeout` | `1.0` | 首次识别后连续丢失的完成阈值，秒 |
 | `camera_timeout` | `2.0` | 连续读图失败的失败阈值，秒 |
@@ -281,8 +317,8 @@ PYTHONPATH="$PWD/src/run_keyboard_test:$PYTHONPATH" \
   /usr/bin/python3 -m pytest -q src/run_keyboard_test/test/test_yolo_control.py
 ```
 
-测试替换串口和模型，验证左右对中、框高比例、纵向偏移不影响大小判断、不同分辨率和大小范围、
-分步前后调整、首次全部到位锁车、
+测试替换串口和模型，验证 cx/cy 范围与含边界判定、框高变化不影响 cy 控制、不同分辨率和上下范围、
+分步前后调整、连续稳定到位后锁车、画面边界与控制判定一致、
 移出范围恢复追踪、丢失判定、重复触发、服务成功/失败、结果过期、框边界消息序列化、
 两轴串口编码与速度硬限幅，不打开真实串口。
 
