@@ -33,7 +33,7 @@ def encode_lateral_velocity(velocity, max_speed=HARD_MAX_LATERAL_SPEED):
 def encode_velocity(vx, vy, max_speed=HARD_MAX_LATERAL_SPEED,
                     max_forward_speed=HARD_MAX_LATERAL_SPEED):
     """生成前后 Vx、横移 Vy 的速度帧；角速度和三个标志字节为零。"""
-    vx, vy = -float(vx), float(vy)
+    vx, vy = float(vx), float(vy)
     if not math.isfinite(vx) or not math.isfinite(vy):
         raise ValueError('平移速度必须为有限数值')
     limit = speed_limit(max_speed)

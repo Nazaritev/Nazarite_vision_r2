@@ -41,12 +41,13 @@ class NavToPose(BasicNavigator):
         self.slope_publisher.publish(sl)
         while self.bool_slope != True:
             rclpy.spin_once(self, timeout_sec=0.1)
-        self.bool_slope == False
+        self.bool_slope = False
         # 等待位置
         self.run_dir(vy=0.8,run_time=1.2,acc=0.2,acc_time=0.1)
         self.adj_angle(0,3.1415/2)
         # 调用摄像头
-        # self.camera_use()
+        time.sleep(1.0)
+        self.camera_use()
         # 点位1
         time.sleep(1.0)
         self.adj_angle(0,-3.1415/2)
@@ -54,7 +55,7 @@ class NavToPose(BasicNavigator):
         self.nav_pose(2.4,1.4)
         time.sleep(1.0)
         start = time.time()
-        while time.time() - start < 10:
+        while time.time() - start < 6:
             time.sleep(0.1)
         self.run_dir(vx=-0.4,vy=0.2,run_time=0.5)
         # 交接区
@@ -62,31 +63,23 @@ class NavToPose(BasicNavigator):
         time.sleep(1.0)
         self.adj_angle(0,3.1415/2)
         # 调用摄像头
-        # self.camera_use()
+        time.sleep(1.0)
+        self.camera_use()
+        time.sleep(1.0)
         # 点位2
         time.sleep(1.0)
-        self.adj_angle(0,-3.0415)
-        self.nav2_mult([[2.5,0.8],[2.2,-0.9]]) #!!!!!!!!!!!!!!
+        self.adj_angle(0,-3.1415)
+        self.nav2_mult([[2.5,0.8],[2.07,-0.9]]) #!!!!!!!!!!!!!!
         time.sleep(1.0)
         start = time.time()
-        while time.time() - start < 10:
+        while time.time() - start < 6:
             time.sleep(0.1)
-        self.run_dir(vx=-0.4,run_time=0.5)
+        self.run_dir(vx=-0.4,run_time=0.8)
         # 交接区
         self.nav2_mult([[2.7,0.8],[3.2,1.4]]) #!!!!!!!!!!!!!!
         time.sleep(1.0)
         self.adj_angle(0,3.1415)
 
-        # thread.start()
-        #self.pose_init(-0.4,3.2,3.1415626)
-
-        #self.nav2_mult([[1.8,3.6],[7.3,3.6],[8.1,2.2]])
-        # # time.sleep(1.0)
-        # #self.adj_angle(0,3.1415)
-        
-        sl = Slope()
-        sl.slope = 3
-        self.slope_publisher.publish(sl)
 
         # self.camera_use()
         #self.nav_pose(2.5,1.3)
@@ -103,8 +96,8 @@ class NavToPose(BasicNavigator):
         self.slope_publisher.publish(sl)
         while self.bool_slope != True:
             rclpy.spin_once(self, timeout_sec=0.1)
-        self.bool_slope == False
-        # self.run_dir(vx=-0.6,run_time=0.7,acc=0.2,acc_time=0.1)
+        self.bool_slope = False
+        self.run_dir(vx=-0.6,run_time=0.9,acc=0.2,acc_time=0.1)
 
 
     def run_dir(self,vx = 0,vy = 0,vw = 0,run_time = 0,acc = 0.0,acc_time = 0.0):

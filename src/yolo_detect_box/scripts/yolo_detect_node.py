@@ -43,8 +43,6 @@ class YoloDetectNode(Node):
         self.declare_parameter('camera_timeout', 2.0)
         self.declare_parameter('show_window', True)
         self.declare_parameter('detection_topic', '/yolo/box_detection')
-        self.declare_parameter('center_left_ratio', 0.45)
-        self.declare_parameter('center_right_ratio', 0.55)
         self.declare_parameter('box_height_min_ratio', 0.8)
         self.declare_parameter('box_height_max_ratio', 0.9)
         self.missing_timeout = float(self.get_parameter('missing_timeout').value)

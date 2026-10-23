@@ -18,14 +18,14 @@ def generate_launch_description():
     }
     alignment = {
         'center_left_ratio': ('0.55', float, '到位范围左边界占图像宽度的比例'),
-        'center_right_ratio': ('0.65', float, '到位范围右边界占图像宽度的比例'),
+        'center_right_ratio': ('0.60', float, '到位范围右边界占图像宽度的比例'),
         'box_height_min_ratio': ('0.35', float, '到位时框高占图像高度的最小比例'),
         'box_height_max_ratio': ('0.55', float, '到位时框高占图像高度的最大比例'),
     }
     controller = {
         'slope_topic': ('/slope', str, '外部触发话题'),
         'trigger_value': ('3', int, '启动一轮视觉平移的 slope 值'),
-        'serial_port': ('/dev/pts/11', str, '底盘串口，需由本控制节点独占写入'),
+        'serial_port': ('/dev/ttyUSB1', str, '底盘串口，需由本控制节点独占写入'),
         'baudrate': ('961200', int, '沿用现有速度协议的波特率'),
         'max_lateral_speed': ('0.3', float, '最大横移速度，m/s，硬限制不超过 0.3'),
         'lateral_gain': ('1.0', float, '水平归一化偏差到横移速度的比例增益'),
@@ -47,8 +47,8 @@ def generate_launch_description():
         'center_left_ratio': ('0.4', float, '到位范围左边界占图像宽度的比例'),
         'center_right_ratio': ('0.6', float, '到位范围右边界占图像宽度的比例'),
         'enable_forward_control': ('true', bool, '按框中心 cy 与上下边界调整前后距离'),
-        'center_top_ratio': ('0.5', float, 'cy 到位范围上边界占图像高度的比例，从顶部向下计算'),
-        'center_bottom_ratio': ('0.7', float, 'cy 到位范围下边界占图像高度的比例，从顶部向下计算'),
+        'center_top_ratio': ('0.8', float, 'cy 到位范围上边界占图像高度的比例，从顶部向下计算'),
+        'center_bottom_ratio': ('0.9', float, 'cy 到位范围下边界占图像高度的比例，从顶部向下计算'),
     }
     arguments = [
         DeclareLaunchArgument(name, default_value=default, description=description)

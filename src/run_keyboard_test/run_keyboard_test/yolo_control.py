@@ -36,6 +36,7 @@ class LateralAlignment:
             raise ValueError('中心范围必须满足 0 <= left_ratio < right_ratio <= 1')
         if direction not in (-1.0, 1.0):
             raise ValueError('lateral_direction 只能为 -1 或 1')
+        
         self.gain = gain
         self.left_ratio = left_ratio
         self.right_ratio = right_ratio
@@ -114,9 +115,9 @@ class BoxAlignment(LateralAlignment):
         self.max_forward_speed = speed_limit(max_forward_speed)
         values = (forward_gain, forward_direction, top_ratio, bottom_ratio)
         if not all(math.isfinite(value) for value in values):
-            raise ValueError('前后控制参数和位置确认时长必须为有限数值')
-        if forward_gain <= 0.0 or position_confirm_duration <= 0.0:
-            raise ValueError('forward_gain 和位置确认时长必须大于零')
+            raise ValueError('前后控制参数必须为有限数值')
+        if forward_gain <= 0.0:
+            raise ValueError('forward_gain 必须大于零')
         if forward_direction not in (-1.0, 1.0):
             raise ValueError('forward_direction 只能为 -1 或 1')
         if not 0.0 <= top_ratio < bottom_ratio <= 1.0:
@@ -128,8 +129,6 @@ class BoxAlignment(LateralAlignment):
         self.bottom_ratio = bottom_ratio
         self.in_vertical = False
         self.forward_error = None
-        self.center_in_since = None
-        self.size_in_since = None
 
     @property
     def in_position(self):
@@ -140,46 +139,14 @@ class BoxAlignment(LateralAlignment):
         super().start(session_id)
         self.in_vertical = False
         self.forward_error = None
-        self.center_in_since = None
-        self.size_in_since = None
-
-    def _update_confirmation_timers(self, now):
-        """分别累计水平中心和框高连续处于允许范围内的时间。"""
-        if self.in_center:
-            if self.center_in_since is None:
-                self.center_in_since = now
-        else:
-            self.center_in_since = None
-        if self.enable_forward and self.in_size:
-            if self.size_in_since is None:
-                self.size_in_since = now
-        else:
-            self.size_in_since = None
-
-    def position_is_stable(self, now):
-        """水平中心和框高各自连续达标指定时长后返回 True。"""
-        if (not self.in_center or self.center_in_since is None
-                or now - self.center_in_since
-                < self.position_confirm_duration):
-            return False
-        if not self.enable_forward:
-            return True
-        return (self.in_size and self.size_in_since is not None
-                and now - self.size_in_since >= self.position_confirm_duration)
 
     def update(self, session_id, detected, fx, fy, width, height, now):
         if not self.active or session_id != self.session_id:
             return
-        # 长时间没有检测结果时，未知区间不能算作连续达标时间。
-        if (self.last_received is not None
-                and now - self.last_received > self.detection_timeout):
-            self.center_in_since = None
-            self.size_in_since = None
         super().update(session_id, detected, fx, fy, width, height, now)
         self.in_vertical = False
         self.forward_error = None
         if not self.enable_forward or self.error is None:
-            self._update_confirmation_timers(now)
             return
         fy_ratio = fy / height
         self.in_vertical = self.top_ratio <= fy_ratio <= self.bottom_ratio
@@ -201,8 +168,6 @@ class BoxAlignment(LateralAlignment):
         super().finish()
         self.in_vertical = False
         self.forward_error = None
-        self.center_in_since = None
-        self.size_in_since = None
 
 
 class YoloControlNode(Node):
@@ -240,6 +205,7 @@ class YoloControlNode(Node):
             'service_wait_timeout': 5.0,
             'stop_duration': 0.5,
         }
+        self.pub_slope = self.create_publisher(Slope,'/slope',5)
         for name, value in defaults.items():
             self.declare_parameter(name, value)
 
@@ -473,6 +439,9 @@ class YoloControlNode(Node):
                     self.writer.close()
                     self.stop_until = None
                     self.get_logger().info('停车帧发送完毕，已释放串口，等待下一次触发')
+                    sl = Slope()
+                    sl.slope = 1
+                    self.pub_slope.publish(sl)
             except Exception as exc:
                 self.serial_failure(exc)
 
