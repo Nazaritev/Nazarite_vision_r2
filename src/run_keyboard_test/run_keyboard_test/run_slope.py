@@ -22,7 +22,7 @@ class ImuYawListener(Node):
             self.imu_callback,
             10
         )
-        self.ser = serial.Serial('/dev/ttyUSB0',961200,timeout=1.0)
+        self.ser = serial.Serial('/dev/ttyUSB1',961200,timeout=1.0)
         self.continue_time = 0.0
         self.start = False
         self.start_first = True

@@ -28,12 +28,13 @@ slam_toolbox:
         transform_publish_period: 0.05
         map_update_interval: 0.2
         resolution: 0.05
-        max_laser_range: 20.0
+        max_laser_range: 20.0 #20.0
         minimum_time_interval: 0.2
         transform_timeout: 0.2
         tf_buffer_duration: 30.
         stack_size_to_use: 40000000
         enable_interactive_mode: true
+        #occupancy_threshold: 0.45 #hit命中提高阈值
 
         # General Parameters
         use_scan_matching: true

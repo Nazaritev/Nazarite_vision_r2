@@ -218,7 +218,7 @@ controller_server:
       stateful: true
     stopped_goal_checker:
       plugin: "nav2_controller::StoppedGoalChecker"
-      xy_goal_tolerance: 0.15    # 你想要的 0.15 米范围
+      xy_goal_tolerance: 0.20    # 你想要的 0.15 米范围
       yaw_goal_tolerance: 3.15    # 约 30 度，按需调整
       trans_stopped_velocity: 0.025 # 线速度低于此值视为“已停止”，默认 0.25 偏松
       rot_stopped_velocity: 0.025   # 角速度低于此值视为“已停止”，默认 0.25 偏松
