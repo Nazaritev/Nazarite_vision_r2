@@ -1,0 +1,63 @@
+amcl:
+  ros__parameters:
+    # ===== 你原有的参数（值不变）=====
+    use_sim_time: false
+    global_frame_id: map
+    odom_frame_id: odom
+    base_frame_id: footprint_link
+    scan_topic: /scan
+    map_topic: /map
+    tf_broadcast: true
+    robot_model_type: nav2_amcl::OmniMotionModel
+    alpha1: 0.1
+    alpha2: 0.1
+    alpha3: 0.1
+    alpha4: 0.1
+    alpha5: 0.1
+    laser_model_type: beam
+    laser_min_range: 0.45
+    laser_max_range: 10.0
+    laser_likelihood_max_dist: 2.0
+    max_beams: 180
+    min_particles: 500
+    max_particles: 3000
+    pf_err: 0.05
+    pf_z: 0.99
+    recovery_alpha_fast: 0.0
+    recovery_alpha_slow: 0.0
+    resample_interval: 1
+    transform_tolerance: 0.3
+    update_min_a: 0.05
+    update_min_d: 0.05
+    z_hit: 0.5
+    z_rand: 0.5
+    sigma_hit: 0.2
+
+    # ===== 官方文档中你缺失的参数（默认值）=====
+    # 光束跳过相关（likelihood_field 模型下可选启用）
+    do_beamskip: false
+    beam_skip_distance: 0.5
+    beam_skip_threshold: 0.3
+    beam_skip_error_threshold: 0.9
+
+    # beam 模型专用（likelihood_field 下不生效，保留以备切换）
+    lambda_short: 0.1
+    z_short: 0.05
+    z_max: 0.05
+
+    # 初始位姿
+    set_initial_pose: false
+    initial_pose:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      yaw: 0.0
+
+    # 保存位姿
+    save_pose_rate: 0.5
+
+    # 粒子滤波种子
+    random_seed: -1
+
+    # 内省模式（官方文档明确列出）
+    introspection_mode: "disabled"

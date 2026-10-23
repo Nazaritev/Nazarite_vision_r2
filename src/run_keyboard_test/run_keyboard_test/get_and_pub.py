@@ -16,7 +16,7 @@ class GetAndPub(Node):
         # /dev/ttyUSB0
         # /dev/pts/6
         # /dev/usbv
-        self.ser = serial.Serial('/dev/ttyUSB1',961200,timeout=1.0)
+        self.ser = serial.Serial('/dev/ttyUSB0',961200,timeout=1.0)
         self.vx = 0.0
         self.vy = 0.0
         self.vw = 0.0

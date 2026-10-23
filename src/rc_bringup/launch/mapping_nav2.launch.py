@@ -39,7 +39,7 @@ def generate_launch_description():
         )
         for filename in (
             'nav2_params_forest_small_teb_mppi.yaml',
-            'mapping_nav.yaml',
+            'mapping_nav_copy.yaml',
         )
     ]
 
@@ -116,7 +116,7 @@ def generate_launch_description():
                 'max_height': 4.0,
                 'angle_min': -3.14159,
                 'angle_max': 3.14159,
-                'angle_increment': 0.0023,
+                'angle_increment': 0.0043,
                 'scan_time': 0.05,
                 'range_min': 0.45,
                 'range_max': 10.0,
@@ -201,7 +201,7 @@ def generate_launch_description():
     action_group = launch.actions.GroupAction([
         # 动作5-定时器
         launch.actions.TimerAction(period=3.0, actions=[action1]), #2秒后执行
-        launch.actions.TimerAction(period=3.0, actions=[action2]) #4秒后执行
+        # launch.actions.TimerAction(period=3.0, actions=[action2]) #4秒后执行
         ])
 
     actions.extend([
