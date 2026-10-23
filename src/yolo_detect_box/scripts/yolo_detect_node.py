@@ -20,6 +20,17 @@ from yolo_detect_box.msg import BoxDetection
 class YoloDetectNode(Node):
     def __init__(self):
         super().__init__('yolo_detect_box')
+        # 与控制节点使用同一组 launch 参数，窗口中的边界随控制范围变化。
+        for name, default in (
+                ('center_left_ratio', 0.4), ('center_right_ratio', 0.6),
+                ('enable_forward_control', True),
+                ('center_top_ratio', 0.5), ('center_bottom_ratio', 0.7)):
+            self.declare_parameter(name, default)
+            setattr(self, name, self.get_parameter(name).value)
+        if not 0.0 <= self.center_left_ratio < self.center_right_ratio <= 1.0:
+            raise ValueError('中心范围必须满足 0 <= left_ratio < right_ratio <= 1')
+        if not 0.0 <= self.center_top_ratio < self.center_bottom_ratio <= 1.0:
+            raise ValueError('纵向中心范围必须满足 0 <= top_ratio < bottom_ratio <= 1')
         model_path = Path(get_package_share_directory('yolo_detect_box')) / 'model' / 'best.pt'
         self.declare_parameter('conf', 0.6)
         self.conf = self.get_parameter('conf').value
@@ -90,6 +101,84 @@ class YoloDetectNode(Node):
         if self.finished is not None and not self.finished.done():
             self.finished.set_result((status, self.last_fx, self.last_fy))
 
+    def draw_debug_overlay(self, frame, detection):
+        """画出框中心的左右、上下判定边界；所有判断使用原图浮点坐标。"""
+        height, width = frame.shape[:2]
+        green, yellow, red = (0, 255, 0), (0, 220, 255), (0, 80, 255)
+        white = (255, 255, 255)
+        scale = max(0.35, min(width / 1080.0, height / 720.0))
+        font_scale = 0.65 * scale
+        line_height = max(16, round(26 * scale))
+        margin = max(6, round(12 * scale))
+
+        def label(text, point, color=white):
+            # 黑色描边保证亮色目标和复杂背景上也能看清。
+            cv2.putText(frame, text, point, cv2.FONT_HERSHEY_SIMPLEX,
+                        font_scale, (0, 0, 0), 3, cv2.LINE_AA)
+            cv2.putText(frame, text, point, cv2.FONT_HERSHEY_SIMPLEX,
+                        font_scale, color, 1, cv2.LINE_AA)
+
+        left, right = self.center_left_ratio * width, self.center_right_ratio * width
+        top, bottom = self.center_top_ratio * height, self.center_bottom_ratio * height
+        valid_center = (detection.detected and 0.0 <= detection.fx < width
+                        and 0.0 <= detection.fy < height)
+        in_center = valid_center and left <= detection.fx <= right
+        in_vertical = (valid_center
+                       and self.center_top_ratio <= detection.fy / height <= self.center_bottom_ratio)
+        in_position = in_center and (not self.enable_forward_control or in_vertical)
+        boundary_color = green if in_center else yellow
+        for ratio, x in ((self.center_left_ratio, left), (self.center_right_ratio, right)):
+            pixel_x = min(width - 1, round(x))
+            cv2.line(frame, (pixel_x, 0), (pixel_x, height - 1), boundary_color, 2)
+            label(f'{ratio:.0%}', (min(pixel_x + 4, width - 50), height - margin),
+                  boundary_color)
+
+        # 白色十字为画面中心，虚线为当前配置的水平目标中点。
+        target_x = min(width - 1, round((left + right) / 2.0))
+        for y in range(0, height, max(12, round(24 * scale))):
+            cv2.line(frame, (target_x, y),
+                     (target_x, min(height - 1, y + max(6, round(12 * scale)))),
+                     (180, 180, 180), 1)
+        cv2.drawMarker(frame, (width // 2, height // 2), white,
+                       cv2.MARKER_CROSS, max(12, round(24 * scale)), 2)
+        if not valid_center:
+            state, state_color = 'NO TARGET', yellow
+        elif in_position:
+            state, state_color = 'IN POSITION', green
+        elif not in_center:
+            state, state_color = 'ALIGN X', red
+        else:
+            state = ('ALIGN Y (ABOVE)' if detection.fy / height < self.center_top_ratio
+                     else 'ALIGN Y (BELOW)')
+            state_color = red
+        label(state, (margin, line_height), state_color)
+        center_text = f'{detection.fx:.1f}' if valid_center else '--'
+        label(f'X: {center_text}  [{left:.1f}, {right:.1f}] px',
+              (margin, 2 * line_height), green if in_center else yellow)
+        vertical_text = f'{detection.fy:.1f}' if valid_center else '--'
+        label(f'Y: {vertical_text}  [{top:.1f}, {bottom:.1f}] px'
+              if self.enable_forward_control else 'Y control: OFF (X only)',
+              (margin, 3 * line_height), green if in_vertical else yellow)
+        label('Cross: image center | Dot: box center', (margin, 4 * line_height))
+
+        if self.enable_forward_control:
+            # 与 cx 的竖线一样，cy 的两条横线固定在画面比例位置，不跟随检测框。
+            vertical_color = green if in_vertical else yellow
+            for name, ratio in (('TOP', self.center_top_ratio),
+                                ('BOTTOM', self.center_bottom_ratio)):
+                y = min(height - 1, round(ratio * height))
+                cv2.line(frame, (0, y), (width - 1, y), vertical_color, 2)
+                label(f'Y {name} {ratio:.1%}',
+                      (margin, max(line_height, y - margin)), vertical_color)
+        # 最后画中心点，避免判定线覆盖点的红/绿到位状态。
+        if valid_center:
+            point = (min(width - 1, round(detection.fx)),
+                     min(height - 1, round(detection.fy)))
+            color = green if in_position else red
+            cv2.circle(frame, point, max(4, round(6 * scale)), color, -1, cv2.LINE_AA)
+            cv2.circle(frame, point, max(6, round(9 * scale)), white, 1, cv2.LINE_AA)
+        return frame
+
     def process_frame(self):
         # 待机时不读取摄像头、不推理、不显示。
         if not self.active:
@@ -118,9 +207,6 @@ class YoloDetectNode(Node):
             result = self.model.predict(
                 # 过滤低置信度结果，每帧最多保留一个框。
                 frame, device='cpu', conf=self.conf, max_det=1, verbose=False)[0]
-            if self.show_window:
-                cv2.imshow('YOLO Detection', result.plot())
-                cv2.waitKey(1)
             message.detected = len(result.boxes) > 0
             if message.detected:
                 # xyxy 是原图像素坐标，不使用归一化坐标或模型输入尺寸。
@@ -129,6 +215,10 @@ class YoloDetectNode(Node):
                 message.x2, message.y2 = float(x2), float(y2)
                 message.fx = float((x1 + x2) / 2.0)
                 message.fy = float((y1 + y2) / 2.0)
+            if self.show_window:
+                debug_frame = self.draw_debug_overlay(result.plot(), message)
+                cv2.imshow('YOLO Detection', debug_frame)
+                cv2.waitKey(1)
         except Exception as exc:
             self.get_logger().error(f'YOLO 推理或显示失败: {exc}')
             self.finish_detection(0)

@@ -20,6 +20,11 @@ def generate_launch_description():
         DeclareLaunchArgument('camera_timeout', default_value='2.0'),
         DeclareLaunchArgument('show_window', default_value='true'),
         DeclareLaunchArgument('detection_topic', default_value='/yolo/box_detection'),
+        DeclareLaunchArgument('center_left_ratio', default_value='0.4'),
+        DeclareLaunchArgument('center_right_ratio', default_value='0.6'),
+        DeclareLaunchArgument('enable_forward_control', default_value='true'),
+        DeclareLaunchArgument('center_top_ratio', default_value='0.5'),
+        DeclareLaunchArgument('center_bottom_ratio', default_value='0.7'),
         Node(
             package='yolo_detect_box',
             executable='yolo_detect_node',
@@ -35,6 +40,16 @@ def generate_launch_description():
                 'show_window': ParameterValue(
                     LaunchConfiguration('show_window'), value_type=bool),
                 'detection_topic': LaunchConfiguration('detection_topic'),
+                'center_left_ratio': ParameterValue(
+                    LaunchConfiguration('center_left_ratio'), value_type=float),
+                'center_right_ratio': ParameterValue(
+                    LaunchConfiguration('center_right_ratio'), value_type=float),
+                'enable_forward_control': ParameterValue(
+                    LaunchConfiguration('enable_forward_control'), value_type=bool),
+                'center_top_ratio': ParameterValue(
+                    LaunchConfiguration('center_top_ratio'), value_type=float),
+                'center_bottom_ratio': ParameterValue(
+                    LaunchConfiguration('center_bottom_ratio'), value_type=float),
             }],
         ),
     ])

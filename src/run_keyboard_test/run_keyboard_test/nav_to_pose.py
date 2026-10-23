@@ -25,7 +25,7 @@ class NavToPose(BasicNavigator):
         # thread = threading.Thread(target=self.get)
         self.get_pose = self.create_subscription(Odometry,'/odom',self.nav_pose_callback,1)
         self.after_slop = self.create_subscription(Slope,'/slope',self.slope_callback,1)
-        self.ser = serial.Serial('/dev/ttyUSB0',961200,timeout=1.0)
+        self.ser = serial.Serial('/dev/pts/11',961200,timeout=1.0)
         # thread2 = threading.Thread(target=self.slope_thread2)
         # thread2.start()
         self.slope_publisher = self.create_publisher(Slope,'/slope',5)
@@ -40,9 +40,9 @@ class NavToPose(BasicNavigator):
         # # time.sleep(1.0)
         # #self.adj_angle(0,3.1415)
         
-        #sl = Slope()
-        #sl.slope = 1
-        #self.slope_publisher.publish(sl)
+        sl = Slope()
+        sl.slope = 3
+        self.slope_publisher.publish(sl)
 
         #self.nav_pose(2.5,1.3)
         #self.nav_pose(6.7,1.3)
