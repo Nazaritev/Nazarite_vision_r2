@@ -113,7 +113,7 @@ def generate_launch_description():
         executable='livox_ros_driver2_node',
         parameters=[{
             'xfer_format': 1, 'multi_topic': 0, 'data_src': 0,
-            'publish_freq': 100.0, 'output_data_type': 0, 'frame_id': 'livox_frame',
+            'publish_freq': 20.0, 'output_data_type': 0, 'frame_id': 'livox_frame',
             'user_config_path': os.path.join(config_dir, 'MID360_driver.json')
         }]
     )
@@ -158,10 +158,10 @@ def generate_launch_description():
         executable='pointcloud_to_laserscan_node',
         remappings=[('cloud_in', '/cloud_registered'), ('scan', '/scan')],
         parameters=[{
-            'target_frame': 'footprint_link', 'transform_tolerance': 2.0,
+            'target_frame': 'footprint_link', 'transform_tolerance': 0.1,
             # MID360 is mounted upside down; valid obstacle returns can be below
             # the base_link origin. Do not discard the complete scan at startup.
-            'min_height': -0.15, 'max_height': 4.0,
+            'min_height': -0.60, 'max_height': 4.0,
             'angle_min': -3.14159, 'angle_max': 3.14159,
             'angle_increment': 0.0043, 'scan_time': 0.3333,
             'range_min': 0.45, 'range_max': 10.0, 'use_inf': True, 'inf_epsilon': 1.0
@@ -200,7 +200,7 @@ def generate_launch_description():
     ld.add_action(livox_node)
     ld.add_action(nav2)
     ld.add_action(nav_agent_node)
-    ld.add_action(slope_filtered_node)
+    #ld.add_action(slope_filtered_node)
     ld.add_action(point_lio_node)
     ld.add_action(tf_map_to_odom)
     ld.add_action(pc_to_ls_node)

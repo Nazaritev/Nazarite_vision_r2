@@ -32,13 +32,39 @@ class YoloDetectNode(Node):
         self.declare_parameter('camera_timeout', 2.0)
         self.declare_parameter('show_window', True)
         self.declare_parameter('detection_topic', '/yolo/box_detection')
+        self.declare_parameter('center_left_ratio', 0.45)
+        self.declare_parameter('center_right_ratio', 0.55)
+        self.declare_parameter('box_height_min_ratio', 0.8)
+        self.declare_parameter('box_height_max_ratio', 0.9)
         self.missing_timeout = float(self.get_parameter('missing_timeout').value)
         self.camera_timeout = float(self.get_parameter('camera_timeout').value)
+        self.center_left_ratio = float(
+            self.get_parameter('center_left_ratio').value)
+        self.center_right_ratio = float(
+            self.get_parameter('center_right_ratio').value)
+        self.box_height_min_ratio = float(
+            self.get_parameter('box_height_min_ratio').value)
+        self.box_height_max_ratio = float(
+            self.get_parameter('box_height_max_ratio').value)
         for name, value in (
                 ('missing_timeout', self.missing_timeout),
                 ('camera_timeout', self.camera_timeout)):
             if not math.isfinite(value) or value <= 0.0:
                 raise ValueError(f'{name} 必须为有限正数')
+        ratios = (
+            self.center_left_ratio,
+            self.center_right_ratio,
+            self.box_height_min_ratio,
+            self.box_height_max_ratio,
+        )
+        if not all(math.isfinite(ratio) for ratio in ratios):
+            raise ValueError('画面标注比例必须为有限数值')
+        if not 0.0 <= self.center_left_ratio < self.center_right_ratio <= 1.0:
+            raise ValueError('中心范围必须满足 0 <= left < right <= 1')
+        if not (
+                0.0 < self.box_height_min_ratio
+                < self.box_height_max_ratio <= 1.0):
+            raise ValueError('框高比例必须满足 0 < min < max <= 1')
         self.show_window = self.get_parameter('show_window').value
         self.detection_pub = self.create_publisher(
             BoxDetection, self.get_parameter('detection_topic').value, 1)
@@ -58,6 +84,15 @@ class YoloDetectNode(Node):
             CameraUse, '/camara_use', self.use_callback,
             callback_group=self.service_group)
         self.get_logger().info('待机中，等待 /camara_use 请求 use=1')
+
+    def draw_alignment_guides(self, image):
+        image_height, image_width = image.shape[:2]
+        for ratio in (self.center_left_ratio, self.center_right_ratio):
+            x = min(round(ratio * image_width), image_width - 1)
+            cv2.line(image, (x, 0), (x, image_height - 1), (0, 255, 255), 1)
+        for ratio in (self.box_height_min_ratio, self.box_height_max_ratio):
+            y = min(round((1.0 - ratio) * image_height), image_height - 1)
+            cv2.line(image, (0, y), (image_width - 1, y), (0, 255, 255), 1)
 
     async def use_callback(self, request, response):
         response.fx = -1.0
@@ -118,9 +153,6 @@ class YoloDetectNode(Node):
             result = self.model.predict(
                 # 过滤低置信度结果，每帧最多保留一个框。
                 frame, device='cpu', conf=self.conf, max_det=1, verbose=False)[0]
-            if self.show_window:
-                cv2.imshow('YOLO Detection', result.plot())
-                cv2.waitKey(1)
             message.detected = len(result.boxes) > 0
             if message.detected:
                 # xyxy 是原图像素坐标，不使用归一化坐标或模型输入尺寸。
@@ -129,6 +161,14 @@ class YoloDetectNode(Node):
                 message.x2, message.y2 = float(x2), float(y2)
                 message.fx = float((x1 + x2) / 2.0)
                 message.fy = float((y1 + y2) / 2.0)
+            if self.show_window:
+                display_frame = result.plot()
+                self.draw_alignment_guides(display_frame)
+                if message.detected:
+                    center = (round(message.fx), round(message.fy))
+                    cv2.circle(display_frame, center, 3, (0, 0, 255), -1)
+                cv2.imshow('YOLO Detection', display_frame)
+                cv2.waitKey(1)
         except Exception as exc:
             self.get_logger().error(f'YOLO 推理或显示失败: {exc}')
             self.finish_detection(0)

@@ -109,14 +109,16 @@ class BoxAlignment(LateralAlignment):
 
     def __init__(self, *, enable_forward=True, max_forward_speed=0.3,
                  forward_gain=1.0, forward_direction=1.0,
-                 height_min_ratio=0.8, height_max_ratio=0.9, **kwargs):
+                 height_min_ratio=0.8, height_max_ratio=0.9,
+                 position_confirm_duration=0.5, **kwargs):
         super().__init__(**kwargs)
         self.max_forward_speed = speed_limit(max_forward_speed)
-        values = (forward_gain, forward_direction, height_min_ratio, height_max_ratio)
+        values = (forward_gain, forward_direction, height_min_ratio,
+                  height_max_ratio, position_confirm_duration)
         if not all(math.isfinite(value) for value in values):
-            raise ValueError('前后控制参数必须为有限数值')
-        if forward_gain <= 0.0:
-            raise ValueError('forward_gain 必须大于零')
+            raise ValueError('前后控制参数和位置确认时长必须为有限数值')
+        if forward_gain <= 0.0 or position_confirm_duration <= 0.0:
+            raise ValueError('forward_gain 和位置确认时长必须大于零')
         if forward_direction not in (-1.0, 1.0):
             raise ValueError('forward_direction 只能为 -1 或 1')
         if not 0.0 < height_min_ratio < height_max_ratio <= 1.0:
@@ -126,8 +128,11 @@ class BoxAlignment(LateralAlignment):
         self.forward_direction = forward_direction
         self.height_min_ratio = height_min_ratio
         self.height_max_ratio = height_max_ratio
+        self.position_confirm_duration = position_confirm_duration
         self.in_size = False
         self.forward_error = None
+        self.center_in_since = None
+        self.size_in_since = None
 
     @property
     def in_position(self):
@@ -138,22 +143,54 @@ class BoxAlignment(LateralAlignment):
         super().start(session_id)
         self.in_size = False
         self.forward_error = None
+        self.center_in_since = None
+        self.size_in_since = None
+
+    def _update_confirmation_timers(self, now):
+        """分别累计水平中心和框高连续处于允许范围内的时间。"""
+        if self.in_center:
+            if self.center_in_since is None:
+                self.center_in_since = now
+        else:
+            self.center_in_since = None
+        if self.enable_forward and self.in_size:
+            if self.size_in_since is None:
+                self.size_in_since = now
+        else:
+            self.size_in_since = None
+
+    def position_is_stable(self, now):
+        """水平中心和框高各自连续达标指定时长后返回 True。"""
+        if (not self.in_center or self.center_in_since is None
+                or now - self.center_in_since
+                < self.position_confirm_duration):
+            return False
+        if not self.enable_forward:
+            return True
+        return (self.in_size and self.size_in_since is not None
+                and now - self.size_in_since >= self.position_confirm_duration)
 
     def update(self, session_id, detected, fx, fy, width, height, now,
                y1=None, y2=None):
         if not self.active or session_id != self.session_id:
             return
+        # 长时间没有检测结果时，未知区间不能算作连续达标时间。
+        if (self.last_received is not None
+                and now - self.last_received > self.detection_timeout):
+            self.center_in_since = None
+            self.size_in_since = None
         super().update(session_id, detected, fx, fy, width, height, now)
         self.in_size = False
         self.forward_error = None
         if not self.enable_forward or self.error is None:
+            self._update_confirmation_timers(now)
             return
         if (y1 is None or y2 is None
                 or not math.isfinite(y1) or not math.isfinite(y2)
                 or not 0.0 <= y1 <= fy <= y2 <= height or y1 == y2):
             # 消息缺少有效框边界时，两轴都停车，不使用上一帧的前后偏差。
             self.error = None
-            self.in_center = False
+            self._update_confirmation_timers(now)
             return
         box_height = y2 - y1
         self.in_size = (self.height_min_ratio * height <= box_height
@@ -161,6 +198,7 @@ class BoxAlignment(LateralAlignment):
         target = (self.height_min_ratio + self.height_max_ratio) / 2.0
         # 仅用框高判断远近：偏小为正（前进），偏大为负（后退）。
         self.forward_error = target - box_height / height
+        self._update_confirmation_timers(now)
 
     def forward_velocity(self, now):
         """框偏小时前进，偏大时后退；水平未对中、丢失或过期时为零。"""
@@ -176,6 +214,8 @@ class BoxAlignment(LateralAlignment):
         super().finish()
         self.in_size = False
         self.forward_error = None
+        self.center_in_since = None
+        self.size_in_since = None
 
 
 class YoloControlNode(Node):
@@ -204,7 +244,6 @@ class YoloControlNode(Node):
             'box_height_min_ratio': 0.8,
             'box_height_max_ratio': 0.9,
             'lock_on_center': False,
-            'lock_stop_duration': 1.0,
             'lateral_direction': -1.0,
             'control_rate': 20.0,
             'detection_timeout': 0.5,
@@ -235,12 +274,10 @@ class YoloControlNode(Node):
         self.service_wait_timeout = float(value('service_wait_timeout'))
         self.stop_duration = float(value('stop_duration'))
         self.lock_on_center = value('lock_on_center')
-        self.lock_stop_duration = float(value('lock_stop_duration'))
         for name, number in (
                 ('control_rate', self.control_rate),
                 ('service_wait_timeout', self.service_wait_timeout),
-                ('stop_duration', self.stop_duration),
-                ('lock_stop_duration', self.lock_stop_duration)):
+                ('stop_duration', self.stop_duration)):
             if not math.isfinite(number) or number <= 0.0:
                 raise ValueError(f'{name} 必须为有限正数')
         self.trigger_value = int(value('trigger_value'))
@@ -270,7 +307,9 @@ class YoloControlNode(Node):
                 f'前后速度上限 {self.alignment.max_forward_speed:.3f} m/s')
         if self.lock_on_center:
             self.get_logger().info(
-                f'已开启首次到位锁车：连续发送 {self.lock_stop_duration:.2f} 秒零速度后释放串口')
+                f'已开启到位锁车：中心和框高连续达标 '
+                f'{self.alignment.position_confirm_duration:.2f} 秒后锁车，'
+                f'持续发送零速度，直到 YOLO 返回目标消失状态')
 
     def slope_callback(self, message):
         """处理 /slope 消息，默认收到 3 时开始一轮 YOLO 平移追踪。
@@ -279,7 +318,7 @@ class YoloControlNode(Node):
         """
         if message.slope != self.trigger_value:
             return
-        if (self.alignment.active or self.stop_until is not None
+        if (self.alignment.active or self.center_locked or self.stop_until is not None
                 or (self.request_future is not None and not self.request_future.done())):
             self.get_logger().warn('上一轮尚未结束，忽略重复触发')
             return
@@ -299,21 +338,23 @@ class YoloControlNode(Node):
     def detection_callback(self, message):
         """接收实时检测结果，过滤过期坐标并更新左右和前后控制状态。
 
-        水平中心和框高比例同时达标时立即停车；锁车模式只处理首次到位。
+        锁车模式需要两个位置条件各自连续达标后才锁车。
         """
         # 已经过期的推理结果不能用于启动横移。
         stamp = message.stamp.sec + message.stamp.nanosec / 1e9
         age = self.get_clock().now().nanoseconds / 1e9 - stamp
         detected = message.detected and 0.0 <= age <= self.alignment.detection_timeout
         was_in_position = self.alignment.in_position
+        now = time.monotonic()
         self.alignment.update(
             message.session_id, detected, message.fx, message.fy,
-            message.image_width, message.image_height, time.monotonic(),
+            message.image_width, message.image_height, now,
             y1=message.y1, y2=message.y2)
-        if not was_in_position and self.alignment.in_position:
-            if self.lock_on_center:
+        if self.lock_on_center:
+            if self.alignment.position_is_stable(now):
                 self.lock_at_center()
                 return
+        elif not was_in_position and self.alignment.in_position:
             self.get_logger().info('方块水平中心和框高比例已达标，发送零速度；移出后继续追踪')
             # 到位当次回调立即发零，不必等下一个控制定时器。
             try:
@@ -322,15 +363,11 @@ class YoloControlNode(Node):
                 self.serial_failure(exc)
 
     def lock_at_center(self):
-        """首次到位后停止追踪速度，连续发指定时长零速度，再由定时器关闭串口。
-
-        检测服务继续等待方块被拿走，但其结果不再触发串口发送或延长停车时间。
-        """
+        """连续到位确认后锁车，持续发送零速度，直到检测服务确认目标消失。"""
         self.center_locked = True
         self.alignment.finish()
-        self.stop_until = time.monotonic() + self.lock_stop_duration
         self.get_logger().info(
-            f'首次到位，连续发送 {self.lock_stop_duration:.2f} 秒零速度后结束本轮串口控制')
+            '中心和框高连续达标，已锁车；持续发送零速度，等待 YOLO 确认目标消失')
         try:
             self.writer.send(0.0)
         except Exception as exc:
@@ -339,9 +376,9 @@ class YoloControlNode(Node):
     def control_tick(self):
         """按固定频率执行控制，默认每 50 ms 调用一次。
 
-        每轮仅发送一次 YOLO 启动请求，之后持续发送横移或前后速度。
-        本轮结束或锁车模式首次到位后，连续发送对应时长的零速度，再关闭串口。
-        串口释放后不再发送速度；检测服务可以继续等待方块被拿走。
+        启动 YOLO 检测后持续发送横移或前后速度；锁车前若目标提前消失会重启检测。
+        锁车后始终发送零速度并保持串口占用；YOLO 确认目标消失后进入结束停车流程。
+        结束停车时长到达后关闭串口，等待下一次触发。
         """
         now = time.monotonic()
         if self.alignment.active:
@@ -367,6 +404,11 @@ class YoloControlNode(Node):
                         self.writer.send(vy)
                 except Exception as exc:
                     self.serial_failure(exc)
+        elif self.center_locked:
+            try:
+                self.writer.send(0.0)
+            except Exception as exc:
+                self.serial_failure(exc)
         elif self.stop_until is not None:
             try:
                 self.writer.send(0.0)
@@ -381,7 +423,7 @@ class YoloControlNode(Node):
         """处理 YOLO 异步服务的最终响应，收到 success=1 时确认本轮识别完成。
 
         未锁车时，返回 0、其他状态或异常也会进入停车流程。
-        已首次到位锁车时只记录检测结果，不重发速度，也不重置停车计时。
+        已锁车时持续发零速度，直到服务结束后进入最终停车和串口释放流程。
         """
         if future is not self.request_future:
             return
@@ -391,14 +433,20 @@ class YoloControlNode(Node):
             response = future.result()
             success = response is not None and response.success == 1
         except Exception as exc:
-            if self.center_locked:
-                self.get_logger().warn(f'YOLO 服务异常: {exc}；已首次到位锁车，不重新接管串口')
-                return
             self.finish_round(False, f'YOLO 服务异常: {exc}')
             return
+        if success and self.lock_on_center and not self.center_locked:
+            self.get_logger().warn(
+                'YOLO 在锁车前已连续丢失目标，重新启动检测；'
+                '到位锁车后再等待目标消失')
+            self.request_future = None
+            self.service_deadline = time.monotonic() + self.service_wait_timeout
+            return
         if self.center_locked:
-            (self.get_logger().info if success else self.get_logger().warn)(
-                f'YOLO 检测结束，完成状态为 {int(success)}；已首次到位锁车，不重新接管串口')
+            self.finish_round(
+                success,
+                'YOLO 返回 1，方块已消失，本轮完成' if success
+                else '锁车后 YOLO 未返回完成状态 1，本轮未成功，停车')
             return
         self.finish_round(
             success, 'YOLO 返回 1，方块已消失，本轮完成' if success
@@ -407,6 +455,7 @@ class YoloControlNode(Node):
     def finish_round(self, success, message):
         """结束当前追踪、记录结果，并立即发零速度、启动连续停车计时。"""
         self.alignment.finish()
+        self.center_locked = False
         self.stop_until = time.monotonic() + self.stop_duration
         (self.get_logger().info if success else self.get_logger().warn)(message)
         try:
@@ -417,6 +466,7 @@ class YoloControlNode(Node):
     def serial_failure(self, exc):
         """串口发生异常时终止本轮控制，并尝试发送停车帧和关闭串口。"""
         self.alignment.finish()
+        self.center_locked = False
         self.stop_until = None
         self.get_logger().error(f'串口通信失败，停止本轮控制: {exc}')
         try:
