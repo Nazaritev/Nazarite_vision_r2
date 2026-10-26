@@ -12,11 +12,13 @@ from launch.actions import (
     DeclareLaunchArgument,
     ExecuteProcess,
     TimerAction,
+    IncludeLaunchDescription, 
 )
 import launch_ros
 import launch
 from launch_ros.substitutions import FindPackageShare
 import math
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
     pkg_dir = get_package_share_directory('rc_bringup')
@@ -85,7 +87,7 @@ def generate_launch_description():
                 'xfer_format': 1,
                 'multi_topic': 0,
                 'data_src': 0,
-                'publish_freq': 20.0,
+                'publish_freq': 40.0, # 20.0
                 'output_data_type': 0,
                 'frame_id': 'livox_frame',
                 'user_config_path': os.path.join(
@@ -154,6 +156,19 @@ def generate_launch_description():
                 'use_sim_time': use_sim_time,
                 'autostart': True,
                 'node_names': ['map_server', 'amcl'],
+            }],
+        ),
+        Node(
+            package='pointcloud_to_grid',
+            executable='pointcloud_to_grid_node', # 注意：请确认它的可执行文件名，通常是这个
+            name='pointcloud_to_grid_node',
+            output='screen',
+            parameters=[{
+                'use_sim_time': use_sim_time,
+                'cloud_in_topic': '/cloud_registered', # 输入点云话题
+                'z_min': -2.0  ,                   # 高度筛选下限
+                'z_max':1.5  ,                     # 高度筛选上限.
+                'cell_size': 0.1, 
             }],
         ),
     ]

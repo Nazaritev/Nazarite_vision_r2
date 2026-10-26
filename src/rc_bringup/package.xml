@@ -41,6 +41,7 @@
   <exec_depend>stm32_driver</exec_depend>
   <exec_depend>tur3_run_interfaces</exec_depend>
   <exec_depend>run_keyboard_test</exec_depend>
+  <exec_depend>pointcloud_to_grid</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

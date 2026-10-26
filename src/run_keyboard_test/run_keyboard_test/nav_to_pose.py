@@ -33,6 +33,7 @@ class NavToPose(BasicNavigator):
         self.nav_mode_client = self.create_client(UseNavToPose, '/nav_mode/slope')
         # 初始位置
         self.pose_init(-0.4,3.2,3.1415626)
+        self.waitUntilNav2Active()
         # # 上斜坡
         # self.nav2_mult([[1.8,3.6],[7.3,3.6],[8.1,2.2]])
         # time.sleep(1.0)
@@ -142,7 +143,7 @@ class NavToPose(BasicNavigator):
         
         
     def nav2_mult(self,poses):
-        self.waitUntilNav2Active()
+        
         goal_poses = []
         for pose in poses:
             goal_pose = PoseStamped()
@@ -309,9 +310,7 @@ class NavToPose(BasicNavigator):
 
     def nav_pose(self,x,y,yaw_goal = 0,adjust_angle = False):
         # navigator = BasicNavigator()
-    
-        # 等待导航启动完成
-        self.waitUntilNav2Active()
+
     
         # ---------- 设置目标点坐标 ----------
         goal_pose = PoseStamped()

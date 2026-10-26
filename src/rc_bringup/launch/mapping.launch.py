@@ -113,7 +113,7 @@ def generate_launch_description():
         executable='livox_ros_driver2_node',
         parameters=[{
             'xfer_format': 1, 'multi_topic': 0, 'data_src': 0,
-            'publish_freq': 20.0, 'output_data_type': 0, 'frame_id': 'livox_frame',
+            'publish_freq': 30.0, 'output_data_type': 0, 'frame_id': 'livox_frame',
             'user_config_path': os.path.join(config_dir, 'MID360_driver.json')
         }]
     )
