@@ -12,7 +12,7 @@ import time
 import serial
 import struct
 from tur3_run_interfaces.srv import UseNavToPose,NavOnce
-from tur3_run_interfaces.msg import Slope
+from tur3_run_interfaces.msg import Slope,AdjYaw
 # ros2 run tur3_run_test nav_to_pose
 # 单点导航
 # 增加初始化位置设置
@@ -29,60 +29,111 @@ class NavToPose(BasicNavigator):
         # thread2 = threading.Thread(target=self.slope_thread2)
         # thread2.start()
         self.slope_publisher = self.create_publisher(Slope,'/slope',5)
+        self.yaw_publisher = self.create_publisher(AdjYaw,'/adj_yaw',5)
         self.vw_publisher = self.create_publisher(Twist,'/cmd_vel',10)
         self.nav_mode_client = self.create_client(UseNavToPose, '/nav_mode/slope')
         # 初始位置
-        self.pose_init(-0.4,3.2,3.1415626)
-        self.waitUntilNav2Active()
+        self.pose_init(-0.45,3.2,3.1415626)
+        # self.waitUntilNav2Active()
+        # # 等待开始
+        # while self.bool_slope != True:
+        #     rclpy.spin_once(self, timeout_sec=0.1)
+        # self.bool_slope = False
         # # 上斜坡
-        # self.nav2_mult([[1.8,3.6],[7.3,3.6],[8.1,2.2]])
+        # self.nav2_mult([[1.8,3.6],[7.4,3.6],[8.1,2.2]])
         # time.sleep(1.0)
+        # self.adj_yaw_auto(0.0)
+        # time.sleep(0.1)
         # sl = Slope()
         # sl.slope = 2
         # self.slope_publisher.publish(sl)
         # while self.bool_slope != True:
         #     rclpy.spin_once(self, timeout_sec=0.1)
         # self.bool_slope = False
-        # # 等待位置
+        # # # 等待位置
         # self.run_dir(vy=0.8,run_time=1.2,acc=0.2,acc_time=0.1)
-        # self.adj_angle(0,3.1415/2)
+        # time.sleep(0.1)
+        # # self.adj_angle(0,3.1415/2)
+        # self.adj_yaw_auto(-3.1415/2)
+        # self.pose_init(3.30,1.44,3.1415626/2)
         # # 调用摄像头
-        # time.sleep(1.0)
+        # time.sleep(0.5)
         # self.camera_use()
-        # # 点位1
-        # time.sleep(1.0)
-        # self.adj_angle(0,-3.1415/2)
-        # #self.nav2_mult([[3.0,0.8],[2.3,1.4],[2.3,1.4]]) #!!!!!!!!!!!!!!
-        # self.nav_pose(2.4,1.4)
+        # # # # 点位1
+        # time.sleep(0.1)
+        # # # self.adj_angle(0,-3.1415/2)
+        # self.adj_yaw_auto(0.0)
+        # # # #self.nav2_mult([[3.0,0.8],[2.3,1.4],[2.3,1.4]]) #!!!!!!!!!!!!!!
+        # self.nav_pose(2.5,1.35)
         # time.sleep(1.0)
         # start = time.time()
-        # while time.time() - start < 6:
+        # while time.time() - start < 2:
         #     time.sleep(0.1)
         # self.run_dir(vx=-0.4,vy=0.2,run_time=0.5)
-        # # 交接区
-        # self.nav2_mult([[3.0,0.8],[3.3,1.4]]) #!!!!!!!!!!!!!!
+        # # # 交接区
+        # self.nav2_mult([[3.0,0.8],[3.45,1.44]]) #
         # time.sleep(1.0)
-        # self.adj_angle(0,3.1415/2)
-        # # 调用摄像头
-        # time.sleep(1.0)
+        # # self.adj_angle(0,3.1415/2)
+        # self.adj_yaw_auto(-3.1415/2)
+        # # # 调用摄像头
+        # time.sleep(0.1)
         # self.camera_use()
-        # time.sleep(1.0)
-        # # 点位2
-        # time.sleep(1.0)
-        # self.adj_angle(0,-3.1415)
-        # self.nav2_mult([[2.5,0.8],[2.07,-0.9]]) #!!!!!!!!!!!!!!
+        # time.sleep(0.1)
+        # # # 点位2
+        # # self.adj_angle(0,-3.1415)
+        # self.adj_yaw_auto(3.1415/2)
+        # self.nav2_mult([[2.5,0.8],[2.12,-0.81]]) #!!!!!!!!!!!!!!
         # time.sleep(1.0)
         # start = time.time()
-        # while time.time() - start < 6:
+        # while time.time() - start < 2:
         #     time.sleep(0.1)
         # self.run_dir(vx=-0.4,run_time=0.8)
-        # # 交接区
-        # self.nav2_mult([[2.7,0.8],[3.2,1.4]]) #!!!!!!!!!!!!!!
+        # # # 交接区
+        # self.nav2_mult([[2.6,0.8],[3.45,1.44]]) #!!!!!!!!!!!!!!
         # time.sleep(1.0)
-        # self.adj_angle(0,3.1415)
+        # # self.adj_angle(0,3.1415)
+        # self.adj_yaw_auto(-3.1415/2)
+        # # # 调用摄像头
+        # time.sleep(0.1)
+        # self.camera_use()
+        # time.sleep(0.1)
+        # # 点位3
+        # self.adj_yaw_auto(3.1415)
+        # self.nav_pose(6.8,1.36)
+        # time.sleep(1.0)
+        # start = time.time()
+        # while time.time() - start < 2:
+        #     time.sleep(0.1)
+        # self.run_dir(vx=-0.4,vy=-0.2,run_time=0.5)
+        # # # 交接区
+        # # self.nav_pose(3.45,1.44)
+        # self.nav2_mult([[4.5,1.3],[3.45,1.44]])
+        # time.sleep(1.0)
+        # self.adj_yaw_auto(-3.1415/2)
+        # # # 调用摄像头
+        # time.sleep(0.1)
+        # self.camera_use()
+        # time.sleep(0.1)
+        # # 点位4
+        # self.adj_yaw_auto(3.1415/2)
+        # self.nav2_mult([[6.7,0.71],[7.24,-0.85]])
+        # time.sleep(1.0)
+        # start = time.time()
+        # while time.time() - start < 2:
+        #     time.sleep(0.1)
+        # self.run_dir(vx=-0.4,run_time=0.8)
+        # # # 交接区
+        # self.nav2_mult([[6.7,0.71],[3.45,1.44]]) #!!!!!!!!!!!!!!
+        # time.sleep(1.0)
+        # self.adj_yaw_auto(-3.1415/2)
+
+
+        
 
 
         # self.camera_use()
+        # self.pose_init(6.7,0.71,-3.1415/2)
+        
         #self.nav_pose(2.5,1.3)
         #self.nav_pose(6.7,1.3)
         #self.nav_pose(2.35,1.3)
@@ -91,6 +142,15 @@ class NavToPose(BasicNavigator):
         # self.run_dir(vx=-0.8,run_time=0.5,acc=0.2,acc_time=0.1)
         # time.sleep(0.1)
         # self.adj_angle(0,-3.1415/2)
+
+    def adj_yaw_auto(self,goal_yaw):
+        ya = AdjYaw()
+        ya.goal_yaw = goal_yaw
+        self.yaw_publisher.publish(ya)
+        while self.bool_slope != True:
+            rclpy.spin_once(self, timeout_sec=0.1)
+        self.bool_slope = False
+
     def camera_use(self):
         sl = Slope()
         sl.slope = 3
@@ -143,7 +203,7 @@ class NavToPose(BasicNavigator):
         
         
     def nav2_mult(self,poses):
-        
+        # self.waitUntilNav2Active()
         goal_poses = []
         for pose in poses:
             goal_pose = PoseStamped()
@@ -310,7 +370,9 @@ class NavToPose(BasicNavigator):
 
     def nav_pose(self,x,y,yaw_goal = 0,adjust_angle = False):
         # navigator = BasicNavigator()
-
+    
+        # 等待导航启动完成
+        # self.waitUntilNav2Active()
     
         # ---------- 设置目标点坐标 ----------
         goal_pose = PoseStamped()
