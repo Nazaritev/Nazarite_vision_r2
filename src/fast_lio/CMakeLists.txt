@@ -127,6 +127,22 @@ install(TARGETS
   slope_filter_node
   DESTINATION lib/${PROJECT_NAME}
 )
+
+# 四角堆叠检测：订阅 /cloud_registered，发布 RViz marker / 层数
+add_executable(block_stacking_detection src/Block_stacking_detection.cpp)
+ament_target_dependencies(block_stacking_detection
+  rclcpp
+  geometry_msgs
+  sensor_msgs
+  std_msgs
+  visualization_msgs
+  pcl_conversions
+  PCL
+)
+install(TARGETS
+  block_stacking_detection
+  DESTINATION lib/${PROJECT_NAME}
+)
 target_include_directories(fastlio_mapping PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>

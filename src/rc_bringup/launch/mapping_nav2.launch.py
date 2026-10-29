@@ -23,7 +23,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 def generate_launch_description():
     pkg_dir = get_package_share_directory('rc_bringup')
     config_dir = os.path.join(pkg_dir, 'config', 'reality')
-    map_yaml_file = os.path.join(pkg_dir, 'map', 'map2.yaml')
+    map_yaml_file = os.path.join(pkg_dir, 'map', 'clean_map.yaml')
     bt_xml_file = os.path.join(
         config_dir, 'navigate_to_pose_teb_mppi_selector.xml'
     )
@@ -105,6 +105,29 @@ def generate_launch_description():
                 {'use_sim_time': use_sim_time, 'pcd_save.pcd_save_en': False},
             ],
         ),
+        # 四角堆叠检测：订阅 /cloud_registered，发布 /block_stacking/markers、
+        # /block_stacking/corner_cloud、/block_stacking/layers（四角层数）
+        # ★ corner_N = [x_min, x_max, y_min, y_max, z_min, z_max]，务必按场地改
+        Node(
+            package='fast_lio',
+            executable='block_stacking_detection',
+            name='block_stacking_detection',
+            output='screen',
+            parameters=[{
+                'use_sim_time': use_sim_time,
+                'cloud_topic': '/cloud_registered',
+                'cube_height': 0.5,
+                'max_height': 3.0,
+                'min_height_for_cube': 0.25,
+                'ground_percentile': 0.05,
+                'top_percentile': 0.95,
+                'process_period': 0.2,
+                'corner_1': [-1.0, 1.0, -1.0, 1.0, -0.5, 1.8],
+                'corner_2': [-1.0, 1.0, -1.0, 1.0, -0.5, 1.8],
+                'corner_3': [-1.0, 1.0, -1.0, 1.0, -0.5, 1.8],
+                'corner_4': [-1.0, 1.0, -1.0, 1.0, -0.5, 1.8],
+            }],
+        ),
         Node(
             package='pointcloud_to_laserscan',
             executable='pointcloud_to_laserscan_node',
@@ -114,7 +137,7 @@ def generate_launch_description():
                 'use_sim_time': use_sim_time,
                 'target_frame': 'footprint_link',
                 'transform_tolerance': 0.1,
-                'min_height': -0.55,
+                'min_height': -0.60,
                 'max_height': 4.0,
                 'angle_min': -3.14159,
                 'angle_max': 3.14159,
@@ -167,8 +190,21 @@ def generate_launch_description():
                 'use_sim_time': use_sim_time,
                 'cloud_in_topic': '/cloud_registered', # 输入点云话题
                 'z_min': -2.0  ,                   # 高度筛选下限
-                'z_max':1.5  ,                     # 高度筛选上限.
-                'cell_size': 0.1, 
+                'z_max':2.0  ,                     # 高度筛选上限.
+                'cell_size': 0.05 ,
+                # height_grid 的数值换算：value = (z + height_offset) * height_factor
+                # OccupancyGrid 只有 0..100（灰度），必须把关心的地面以上高度摊满
+                # 整个量程，否则所有格子都是 0/1，图上就是一片同色。
+                # ground 在 map 系约 -0.55m（base_link 比 motion_link 高 0.576m），
+                # 所以 offset=0.55 让地面→0；factor=100 让地面以上 1m→100。
+                'height_offset': 0.55,
+                'height_factor': 125.0,
+                # 自车（车身）点剔除：框在 base_link 下（x 前  y 左  z 上），
+                # 默认 = 雷达左后方 0.5m x 0.5m（雷达在车身右上角）。
+                'ego_filter_enable': True,
+                'ego_frame': 'base_link',
+                'ego_x_min': -0.5, 'ego_x_max': 0.0,
+                'ego_y_min': 0.0,  'ego_y_max': 0.5,
             }],
         ),
     ]

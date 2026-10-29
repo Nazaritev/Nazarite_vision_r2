@@ -191,7 +191,7 @@ class ImuYawListener(Node):
         # self.get_logger().info(f'四元数: x={q.x:.4f}, y={q.y:.4f}, z={q.z:.4f}, w={q.w:.4f}')
         if time.time() - self.start_time > 0.1:
             # self.get_logger().info(f'{self.pitch} = {pitch} - {self.pitch_init}')
-            #self.get_logger().info(f'rool={rotation_euler[0]:.3f},pithch={self.pitch:.3f},yaw={rotation_euler[2]:.3f}')
+            self.get_logger().info(f'rool={rotation_euler[0]:.3f},pithch={self.pitch:.3f},yaw={rotation_euler[2]:.3f}')
             self.start_time = time.time()
         # self.get_logger().info(f'Yaw: {yaw:.4f} rad ({yaw * 180.0 / 3.141592653589793:.2f} deg)')
 

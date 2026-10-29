@@ -9,11 +9,11 @@ amcl:
     map_topic: /map
     tf_broadcast: true
     robot_model_type: nav2_amcl::OmniMotionModel
-    alpha1: 0.35
-    alpha2: 0.35
-    alpha3: 0.35
-    alpha4: 0.35
-    alpha5: 0.35
+    alpha1: 0.50
+    alpha2: 0.50
+    alpha3: 0.50
+    alpha4: 0.50
+    alpha5: 0.50
     laser_model_type: likelihood_field
     laser_min_range: 0.45
     laser_max_range: 10.0
