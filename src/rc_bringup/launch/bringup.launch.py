@@ -273,6 +273,10 @@ def generate_launch_description():
         ),
         launch_arguments={
             "use_sim_time": use_sim_time,
+            "start_fast_lio": "false",
+            "start_livox": "false",
+            "start_robot_state_publisher": "false",
+            "rviz": "false",
             "world": world,
             "loc_map": loc_map,
             "initialpose_preset": initialpose_preset,

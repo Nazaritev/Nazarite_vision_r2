@@ -14,6 +14,8 @@
 #include <tf2_eigen/tf2_eigen.hpp>
 #include <queue>
 #include <cmath>
+#include <atomic>
+#include <thread>
 // #include <pcl/common/transforms.h>
 
 #include <Eigen/Core>
@@ -82,7 +84,7 @@ public:
     ~GloabalLocalization();
 
     /// @brief 初始化定位
-    void LocalizationInitialize();
+    bool LocalizationInitialize();
 
     /// @brief 订阅fast_lio里程计信息
     void CallbackBaselink2Odom(const nav_msgs::msg::Odometry::SharedPtr baselink2odom);
@@ -169,8 +171,7 @@ private:
 
     std::thread thread_loc_;
     std::mutex lock_scan_;
-    std::mutex lock_exit_;
-    bool flag_exit_;
+    std::atomic<bool> flag_exit_{false};
 
     rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr pub_baselink2map_;
     rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr pub_baselink2map_kalman_;
@@ -265,7 +266,8 @@ GloabalLocalization::GloabalLocalization() : Node("global_loc_node"),
     pub_odom2map_ = this->create_publisher<nav_msgs::msg::Odometry>("/odom2map", 100000);
     pub_odom2map_kalman_ = this->create_publisher<nav_msgs::msg::Odometry>("/odom2map_kalman", 100000);
 
-    pub_map_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("/map", 1);
+    pub_map_ = this->create_publisher<sensor_msgs::msg::PointCloud2>(
+        "/map", rclcpp::QoS(rclcpp::KeepLast(1)).reliable().transient_local());
     pub_submap_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("/submap", 1);
     pub_scan2map_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("/scan2map", 1);
     pub_scan_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("/scan", 1);
@@ -312,9 +314,9 @@ GloabalLocalization::GloabalLocalization() : Node("global_loc_node"),
     this->declare_parameter<double>("confidence_loc_th", 0.6);
 
     /// 卡尔曼参数
-    this->declare_parameter<std::vector<double>>("kf_baselink2map/x", std::vector<double>(2));
-    this->declare_parameter<std::vector<double>>("kf_baselink2map/y", std::vector<double>(2));
-    this->declare_parameter<std::vector<double>>("kf_baselink2map/z", std::vector<double>(2));
+    this->declare_parameter<std::vector<double>>("kf_baselink2map.x", std::vector<double>{0.001, 0.002});
+    this->declare_parameter<std::vector<double>>("kf_baselink2map.y", std::vector<double>{0.001, 0.005});
+    this->declare_parameter<std::vector<double>>("kf_baselink2map.z", std::vector<double>{0.00001, 0.04});
 
     this->declare_parameter<bool>("filter_odom2map", false);
     this->declare_parameter<double>("kalman_processVar2", 0.02);
@@ -340,9 +342,9 @@ GloabalLocalization::GloabalLocalization() : Node("global_loc_node"),
     this->get_parameter("maxpoints_target", maxpoints_target_);
     this->get_parameter("loc_frequence", loc_frequence_);
     this->get_parameter("confidence_loc_th", confidence_loc_th_);
-    this->get_parameter("kf_baselink2map/x", kf_param_x_);
-    this->get_parameter("kf_baselink2map/y", kf_param_y_);
-    this->get_parameter("kf_baselink2map/z", kf_param_z_);
+    this->get_parameter("kf_baselink2map.x", kf_param_x_);
+    this->get_parameter("kf_baselink2map.y", kf_param_y_);
+    this->get_parameter("kf_baselink2map.z", kf_param_z_);
     this->get_parameter("filter_odom2map", filter_odom2map_);
     this->get_parameter("kalman_processVar2", kalman_processVar2_);
     this->get_parameter("kalman_estimatedMeasVar2", kalman_estimatedMeasVar2_);
@@ -471,6 +473,8 @@ GloabalLocalization::GloabalLocalization() : Node("global_loc_node"),
 
     pcd_map_coarse_ = pcd_map_ori_->VoxelDownSample(voxelsize_coarse_);
     pcd_map_coarse_->EstimateNormals(open3d::geometry::KDTreeSearchParamHybrid(voxelsize_coarse_ * 2, 30));
+    RCLCPP_INFO(this->get_logger(), "Loaded map %s: %zu points, visualization %zu points",
+                path_map.c_str(), pcd_map_ori_->points_.size(), pcd_map_coarse_->points_.size());
 
     /// publish map, 用粗地图可视化，减少资源占用
     sensor_msgs::msg::PointCloud2 pc2_map;
@@ -498,9 +502,11 @@ GloabalLocalization::GloabalLocalization() : Node("global_loc_node"),
 
 GloabalLocalization::~GloabalLocalization()
 {
-    lock_exit_.lock();
     flag_exit_ = true;
-    lock_exit_.unlock();
+    if (thread_loc_.joinable())
+    {
+        thread_loc_.join();
+    }
 }
 
 Eigen::Matrix3d GloabalLocalization::Euler2Matrix3d(const Eigen::Vector3d euler)
@@ -520,11 +526,12 @@ bool GloabalLocalization::GetTfTransformToMatrix(std::string frame_id, std::stri
     geometry_msgs::msg::TransformStamped pose_;
     try
     {
-        pose_ = tf_buffer_.lookupTransform(frame_id, child_frame_id, rclcpp::Time(0));
+        pose_ = tf_buffer_.lookupTransform(
+            frame_id, child_frame_id, rclcpp::Time(0), rclcpp::Duration::from_seconds(1.0));
     }
     catch (tf2::TransformException &e)
     {
-        RCLCPP_ERROR(this->get_logger(), "[GetTransformMatrix]: %s", e.what());
+        RCLCPP_DEBUG(this->get_logger(), "[GetTransformMatrix]: %s", e.what());
         return false;
     }
 
@@ -706,7 +713,7 @@ void GloabalLocalization::CallbackScan(
     auto cbk_e = std::chrono::high_resolution_clock::now();
 }
 
-void GloabalLocalization::LocalizationInitialize()
+bool GloabalLocalization::LocalizationInitialize()
 {
     /// 裁剪后的地图
     std::shared_ptr<open3d::geometry::PointCloud> map_coarse_crop(new open3d::geometry::PointCloud);
@@ -738,7 +745,7 @@ void GloabalLocalization::LocalizationInitialize()
     double fitness_initial; /// overlap
     double loc_cost = 0;    /// 定位耗时(ms)
     int count_success = 0;
-    while (rclcpp::ok())
+    while (!flag_exit_ && rclcpp::ok())
     {
         auto loc_s = std::chrono::high_resolution_clock::now(); /// 开始定位计时
         lock_scan_.lock();
@@ -820,22 +827,38 @@ void GloabalLocalization::LocalizationInitialize()
         }
     }
 
+    if (flag_exit_ || !rclcpp::ok())
+    {
+        return false;
+    }
     open3d::utility::LogInfo("\n\n\nlocalization initialize success!!!!\n\n\n");
+    return true;
 }
 void GloabalLocalization::Localization()
 {
     RCLCPP_INFO(this->get_logger(), "wait for Odometry");
     // 等待接收到第一条里程计消息（通过检查timestamp是否有效）
-    while (rclcpp::ok() && timestamp_odom_.seconds() == 0.0)
+    while (!flag_exit_ && rclcpp::ok())
     {
+        {
+            std::lock_guard<std::mutex> lock(lock_timestamp_);
+            if (timestamp_odom_.seconds() != 0.0)
+            {
+                break;
+            }
+        }
         RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 2000, "Waiting for Odometry...");
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+    if (flag_exit_ || !rclcpp::ok())
+    {
+        return;
     }
     RCLCPP_INFO(this->get_logger(), "Received Odometry");
 
     RCLCPP_INFO(this->get_logger(), "wait for cloud_registered_1");
     // 等待接收到第一条点云消息（通过检查pcd_scan_cur_是否为空）
-    while (rclcpp::ok())
+    while (!flag_exit_ && rclcpp::ok())
     {
         lock_scan_.lock();
         bool has_scan = !pcd_scan_cur_->IsEmpty();
@@ -847,12 +870,19 @@ void GloabalLocalization::Localization()
         RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 2000, "Waiting for cloud_registered_1...");
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
+    if (flag_exit_ || !rclcpp::ok())
+    {
+        return;
+    }
     RCLCPP_INFO(this->get_logger(), "Received cloud_registered_1");
 
     // initialize
     /****初始化定位****/
     mat_odom2map_ = mat_initialpose_; /// 初始位姿，从目前是从配置文件给
-    LocalizationInitialize();
+    if (!LocalizationInitialize())
+    {
+        return;
+    }
 
     /// 卡尔曼滤波初始化
     /// 使用当前 baselink2map 位置初始化卡尔曼滤波器
@@ -919,7 +949,7 @@ void GloabalLocalization::Localization()
     std::chrono::high_resolution_clock::time_point time_last_loc; /// 上次定位的完成时间点
     std::chrono::high_resolution_clock::time_point time_this_loc; /// 当前定位的开始时间点
     double loc_cost = 0;                                          /// 定位耗时(ms)
-    while (rclcpp::ok())
+    while (!flag_exit_ && rclcpp::ok())
     {
 
         lock_timestamp_.lock();
