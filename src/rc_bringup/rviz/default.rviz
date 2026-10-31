@@ -5,9 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /TF1
         - /TF1/Frames1
-        - /AMCL Particles1
         - /Localisation1/curr_scan_in_map1/Topic1
       Splitter Ratio: 0.50971919298172
     Tree Height: 413
@@ -337,11 +335,11 @@ Visualization Manager:
           Size (m): 0.009999999776482582
           Style: Points
           Topic:
-            Depth: 5
+            Depth: 1
             Durability Policy: Volatile
-            Filter size: 10
+            Filter size: 1
             History Policy: Keep Last
-            Reliability Policy: Reliable
+            Reliability Policy: Best Effort
             Value: /cur_scan_in_map
           Use Fixed Frame: true
           Use rainbow: true
@@ -371,11 +369,11 @@ Visualization Manager:
           Size (m): 0.009999999776482582
           Style: Points
           Topic:
-            Depth: 5
+            Depth: 1
             Durability Policy: Volatile
-            Filter size: 10
+            Filter size: 1
             History Policy: Keep Last
-            Reliability Policy: Reliable
+            Reliability Policy: Best Effort
             Value: /submap
           Use Fixed Frame: true
           Use rainbow: true
@@ -444,11 +442,11 @@ Visualization Manager:
           Size (m): 0.009999999776482582
           Style: Points
           Topic:
-            Depth: 2
+            Depth: 1
             Durability Policy: Volatile
-            Filter size: 10
+            Filter size: 1
             History Policy: Keep Last
-            Reliability Policy: Reliable
+            Reliability Policy: Best Effort
             Value: /cloud_pcd
           Use Fixed Frame: true
           Use rainbow: true
@@ -467,7 +465,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: AxisColor
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 255
@@ -480,20 +478,20 @@ Visualization Manager:
       Size (m): 0.009999999776482582
       Style: Flat Squares
       Topic:
-        Depth: 5
+        Depth: 1
         Durability Policy: Volatile
-        Filter size: 10
+        Filter size: 1
         History Policy: Keep Last
-        Reliability Policy: Reliable
+        Reliability Policy: Best Effort
         Value: /Laser_map
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 0.4635060131549835
-        Min Value: 0.4635060131549835
+        Max Value: -0.043103743344545364
+        Min Value: -0.6973587870597839
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -501,7 +499,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: AxisColor
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 4096
@@ -514,15 +512,15 @@ Visualization Manager:
       Size (m): 0.009999999776482582
       Style: Flat Squares
       Topic:
-        Depth: 5
+        Depth: 1
         Durability Policy: Volatile
-        Filter size: 10
+        Filter size: 1
         History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /cloud_obstacles
+        Reliability Policy: Best Effort
+        Value: /cloud_registered
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -548,18 +546,18 @@ Visualization Manager:
       Size (m): 0.10000000149011612
       Style: Flat Squares
       Topic:
-        Depth: 5
+        Depth: 1
         Durability Policy: Volatile
-        Filter size: 10
+        Filter size: 1
         History Policy: Keep Last
-        Reliability Policy: Reliable
+        Reliability Policy: Best Effort
         Value: /cloud_registered
       Use Fixed Frame: true
       Use rainbow: true
       Value: false
     - Alpha: 0.699999988079071
       Class: rviz_default_plugins/Map
-      Color Scheme: map
+      Color Scheme: raw
       Draw Behind: false
       Enabled: true
       Name: Map
@@ -616,25 +614,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 26.218589782714844
+      Distance: 13.88315486907959
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 1.334823727607727
-        Y: 0.24621900916099548
-        Z: -0.7053090333938599
+        X: -2.4215192794799805
+        Y: 2.220736026763916
+        Z: -0.8206438422203064
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.3747971057891846
+      Pitch: 1.3647966384887695
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz_default_plugins)
-      Yaw: 3.142380475997925
+      Yaw: 3.162386655807495
     Saved: ~
 Window Geometry:
   Displays:

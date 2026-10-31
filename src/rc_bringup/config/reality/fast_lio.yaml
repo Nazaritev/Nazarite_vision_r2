@@ -3,7 +3,7 @@
         feature_extract_enable: false
         point_filter_num: 1
         max_iteration: 5
-        filter_size_surf: 0.2
+        filter_size_surf: 0.01
         filter_size_map: 0.06
         cube_side_length: 24.0
         runtime_pos_log_enable: false
@@ -54,7 +54,7 @@
             scan_bodyframe_pub_en: false # IMU-body-frame cloud is only for debugging and adds extra publication load
 
         diagnostics:
-            min_effective_features_warn: 80
+            min_effective_features_warn: 60
             max_horizontal_ratio_warn: 0.80
             min_vertical_ratio_warn: 0.08
 

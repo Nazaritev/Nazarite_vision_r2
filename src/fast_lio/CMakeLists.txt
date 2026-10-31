@@ -60,6 +60,18 @@ find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(visualization_msgs REQUIRED)
+find_package(grid_map_core REQUIRED)
+find_package(grid_map_msgs REQUIRED)
+find_package(grid_map_ros REQUIRED)
+# grid_map_core exports Eigen plugin macros directory-wide. Its Eigen plugin
+# headers need the package-specific include root on every target.
+find_path(GRID_MAP_CORE_EIGEN_INCLUDE_DIR
+  grid_map_core/eigen_plugins/FunctorsPlugin.hpp
+  PATHS ${CMAKE_PREFIX_PATH}
+  PATH_SUFFIXES include/grid_map_core
+  REQUIRED
+)
+include_directories(${GRID_MAP_CORE_EIGEN_INCLUDE_DIR})
 find_package(pcl_ros REQUIRED)
 find_package(pcl_conversions REQUIRED)
 find_package(livox_ros_driver2 REQUIRED)
@@ -136,6 +148,9 @@ ament_target_dependencies(block_stacking_detection
   sensor_msgs
   std_msgs
   visualization_msgs
+  grid_map_core
+  grid_map_msgs
+  grid_map_ros
   pcl_conversions
   PCL
 )

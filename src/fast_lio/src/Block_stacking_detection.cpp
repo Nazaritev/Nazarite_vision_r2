@@ -14,7 +14,6 @@
 #include <pcl/point_types.h>
 #include <pcl/filters/crop_box.h>
 #include <pcl/filters/passthrough.h>
-#include <pcl/filters/statistical_outlier_removal.h>
 #include <pcl_conversions/pcl_conversions.h>
 
 // ============================================================
@@ -23,7 +22,7 @@
 //   离线版原来是读 ../scans.pcd，现在改成订阅 FAST-LIO 的
 //   /cloud_registered（里程计坐标系 odom 下的世界系点云，
 //   带 z，单位米），每个角做：
-//     裁剪 -> 去噪 -> z 分位数 -> 高度差 -> 层数
+//     裁剪 -> z 分位数 -> 高度差 -> 层数
 //
 //   可视化不再用 PCLVisualizer，改成发 RViz marker：
 //     /block_stacking/markers        四个 ROI 框 + 层数文字
@@ -173,7 +172,7 @@ private:
             return;
         }
 
-        // ---------- 2. 逐角裁剪、去噪、高度判断 ----------
+        // ---------- 2. 逐角裁剪、高度判断 ----------
         std::vector<CornerResult> results;
         results.reserve(corners_.size());
 
@@ -198,27 +197,12 @@ private:
                 continue;
             }
 
-            // 去噪（MeanK=20，StddevMulThresh=1.0）
-            pcl::PointCloud<pcl::PointXYZ>::Ptr denoised(
-                new pcl::PointCloud<pcl::PointXYZ>);
-            pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
-            sor.setInputCloud(corner_cloud);
-            sor.setMeanK(20);
-            sor.setStddevMulThresh(1.0);
-            sor.filter(*denoised);
-            res.cloud = denoised;
-
-            if (static_cast<int>(denoised->size()) < min_points_) {
-                RCLCPP_DEBUG(get_logger(), "%s: 去噪后点云太少，跳过",
-                             roi.name.c_str());
-                results.push_back(res);
-                continue;
-            }
+            res.cloud = corner_cloud;
 
             // 收集 Z 值并排序
             std::vector<float> z_vals;
-            z_vals.reserve(denoised->size());
-            for (const auto& pt : denoised->points) {
+            z_vals.reserve(corner_cloud->size());
+            for (const auto& pt : corner_cloud->points) {
                 z_vals.push_back(pt.z);
             }
             std::sort(z_vals.begin(), z_vals.end());
@@ -243,7 +227,7 @@ private:
 
             RCLCPP_INFO(get_logger(),
                         "%s 点数=%zu 地面Z=%.3f 顶部Z=%.3f 高度差=%.3f 有立方体=%s 层数=%d",
-                        roi.name.c_str(), denoised->size(), z_ground, z_top, diff,
+                        roi.name.c_str(), corner_cloud->size(), z_ground, z_top, diff,
                         res.has_cube ? "是" : "否", res.layers);
 
             results.push_back(res);

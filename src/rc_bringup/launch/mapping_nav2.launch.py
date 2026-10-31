@@ -116,6 +116,9 @@ def generate_launch_description():
             parameters=[{
                 'use_sim_time': use_sim_time,
                 'cloud_topic': '/cloud_registered',
+                'height_gridmap_topic': '/height_gridmap',
+                'height_layer': 'height',
+                'height_query_points': [0.0, 0.0],
                 'cube_height': 0.5,
                 'max_height': 3.0,
                 'min_height_for_cube': 0.25,

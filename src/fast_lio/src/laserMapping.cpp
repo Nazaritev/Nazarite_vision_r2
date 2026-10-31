@@ -880,7 +880,7 @@ void publish_map(rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr pub
     pcl::toROSMsg(*pcl_wait_pub, laserCloudmsg);
     if (laser_map_publish_en)
     {
-        laserCloudmsg.header.stamp = get_ros_time(lidar_end_time);
+        laserCloudmsg.header.stamp = builtin_interfaces::msg::Time();
         laserCloudmsg.header.frame_id = "odom";
         pubLaserCloudMap->publish(laserCloudmsg);
     }
