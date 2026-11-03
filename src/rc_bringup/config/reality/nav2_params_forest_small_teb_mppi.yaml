@@ -126,8 +126,8 @@ local_costmap:
       width: 6
       height: 6
       resolution: 0.02
-      footprint: "[ [0.144, 0.494], [0.144, -0.128], [-0.534, -0.128], [-0.534, 0.494] ]"
-      plugins: ["obstacle_layer", "inflation_layer"]
+      footprint: "[ [0.144, 0.724], [0.144, -0.358], [-0.534, -0.128], [-0.534, 0.494] ]"
+      plugins: ["obstacle_layer", "inflation_layer"] 
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
@@ -163,7 +163,7 @@ global_costmap:
       width: 14
       height: 14
       resolution: 0.02
-      footprint: "[ [0.339, 0.31], [0.339, -0.31], [-0.339, -0.31], [-0.339, 0.31] ]"
+      footprint: "[ [0.339, 0.31], [0.339, -0.54], [-0.339, -0.54], [-0.339, 0.31] ]"
       track_unknown_space: true
       plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
       static_layer:

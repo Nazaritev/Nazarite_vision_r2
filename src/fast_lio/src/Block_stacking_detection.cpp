@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <limits>
 #include <string>
@@ -10,52 +11,57 @@
 #include <std_msgs/msg/int32_multi_array.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
 
+#include <pcl/common/transforms.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/filters/crop_box.h>
-#include <pcl/filters/passthrough.h>
+#include <pcl/filters/statistical_outlier_removal.h>
 #include <pcl_conversions/pcl_conversions.h>
 
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2/exceptions.h>
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
+
 // ============================================================
-// 四角堆叠检测（在线版）
+// 堆叠检测（map 坐标系查询版）
 //
-//   离线版原来是读 ../scans.pcd，现在改成订阅 FAST-LIO 的
-//   /cloud_registered（里程计坐标系 odom 下的世界系点云，
-//   带 z，单位米），每个角做：
-//     裁剪 -> z 分位数 -> 高度差 -> 层数
+//   订阅 /cloud_registered（odom 系点云），先用 TF 变到 map 系，
+//   然后在 map 系下若干个查询点（points 参数，二维 [x,y] 对）处，
+//   各取一个竖直方柱 ROI，统计堆叠高度和层数。
 //
-//   可视化不再用 PCLVisualizer，改成发 RViz marker：
-//     /block_stacking/markers        四个 ROI 框 + 层数文字
-//     /block_stacking/corner_cloud   框内点云（绿=有立方体，蓝=没有）
-//     /block_stacking/layers         四角层数 Int32MultiArray
+//   雷达倒装（URDF 里 pitch=π），所以 odom/map 的 z 轴朝下：
+//   地面在 z = ground_z（默认 0.55m，即雷达离地高度），
+//   物体越高 z 越小，物体高度 h = ground_z - z。
+//   若哪天雷达正装，把 inverted 参数设为 false 即可。
 //
-//   注意：/cloud_registered 是单帧点云（fast_lio 里
-//   scan_pub_en 控制），框内点会随车/雷达移动变化。
-//   如果想用累积地图，把 cloud_topic 参数改成 /Laser_map。
+//   层数规则：h > layer_height（默认 0.35m）算 1 层，
+//   h > 2*layer_height 算 2 层，即 layers = floor(h / layer_height)。
+//
+//   可视化（全部在 map 系）：
+//     /block_stacking/markers       查询点 ROI 框 + 堆叠顶面 + 层数文字
+//     /block_stacking/corner_cloud  ROI 内点云（绿=有堆叠，蓝=没有）
+//     /block_stacking/layers        各查询点层数 Int32MultiArray
 // ============================================================
 
-// 一个角区域的定义（长方体裁剪框），坐标在 odom 系
-struct CornerROI {
+// 一个查询点（map 坐标系下的 xy，竖直方向由 ground_z 决定）
+struct QueryPoint {
     std::string name;
-    float x_min, x_max;
-    float y_min, y_max;
-    float z_min, z_max;
+    float x, y;
 };
 
-// 单个角的检测结果
-struct CornerResult {
+// 单个查询点的检测结果
+struct StackResult {
     std::string name;
-    bool has_cube = false;
+    float x = 0.0f;
+    float y = 0.0f;
+    bool has_object = false;
     int layers = 0;
-    float ground_z = 0.0f;
-    float top_z = 0.0f;
-    float height_diff = 0.0f;
+    float height = 0.0f;    // 堆叠高度（米，地面以上）
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
 };
 
 // 计算分位数（0~1），输入已排序
-//   p = 0.05 → 低 5% 分位，用作地面高度，避免单个低噪声点拉低估计
-//   p = 0.95 → 高 95% 分位，用作顶部高度，避免单个离群点拉高层数
 float percentile(const std::vector<float>& sorted_vals, float p)
 {
     if (sorted_vals.empty()) return 0.0f;
@@ -70,71 +76,86 @@ float percentile(const std::vector<float>& sorted_vals, float p)
 class BlockStackingDetection : public rclcpp::Node
 {
 public:
-    BlockStackingDetection() : Node("block_stacking_detection")
+    BlockStackingDetection()
+    : Node("block_stacking_detection"),
+      tf_buffer_(this->get_clock()),
+      tf_listener_(tf_buffer_)
     {
-        // ---------- 参数（可以在 launch/yaml 里覆盖） ----------
-        // CUBE_HEIGHT：单层立方体高度，layer = round(高度差 / CUBE_HEIGHT)
-        cube_height_        = declare_parameter<double>("cube_height", 0.5);
-        // 只保留 z 低于该值的点，滤掉高处异常点
-        max_height_         = declare_parameter<double>("max_height", 3.0);
-        // 高度差超过该值才判“有物体”，默认 0.25m
-        min_height_for_cube_ = declare_parameter<double>("min_height_for_cube",
-                                                         cube_height_ * 0.5);
-        ground_percentile_  = declare_parameter<double>("ground_percentile", 0.05);
-        top_percentile_     = declare_parameter<double>("top_percentile", 0.95);
-        // 框内点数少于该值直接跳过
-        min_points_         = declare_parameter<int>("min_points", 20);
-        // 处理节流（秒）：/cloud_registered 约 10Hz，没必要每帧都算
-        process_period_     = declare_parameter<double>("process_period", 0.2);
+        // ---------- 参数 ----------
         const std::string topic =
             declare_parameter<std::string>("cloud_topic", "/cloud_registered");
 
-        // ---------- 四个角的 ROI：每项 6 个数 ----------
-        //   [x_min, x_max, y_min, y_max, z_min, z_max]
-        //   ★ 必须按实际地图坐标系改，确保立方体完整落在框内
-        std::vector<std::string> names = declare_parameter<std::vector<std::string>>(
-            "corner_names", {"corner_1", "corner_2", "corner_3", "corner_4"});
-        const std::vector<std::vector<double>> defaults = {
-            {-1.0, 1.0, -1.0, 1.0, -0.5, 1.8},
-            {-1.0, 1.0, -1.0, 1.0, -0.5, 1.8},
-            {-1.0, 1.0, -1.0, 1.0, -0.5, 1.8},
-            {-1.0, 1.0, -1.0, 1.0, -0.5, 1.8},
-        };
-        for (size_t i = 0; i < defaults.size(); ++i) {
-            const std::string pname = "corner_" + std::to_string(i + 1);
-            auto v = declare_parameter<std::vector<double>>(pname, defaults[i]);
-            if (v.size() != 6) {
-                RCLCPP_ERROR(get_logger(), "参数 %s 需要 6 个数，收到 %zu 个，使用默认值",
-                             pname.c_str(), v.size());
-                v = defaults[i];
+        // 查询用的目标坐标系：点云先变到这里，points 也按这个系给
+        target_frame_ = declare_parameter<std::string>("target_frame", "map");
+        tf_timeout_   = declare_parameter<double>("tf_timeout", 0.2);
+
+        // 地面高度（目标坐标系下）。雷达倒装、离地 0.55m → 地面 z=0.55
+        ground_z_ = declare_parameter<double>("ground_z", 0.55);
+        // true: z 轴朝下（倒装），高度 h = ground_z - z
+        // false: z 轴朝上，高度 h = z - ground_z
+        inverted_ = declare_parameter<bool>("inverted", true);
+
+        // 单层高度（米）：h > 0.35 算 1 层，h > 0.70 算 2 层……
+        layer_height_ = declare_parameter<double>("layer_height", 0.35);
+        // 查询点周围的方柱半径（米），ROI 为 [x±r, y±r]
+        roi_half_size_ = declare_parameter<double>("roi_half_size", 0.30);
+        // 竖直方向最多往上看多高（米）
+        max_stack_height_ = declare_parameter<double>("max_stack_height", 2.0);
+        // 取多少分位作为堆叠顶面，默认 95%
+        top_percentile_ = declare_parameter<double>("top_percentile", 0.95);
+        // ROI 内点数少于该值视为没有物体
+        min_points_ = declare_parameter<int>("min_points", 20);
+        // 处理节流（秒）
+        process_period_ = declare_parameter<double>("process_period", 0.2);
+
+        // ---------- 查询点：扁平二维数组 [x1,y1, x2,y2, ...] ----------
+        const auto flat = declare_parameter<std::vector<double>>(
+            "points", std::vector<double>{});
+        const auto names = declare_parameter<std::vector<std::string>>(
+            "point_names", std::vector<std::string>{});
+
+        if (flat.size() % 2 != 0) {
+            RCLCPP_ERROR(get_logger(),
+                         "参数 points 需要成对的 [x,y]，收到 %zu 个数，已忽略",
+                         flat.size());
+        } else {
+            for (size_t i = 0; i + 1 < flat.size(); i += 2) {
+                const size_t idx = i / 2;
+                QueryPoint q;
+                q.name = (idx < names.size()) ? names[idx]
+                                              : "point_" + std::to_string(idx + 1);
+                q.x = static_cast<float>(flat[i]);
+                q.y = static_cast<float>(flat[i + 1]);
+                points_.push_back(q);
             }
-            CornerROI roi;
-            roi.name  = (i < names.size()) ? names[i] : pname;
-            roi.x_min = static_cast<float>(v[0]);
-            roi.x_max = static_cast<float>(v[1]);
-            roi.y_min = static_cast<float>(v[2]);
-            roi.y_max = static_cast<float>(v[3]);
-            roi.z_min = static_cast<float>(v[4]);
-            roi.z_max = static_cast<float>(v[5]);
-            corners_.push_back(roi);
+        }
+        if (points_.empty()) {
+            RCLCPP_WARN(get_logger(),
+                        "没有配置查询点，请用 -p points:=\"[x1,y1,x2,y2,...]\" 指定"
+                        "（%s 系坐标）",
+                        target_frame_.empty() ? "输入点云" : target_frame_.c_str());
         }
 
         // ---------- 订阅 / 发布 ----------
         sub_cloud_ = create_subscription<sensor_msgs::msg::PointCloud2>(
             topic, rclcpp::SensorDataQoS(),
-            std::bind(&BlockStackingDetection::cloudCallback, this, std::placeholders::_1));
+            std::bind(&BlockStackingDetection::cloudCallback, this,
+                      std::placeholders::_1));
 
         pub_markers_ = create_publisher<visualization_msgs::msg::MarkerArray>(
             "/block_stacking/markers", 10);
-        // 四个角的点云合并成一份发布，RViz 里一个显示项就能看全部区域
-        pub_corner_cloud_ = create_publisher<sensor_msgs::msg::PointCloud2>(
+        pub_roi_cloud_ = create_publisher<sensor_msgs::msg::PointCloud2>(
             "/block_stacking/corner_cloud", 10);
         pub_layers_ = create_publisher<std_msgs::msg::Int32MultiArray>(
             "/block_stacking/layers", 10);
 
         RCLCPP_INFO(get_logger(),
-                    "BlockStackingDetection 已启动，订阅 %s，立方体高度 %.2fm",
-                    topic.c_str(), cube_height_);
+                    "BlockStackingDetection 启动：订阅 %s → 目标系 %s，"
+                    "地面 z=%.2f（%s），单层 %.2fm，查询点 %zu 个",
+                    topic.c_str(),
+                    target_frame_.empty() ? "输入点云坐标系" : target_frame_.c_str(),
+                    ground_z_, inverted_ ? "z 轴朝下" : "z 轴朝上",
+                    layer_height_, points_.size());
     }
 
 private:
@@ -148,6 +169,30 @@ private:
         }
         last_process_time_ = now;
 
+        std::string frame_id = msg->header.frame_id;
+        if (!target_frame_.empty() && frame_id != target_frame_) {
+            std::string tf_error;
+            if (!tf_buffer_.canTransform(
+                    target_frame_, frame_id, rclcpp::Time(msg->header.stamp),
+                    rclcpp::Duration::from_seconds(tf_timeout_), &tf_error)) {
+                const double waiting_seconds = std::chrono::duration<double>(
+                    std::chrono::steady_clock::now() - tf_wait_start_).count();
+                if (!tf_ready_ && waiting_seconds < 5.0) {
+                    RCLCPP_INFO_THROTTLE(
+                        get_logger(), *get_clock(), 2000,
+                        "TF 缓存预热：%s -> %s 尚不能转换当前点云时间，跳过本帧，等待后续有效帧。",
+                        frame_id.c_str(), target_frame_.c_str());
+                } else {
+                    RCLCPP_WARN_THROTTLE(
+                        get_logger(), *get_clock(), 2000,
+                        "点云时刻的 TF %s -> %s 不可用（%s）；本帧跳过。"
+                        "请检查定位 TF 和传感器时间戳。",
+                        frame_id.c_str(), target_frame_.c_str(), tf_error.c_str());
+                }
+                return;
+            }
+        }
+
         // ---------- 1. 转 PCL ----------
         pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
         pcl::fromROSMsg(*msg, *cloud);
@@ -156,117 +201,168 @@ private:
             return;
         }
 
-        // ---------- 1.5 高度筛选：只保留 z <= max_height 的点 ----------
-        pcl::PointCloud<pcl::PointXYZ>::Ptr height_filtered(
+        // ---------- 2. 变换到 target_frame（默认 map） ----------
+        if (!target_frame_.empty() && frame_id != target_frame_) {
+            try {
+                const auto ts = tf_buffer_.lookupTransform(
+                    target_frame_, frame_id, rclcpp::Time(msg->header.stamp));
+
+                const auto& tr = ts.transform.translation;
+                const auto& rot = ts.transform.rotation;
+                const tf2::Quaternion q(rot.x, rot.y, rot.z, rot.w);
+
+                Eigen::Affine3f T = Eigen::Affine3f::Identity();
+                T.translation() << static_cast<float>(tr.x),
+                                   static_cast<float>(tr.y),
+                                   static_cast<float>(tr.z);
+                T.linear() = Eigen::Quaternionf(q.w(), q.x(), q.y(), q.z())
+                                 .toRotationMatrix();
+                pcl::transformPointCloud(*cloud, *cloud, T);
+                frame_id = target_frame_;
+                if (!tf_ready_) {
+                    tf_ready_ = true;
+                    RCLCPP_INFO(
+                        get_logger(), "TF 缓存已就绪，开始按点云原始时间戳进行堆叠检测。");
+                }
+            } catch (const tf2::TransformException& ex) {
+                // 没有定位时没有 map->odom，本帧跳过，避免发出错坐标系的框
+                RCLCPP_WARN_THROTTLE(
+                    get_logger(), *get_clock(), 2000,
+                    "等不到 TF %s -> %s（%s）；本帧跳过。"
+                    "纯建图无定位时可 -p target_frame:=odom",
+                    frame_id.c_str(), target_frame_.c_str(), ex.what());
+                return;
+            }
+        }
+
+        // ---------- 3. 逐个查询点统计 ----------
+        std::vector<StackResult> results;
+        results.reserve(points_.size());
+        for (const auto& qp : points_) {
+            results.push_back(analyze(qp, cloud));
+        }
+
+        // ---------- 4. 发布 ----------
+        std_msgs::msg::Header out_header = msg->header;
+        out_header.frame_id = frame_id;
+        publishVisualization(out_header, results);
+        publishLayers(results);
+    }
+
+    StackResult analyze(const QueryPoint& qp,
+                        const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud)
+    {
+        StackResult res;
+        res.name = qp.name;
+        res.x = qp.x;
+        res.y = qp.y;
+
+        // 竖直 ROI：从地面往上 max_stack_height
+        float z_low, z_high;
+        if (inverted_) {
+            z_low  = static_cast<float>(ground_z_ - max_stack_height_);
+            z_high = static_cast<float>(ground_z_);
+        } else {
+            z_low  = static_cast<float>(ground_z_);
+            z_high = static_cast<float>(ground_z_ + max_stack_height_);
+        }
+
+        const float r = static_cast<float>(roi_half_size_);
+        pcl::CropBox<pcl::PointXYZ> crop;
+        crop.setInputCloud(cloud);
+        crop.setMin(Eigen::Vector4f(qp.x - r, qp.y - r, z_low, 1.0f));
+        crop.setMax(Eigen::Vector4f(qp.x + r, qp.y + r, z_high, 1.0f));
+
+        pcl::PointCloud<pcl::PointXYZ>::Ptr roi_cloud(
             new pcl::PointCloud<pcl::PointXYZ>);
-        pcl::PassThrough<pcl::PointXYZ> pass;
-        pass.setInputCloud(cloud);
-        pass.setFilterFieldName("z");
-        pass.setFilterLimits(-std::numeric_limits<float>::infinity(),
-                             static_cast<float>(max_height_));
-        pass.filter(*height_filtered);
+        crop.filter(*roi_cloud);
 
-        if (height_filtered->empty()) {
-            RCLCPP_WARN_THROTTLE(get_logger(), *get_clock(), 2000,
-                                 "z 筛选后为空（max_height=%.2f）", max_height_);
-            return;
+        if (static_cast<int>(roi_cloud->size()) < min_points_) {
+            res.cloud = roi_cloud;
+            return res;
         }
 
-        // ---------- 2. 逐角裁剪、高度判断 ----------
-        std::vector<CornerResult> results;
-        results.reserve(corners_.size());
+        // 去噪
+        pcl::PointCloud<pcl::PointXYZ>::Ptr denoised(
+            new pcl::PointCloud<pcl::PointXYZ>);
+        pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
+        sor.setInputCloud(roi_cloud);
+        sor.setMeanK(20);
+        sor.setStddevMulThresh(1.0);
+        sor.filter(*denoised);
+        res.cloud = denoised;
 
-        for (const auto& roi : corners_) {
-            CornerResult res;
-            res.name = roi.name;
-
-            pcl::CropBox<pcl::PointXYZ> crop;
-            crop.setInputCloud(height_filtered);
-            crop.setMin(Eigen::Vector4f(roi.x_min, roi.y_min, roi.z_min, 1.0f));
-            crop.setMax(Eigen::Vector4f(roi.x_max, roi.y_max, roi.z_max, 1.0f));
-
-            pcl::PointCloud<pcl::PointXYZ>::Ptr corner_cloud(
-                new pcl::PointCloud<pcl::PointXYZ>);
-            crop.filter(*corner_cloud);
-
-            if (static_cast<int>(corner_cloud->size()) < min_points_) {
-                RCLCPP_DEBUG(get_logger(), "%s: 点云太少 (%zu)，跳过",
-                             roi.name.c_str(), corner_cloud->size());
-                res.cloud = corner_cloud;
-                results.push_back(res);
-                continue;
-            }
-
-            res.cloud = corner_cloud;
-
-            // 收集 Z 值并排序
-            std::vector<float> z_vals;
-            z_vals.reserve(corner_cloud->size());
-            for (const auto& pt : corner_cloud->points) {
-                z_vals.push_back(pt.z);
-            }
-            std::sort(z_vals.begin(), z_vals.end());
-
-            const float z_ground = percentile(z_vals, static_cast<float>(ground_percentile_));
-            const float z_top    = percentile(z_vals, static_cast<float>(top_percentile_));
-            const float diff     = z_top - z_ground;
-
-            res.ground_z    = z_ground;
-            res.top_z       = z_top;
-            res.height_diff = diff;
-
-            if (diff > min_height_for_cube_) {
-                res.has_cube = true;
-                // layers = round(高度差 / CUBE_HEIGHT)，至少 1 层
-                int layers = static_cast<int>(std::round(diff / cube_height_));
-                res.layers = std::max(1, layers);
-            } else {
-                res.has_cube = false;
-                res.layers = 0;
-            }
-
-            RCLCPP_INFO(get_logger(),
-                        "%s 点数=%zu 地面Z=%.3f 顶部Z=%.3f 高度差=%.3f 有立方体=%s 层数=%d",
-                        roi.name.c_str(), corner_cloud->size(), z_ground, z_top, diff,
-                        res.has_cube ? "是" : "否", res.layers);
-
-            results.push_back(res);
+        if (static_cast<int>(denoised->size()) < min_points_) {
+            return res;
         }
 
-        // ---------- 3. 发布 ----------
-        publishVisualization(msg->header, results);
-        publishLayers(msg->header, results);
+        // 每个点相对地面的高度
+        std::vector<float> heights;
+        heights.reserve(denoised->size());
+        for (const auto& pt : denoised->points) {
+            const float h = inverted_
+                                ? static_cast<float>(ground_z_) - pt.z
+                                : pt.z - static_cast<float>(ground_z_);
+            if (h >= 0.0f) {
+                heights.push_back(h);
+            }
+        }
+        if (heights.empty()) return res;
+
+        std::sort(heights.begin(), heights.end());
+        res.height = percentile(heights, static_cast<float>(top_percentile_));
+        res.layers = static_cast<int>(std::floor(res.height / layer_height_));
+        res.has_object = res.layers > 0;
+
+        RCLCPP_INFO_THROTTLE(
+            get_logger(), *get_clock(), 1000,
+            "%s (%.2f, %.2f) 点数=%zu 堆叠高度=%.3fm 层数=%d",
+            res.name.c_str(), res.x, res.y, denoised->size(), res.height,
+            res.layers);
+        return res;
     }
 
     void publishVisualization(const std_msgs::msg::Header& header,
-                              const std::vector<CornerResult>& results)
+                              const std::vector<StackResult>& results)
     {
         visualization_msgs::msg::MarkerArray marker_array;
 
-        // 3.1 ROI 框：绿=有立方体，蓝=没有
-        for (size_t i = 0; i < corners_.size(); ++i) {
-            const auto& roi = corners_[i];
-            const bool has = (i < results.size()) ? results[i].has_cube : false;
+        for (size_t i = 0; i < results.size(); ++i) {
+            const auto& res = results[i];
+            const float r = static_cast<float>(roi_half_size_);
 
-            visualization_msgs::msg::Marker m;
-            m.header = header;
-            m.ns = "block_stacking_roi";
-            m.id = static_cast<int>(i);
-            m.type = visualization_msgs::msg::Marker::LINE_LIST;
-            m.action = visualization_msgs::msg::Marker::ADD;
-            m.scale.x = 0.02;
-            m.color.r = 0.0f;
-            m.color.g = has ? 1.0f : 0.5f;
-            m.color.b = has ? 0.0f : 1.0f;
-            m.color.a = 0.9f;
-            m.pose.orientation.w = 1.0;
+            float z_low, z_high;
+            if (inverted_) {
+                z_low  = static_cast<float>(ground_z_ - max_stack_height_);
+                z_high = static_cast<float>(ground_z_);
+            } else {
+                z_low  = static_cast<float>(ground_z_);
+                z_high = static_cast<float>(ground_z_ + max_stack_height_);
+            }
+            // 检测到的堆叠顶面
+            const float z_top = inverted_
+                                    ? static_cast<float>(ground_z_ - res.height)
+                                    : static_cast<float>(ground_z_ + res.height);
 
-            // 12 条棱
+            // 3.1 ROI 方柱：绿=有堆叠，蓝=没有
+            visualization_msgs::msg::Marker box;
+            box.header = header;
+            box.ns = "block_stacking_roi";
+            box.id = static_cast<int>(i);
+            box.type = visualization_msgs::msg::Marker::LINE_LIST;
+            box.action = visualization_msgs::msg::Marker::ADD;
+            box.scale.x = 0.02;
+            box.color.r = 0.0f;
+            box.color.g = res.has_object ? 1.0f : 0.5f;
+            box.color.b = res.has_object ? 0.0f : 1.0f;
+            box.color.a = 0.9f;
+            box.pose.orientation.w = 1.0;
+
             const pcl::PointXYZ c[8] = {
-                {roi.x_min, roi.y_min, roi.z_min}, {roi.x_max, roi.y_min, roi.z_min},
-                {roi.x_max, roi.y_max, roi.z_min}, {roi.x_min, roi.y_max, roi.z_min},
-                {roi.x_min, roi.y_min, roi.z_max}, {roi.x_max, roi.y_min, roi.z_max},
-                {roi.x_max, roi.y_max, roi.z_max}, {roi.x_min, roi.y_max, roi.z_max}};
+                {res.x - r, res.y - r, z_low},  {res.x + r, res.y - r, z_low},
+                {res.x + r, res.y + r, z_low},  {res.x - r, res.y + r, z_low},
+                {res.x - r, res.y - r, z_high}, {res.x + r, res.y - r, z_high},
+                {res.x + r, res.y + r, z_high}, {res.x - r, res.y + r, z_high}};
             const int edges[12][2] = {{0,1},{1,2},{2,3},{3,0},
                                       {4,5},{5,6},{6,7},{7,4},
                                       {0,4},{1,5},{2,6},{3,7}};
@@ -274,42 +370,64 @@ private:
                 geometry_msgs::msg::Point p0, p1;
                 p0.x = c[e[0]].x; p0.y = c[e[0]].y; p0.z = c[e[0]].z;
                 p1.x = c[e[1]].x; p1.y = c[e[1]].y; p1.z = c[e[1]].z;
-                m.points.push_back(p0);
-                m.points.push_back(p1);
+                box.points.push_back(p0);
+                box.points.push_back(p1);
             }
-            marker_array.markers.push_back(m);
-        }
+            marker_array.markers.push_back(box);
 
-        // 3.2 层数文字
-        for (size_t i = 0; i < corners_.size() && i < results.size(); ++i) {
-            const auto& roi = corners_[i];
-            const auto& res = results[i];
+            // 3.2 检测到的顶面：黄色方框
+            if (res.has_object) {
+                visualization_msgs::msg::Marker top;
+                top.header = header;
+                top.ns = "block_stacking_top";
+                top.id = static_cast<int>(100 + i);
+                top.type = visualization_msgs::msg::Marker::LINE_STRIP;
+                top.action = visualization_msgs::msg::Marker::ADD;
+                top.scale.x = 0.03;
+                top.color.r = 1.0f;
+                top.color.g = 1.0f;
+                top.color.b = 0.0f;
+                top.color.a = 1.0f;
+                top.pose.orientation.w = 1.0;
+                const pcl::PointXYZ corners[4] = {
+                    {res.x - r, res.y - r, z_top}, {res.x + r, res.y - r, z_top},
+                    {res.x + r, res.y + r, z_top}, {res.x - r, res.y + r, z_top}};
+                for (int k = 0; k < 5; ++k) {
+                    const auto& p = corners[k % 4];
+                    geometry_msgs::msg::Point gp;
+                    gp.x = p.x; gp.y = p.y; gp.z = p.z;
+                    top.points.push_back(gp);
+                }
+                marker_array.markers.push_back(top);
+            }
 
-            visualization_msgs::msg::Marker t;
-            t.header = header;
-            t.ns = "block_stacking_text";
-            t.id = static_cast<int>(100 + i);
-            t.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
-            t.action = visualization_msgs::msg::Marker::ADD;
-            t.scale.z = 0.2;
-            t.color.r = 1.0f;
-            t.color.g = 1.0f;
-            t.color.b = 1.0f;
-            t.color.a = 1.0f;
-            t.pose.position.x = (roi.x_min + roi.x_max) * 0.5;
-            t.pose.position.y = (roi.y_min + roi.y_max) * 0.5;
-            t.pose.position.z = roi.z_max + 0.15;
-            t.pose.orientation.w = 1.0;
-            t.text = res.has_cube
-                         ? (res.name + "\n" + std::to_string(res.layers) + " 层 / " +
-                            std::to_string(static_cast<int>(res.height_diff * 100)) + "cm")
-                         : (res.name + "\n无");
-            marker_array.markers.push_back(t);
+            // 3.3 层数文字
+            visualization_msgs::msg::Marker text;
+            text.header = header;
+            text.ns = "block_stacking_text";
+            text.id = static_cast<int>(200 + i);
+            text.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
+            text.action = visualization_msgs::msg::Marker::ADD;
+            text.scale.z = 0.2;
+            text.color.r = 1.0f;
+            text.color.g = 1.0f;
+            text.color.b = 1.0f;
+            text.color.a = 1.0f;
+            text.pose.position.x = res.x;
+            text.pose.position.y = res.y;
+            // 放在堆叠顶面之上（倒装时"上"是 -z）
+            text.pose.position.z = inverted_ ? z_top - 0.2f : z_top + 0.2f;
+            text.pose.orientation.w = 1.0;
+            text.text = res.has_object
+                            ? (res.name + "\n" + std::to_string(res.layers) + " 层 / " +
+                               std::to_string(static_cast<int>(res.height * 100)) + "cm")
+                            : (res.name + "\n无");
+            marker_array.markers.push_back(text);
         }
 
         pub_markers_->publish(marker_array);
 
-        // 3.3 框内点云：四个角拼成一份，有立方体 = 绿，没有 = 蓝
+        // 3.4 ROI 内点云合并发布：有堆叠=绿，没有=蓝
         pcl::PointCloud<pcl::PointXYZRGB> colored;
         for (const auto& res : results) {
             if (!res.cloud) continue;
@@ -317,19 +435,18 @@ private:
                 pcl::PointXYZRGB c;
                 c.x = p.x; c.y = p.y; c.z = p.z;
                 c.r = 0;
-                c.g = res.has_cube ? 255 : 80;
-                c.b = res.has_cube ? 0 : 200;
+                c.g = res.has_object ? 255 : 80;
+                c.b = res.has_object ? 0 : 200;
                 colored.push_back(c);
             }
         }
         sensor_msgs::msg::PointCloud2 out;
-        pcl::toROSMsg(colored, out);   // 空点云也发，用来清掉 RViz 里的旧显示
+        pcl::toROSMsg(colored, out);
         out.header = header;
-        pub_corner_cloud_->publish(out);
+        pub_roi_cloud_->publish(out);
     }
 
-    void publishLayers(const std_msgs::msg::Header& header,
-                       const std::vector<CornerResult>& results)
+    void publishLayers(const std::vector<StackResult>& results)
     {
         std_msgs::msg::Int32MultiArray arr;
         arr.layout.data_offset = 0;
@@ -340,21 +457,30 @@ private:
     }
 
     // 参数
-    double cube_height_;
-    double max_height_;
-    double min_height_for_cube_;
-    double ground_percentile_;
+    std::string target_frame_;
+    double tf_timeout_;
+    double ground_z_;
+    bool   inverted_;
+    double layer_height_;
+    double roi_half_size_;
+    double max_stack_height_;
     double top_percentile_;
     int    min_points_;
     double process_period_;
+    bool tf_ready_ = false;
+    std::chrono::steady_clock::time_point tf_wait_start_{std::chrono::steady_clock::now()};
 
-    std::vector<CornerROI> corners_;
+    std::vector<QueryPoint> points_;
 
     rclcpp::Time last_process_time_{0, 0, RCL_ROS_TIME};
 
+    // 注意声明顺序：buffer 必须在 listener 之前构造
+    tf2_ros::Buffer tf_buffer_;
+    tf2_ros::TransformListener tf_listener_;
+
     rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr sub_cloud_;
     rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr pub_markers_;
-    rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr pub_corner_cloud_;
+    rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr pub_roi_cloud_;
     rclcpp::Publisher<std_msgs::msg::Int32MultiArray>::SharedPtr pub_layers_;
 };
 

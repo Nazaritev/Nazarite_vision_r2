@@ -2,8 +2,9 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler
 from launch.conditions import IfCondition
+from launch.event_handlers import OnProcessExit
 from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.descriptions import ParameterFile
@@ -23,7 +24,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 def generate_launch_description():
     pkg_dir = get_package_share_directory('rc_bringup')
     config_dir = os.path.join(pkg_dir, 'config', 'reality')
-    map_yaml_file = os.path.join(pkg_dir, 'map', 'clean_map.yaml')
+    map_yaml_file = os.path.join(pkg_dir, 'map', 'map2.yaml')
     bt_xml_file = os.path.join(
         config_dir, 'navigate_to_pose_teb_mppi_selector.xml'
     )
@@ -105,9 +106,16 @@ def generate_launch_description():
                 {'use_sim_time': use_sim_time, 'pcd_save.pcd_save_en': False},
             ],
         ),
-        # 四角堆叠检测：订阅 /cloud_registered，发布 /block_stacking/markers、
-        # /block_stacking/corner_cloud、/block_stacking/layers（四角层数）
-        # ★ corner_N = [x_min, x_max, y_min, y_max, z_min, z_max]，务必按场地改
+    ]
+
+    localized_actions = [
+        # 堆叠检测：订阅 /cloud_registered（odom 系），在 map 系下查询若干点，
+        # 发布 /block_stacking/markers、/block_stacking/corner_cloud、
+        # /block_stacking/layers（每个查询点的层数）
+        # ★ points = [x1,y1, x2,y2, ...]，map 系坐标，务必按场地改
+        # ★ 雷达倒装：z 轴朝下，地面在 z = ground_z（0.55，即雷达离地高度），
+        #   物体高度 h = ground_z - z；layer_height=0.35 表示 h>0.35 算一层
+        # ★ 没有定位（无 map->odom）时把 target_frame 改成 'odom'
         Node(
             package='fast_lio',
             executable='block_stacking_detection',
@@ -116,21 +124,28 @@ def generate_launch_description():
             parameters=[{
                 'use_sim_time': use_sim_time,
                 'cloud_topic': '/cloud_registered',
-                'height_gridmap_topic': '/height_gridmap',
-                'height_layer': 'height',
-                'height_query_points': [0.0, 0.0],
-                'cube_height': 0.5,
-                'max_height': 3.0,
-                'min_height_for_cube': 0.25,
-                'ground_percentile': 0.05,
+                'target_frame': 'map',
+                'tf_timeout': 0.2,
+                'ground_z': 0.55,
+                'inverted': True,
+                'layer_height': 0.35,
+                'roi_half_size': 0.30,
+                'max_stack_height': 2.0,
                 'top_percentile': 0.95,
+                'min_points': 20,
                 'process_period': 0.2,
-                'corner_1': [-1.0, 1.0, -1.0, 1.0, -0.5, 1.8],
-                'corner_2': [-1.0, 1.0, -1.0, 1.0, -0.5, 1.8],
-                'corner_3': [-1.0, 1.0, -1.0, 1.0, -0.5, 1.8],
-                'corner_4': [-1.0, 1.0, -1.0, 1.0, -0.5, 1.8],
+                'point_names': ['corner_1', 'corner_2', 'corner_3', 'corner_4'],
+                'points': [
+                    -0.58, 3.07,   # corner_1
+                     1.0, -1.0,   # corner_2
+                     1.0,  1.0,   # corner_3
+                    -1.0,  1.0,   # corner_4
+                ],
             }],
         ),
+    ]
+
+    actions.extend([
         Node(
             package='pointcloud_to_laserscan',
             executable='pointcloud_to_laserscan_node',
@@ -184,6 +199,9 @@ def generate_launch_description():
                 'node_names': ['map_server', 'amcl'],
             }],
         ),
+    ])
+
+    localized_actions.append(
         Node(
             package='pointcloud_to_grid',
             executable='pointcloud_to_grid_node', # 注意：请确认它的可执行文件名，通常是这个
@@ -210,7 +228,7 @@ def generate_launch_description():
                 'ego_y_min': 0.0,  'ego_y_max': 0.5,
             }],
         ),
-    ]
+    )
 
     navigation_nodes = [
         ('nav2_controller', 'controller_server'),
@@ -233,7 +251,7 @@ def generate_launch_description():
             ]
         elif executable == 'bt_navigator':
             parameters.append({'default_nav_to_pose_bt_xml': bt_xml_file})
-        actions.append(Node(
+        localized_actions.append(Node(
             package=package,
             executable=executable,
             name=executable,
@@ -258,7 +276,7 @@ def generate_launch_description():
         # launch.actions.TimerAction(period=3.0, actions=[action2]) #4秒后执行
         ])
 
-    actions.extend([
+    localized_actions.append(
         Node(
             package='nav2_lifecycle_manager',
             executable='lifecycle_manager',
@@ -272,6 +290,36 @@ def generate_launch_description():
                 ],
             }],
         ),
+    )
+
+    localization_ready = Node(
+        package='rc_bringup',
+        executable='wait_for_localization.py',
+        name='wait_for_localization',
+        output='screen',
+        parameters=[{
+            'use_sim_time': use_sim_time,
+            'target_frame': 'map',
+            'source_frame': 'footprint_link',
+        }],
+    )
+
+    def start_localized_nodes(event, context):
+        if context.is_shutdown:
+            return []
+        if event.returncode != 0:
+            launch.logging.get_logger('mapping_nav2').error(
+                '定位 TF 等待进程异常退出，未启动导航和堆叠检测。'
+            )
+            return []
+        return localized_actions
+
+    actions.extend([
+        RegisterEventHandler(OnProcessExit(
+            target_action=localization_ready,
+            on_exit=start_localized_nodes,
+        )),
+        localization_ready,
         Node(
             package='rviz2',
             executable='rviz2',

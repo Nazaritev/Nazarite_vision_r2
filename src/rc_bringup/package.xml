@@ -24,6 +24,7 @@
   <exec_depend>nav2_map_server</exec_depend>
   <exec_depend>nav2_amcl</exec_depend>
   <exec_depend>rclpy</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>nav2_controller</exec_depend>
   <exec_depend>nav2_smoother</exec_depend>
@@ -50,4 +51,3 @@
        gazebo_plugin_path="${prefix}/plugins"/>
   </export>
 </package>
-
