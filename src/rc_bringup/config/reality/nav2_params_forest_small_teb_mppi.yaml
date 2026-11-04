@@ -131,6 +131,7 @@ local_costmap:
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
+        # mapping_nav2 selects the separate sources only when filtering is enabled.
         observation_sources: scan
         scan:
           topic: /scan 
@@ -145,6 +146,28 @@ local_costmap:
           raytrace_min_range: 0.0
           obstacle_max_range: 6.0 #3.5
           inf_is_valid: true
+        gripper_marking:
+          topic: /scan_costmap
+          clearing: false
+          marking: true
+          observation_persistence: 0.5
+          data_type: "LaserScan"
+          min_obstacle_height: -0.15
+          max_obstacle_height: 4.0
+          obstacle_max_range: 6.0
+          raytrace_max_range: 6.0
+          inf_is_valid: false
+        gripper_clearing:
+          topic: /scan
+          clearing: true
+          marking: false
+          observation_persistence: 0.5
+          data_type: "LaserScan"
+          min_obstacle_height: -0.15
+          max_obstacle_height: 4.0
+          obstacle_max_range: 6.0
+          raytrace_max_range: 6.0
+          inf_is_valid: false
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 6.0
@@ -187,6 +210,28 @@ global_costmap:
           obstacle_max_range: 8.0
           raytrace_max_range: 8.5
           inf_is_valid: true
+        gripper_marking:
+          topic: /scan_costmap
+          clearing: false
+          marking: true
+          observation_persistence: 0.4
+          data_type: "LaserScan"
+          min_obstacle_height: -0.15
+          max_obstacle_height: 4.0
+          obstacle_max_range: 8.0
+          raytrace_max_range: 8.5
+          inf_is_valid: false
+        gripper_clearing:
+          topic: /scan
+          clearing: true
+          marking: false
+          observation_persistence: 0.4
+          data_type: "LaserScan"
+          min_obstacle_height: -0.15
+          max_obstacle_height: 4.0
+          obstacle_max_range: 8.0
+          raytrace_max_range: 8.5
+          inf_is_valid: false
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 6.0

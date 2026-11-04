@@ -576,6 +576,20 @@ Visualization Manager:
         Value: /height_grid_updates
       Use Timestamp: false
       Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: MarkerArray
+      Namespaces:
+        block_stacking_roi: true
+        block_stacking_text: true
+        block_stacking_top: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /block_stacking/markers
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -614,25 +628,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 13.88315486907959
+      Distance: 11.665316581726074
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -2.4215192794799805
-        Y: 2.220736026763916
-        Z: -0.8206438422203064
+        X: 1.5969847440719604
+        Y: 1.6774570941925049
+        Z: -0.34618815779685974
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.3647966384887695
+      Pitch: 1.2197966575622559
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz_default_plugins)
-      Yaw: 3.162386655807495
+      Yaw: 3.5173888206481934
     Saved: ~
 Window Geometry:
   Displays:

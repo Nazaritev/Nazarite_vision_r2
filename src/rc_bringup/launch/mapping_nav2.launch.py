@@ -5,7 +5,7 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, RegisterEventHandler
 from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessExit
-from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution
+from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution, PythonExpression
 from launch_ros.actions import Node
 from launch_ros.descriptions import ParameterFile
 from nav2_common.launch import RewrittenYaml
@@ -21,6 +21,57 @@ from launch_ros.substitutions import FindPackageShare
 import math
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
+def build_nav2_params(config_dir, use_sim_time, enable_gripper_filter,
+                      costmap_scan_topic='/scan_costmap'):
+    filtering_inactive = PythonExpression([
+        "'", enable_gripper_filter, "'.lower() not in ('true', '1')",
+    ])
+    observation_sources = PythonExpression([
+        "'scan gripper_marking gripper_clearing' if '",
+        enable_gripper_filter,
+        "'.lower() in ('true', '1') else 'scan'",
+    ])
+    nav2_params = [
+        ParameterFile(
+            RewrittenYaml(
+                source_file=os.path.join(config_dir, 'nav2_params_forest_small_teb_mppi.yaml'),
+                param_rewrites={
+                    'use_sim_time': use_sim_time,
+                    'local_costmap.local_costmap.ros__parameters.obstacle_layer.observation_sources': observation_sources,
+                    'local_costmap.local_costmap.ros__parameters.obstacle_layer.scan.marking': filtering_inactive,
+                    'local_costmap.local_costmap.ros__parameters.obstacle_layer.scan.clearing': filtering_inactive,
+                    'local_costmap.local_costmap.ros__parameters.obstacle_layer.gripper_marking.marking': enable_gripper_filter,
+                    'local_costmap.local_costmap.ros__parameters.obstacle_layer.gripper_marking.topic': costmap_scan_topic,
+                    'local_costmap.local_costmap.ros__parameters.obstacle_layer.gripper_marking.clearing': 'false',
+                    'local_costmap.local_costmap.ros__parameters.obstacle_layer.gripper_clearing.marking': 'false',
+                    'local_costmap.local_costmap.ros__parameters.obstacle_layer.gripper_clearing.clearing': enable_gripper_filter,
+                    'global_costmap.global_costmap.ros__parameters.obstacle_layer.scan.marking': filtering_inactive,
+                    'global_costmap.global_costmap.ros__parameters.obstacle_layer.observation_sources': observation_sources,
+                    'global_costmap.global_costmap.ros__parameters.obstacle_layer.scan.clearing': filtering_inactive,
+                    'global_costmap.global_costmap.ros__parameters.obstacle_layer.gripper_marking.marking': enable_gripper_filter,
+                    'global_costmap.global_costmap.ros__parameters.obstacle_layer.gripper_marking.topic': costmap_scan_topic,
+                    'global_costmap.global_costmap.ros__parameters.obstacle_layer.gripper_marking.clearing': 'false',
+                    'global_costmap.global_costmap.ros__parameters.obstacle_layer.gripper_clearing.marking': 'false',
+                    'global_costmap.global_costmap.ros__parameters.obstacle_layer.gripper_clearing.clearing': enable_gripper_filter,
+                },
+                convert_types=True,
+            ),
+            allow_substs=True,
+        )
+    ]
+    nav2_params.append(
+        ParameterFile(
+            RewrittenYaml(
+                source_file=os.path.join(config_dir, 'mapping_nav_copy.yaml'),
+                param_rewrites={'use_sim_time': use_sim_time},
+                convert_types=True,
+            ),
+            allow_substs=True,
+        )
+    )
+    return nav2_params
+
+
 def generate_launch_description():
     pkg_dir = get_package_share_directory('rc_bringup')
     config_dir = os.path.join(pkg_dir, 'config', 'reality')
@@ -30,25 +81,25 @@ def generate_launch_description():
     )
     use_sim_time = LaunchConfiguration('use_sim_time')
     use_rviz = LaunchConfiguration('use_rviz')
-
-    nav2_params = [
-        ParameterFile(
-            RewrittenYaml(
-                source_file=os.path.join(config_dir, filename),
-                param_rewrites={'use_sim_time': use_sim_time},
-                convert_types=True,
-            ),
-            allow_substs=True,
-        )
-        for filename in (
-            'nav2_params_forest_small_teb_mppi.yaml',
-            'mapping_nav_copy.yaml',
-        )
-    ]
+    enable_gripper_filter = LaunchConfiguration('enable_gripper_filter')
+    filter_input_topic = LaunchConfiguration('filter_input_topic')
+    filtered_cloud_topic = LaunchConfiguration('filtered_cloud_topic')
+    costmap_scan_topic = LaunchConfiguration('costmap_scan_topic')
+    nav2_params = build_nav2_params(
+        config_dir, use_sim_time, enable_gripper_filter, costmap_scan_topic)
 
     actions = [
         DeclareLaunchArgument('use_sim_time', default_value='false'),
         DeclareLaunchArgument('use_rviz', default_value='true'),
+        DeclareLaunchArgument('filter_input_topic', default_value='/cloud_registered'),
+        DeclareLaunchArgument('filtered_cloud_topic', default_value='/cloud_registered_costmap'),
+        DeclareLaunchArgument('costmap_scan_topic', default_value='/scan_costmap'),
+        DeclareLaunchArgument(
+            'enable_gripper_filter',
+            default_value='false',
+            choices=['true', 'false'],
+            description='Enable the measured gripper self-filtered costmap scan',
+        ),
         Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
@@ -109,6 +160,33 @@ def generate_launch_description():
     ]
 
     localized_actions = [
+        Node(
+            package='rc_bringup',
+            executable='gripper_pointcloud_filter.py',
+            name='gripper_pointcloud_filter',
+            output='screen',
+            parameters=[
+                os.path.join(config_dir, 'gripper_filter.yaml'),
+                {'use_sim_time': use_sim_time, 'enabled': enable_gripper_filter,
+                 'input_topic': filter_input_topic, 'output_topic': filtered_cloud_topic},
+            ],
+            condition=IfCondition(enable_gripper_filter),
+        ),
+        Node(
+            package='pointcloud_to_laserscan',
+            executable='pointcloud_to_laserscan_node',
+            name='pointcloud_to_laserscan_costmap',
+            output='screen',
+            remappings=[
+                ('cloud_in', filtered_cloud_topic),
+                ('scan', costmap_scan_topic),
+            ],
+            parameters=[
+                os.path.join(config_dir, 'gripper_filter.yaml'),
+                {'use_sim_time': use_sim_time},
+            ],
+            condition=IfCondition(enable_gripper_filter),
+        ),
         # 堆叠检测：订阅 /cloud_registered（odom 系），在 map 系下查询若干点，
         # 发布 /block_stacking/markers、/block_stacking/corner_cloud、
         # /block_stacking/layers（每个查询点的层数）
@@ -161,7 +239,7 @@ def generate_launch_description():
                 'angle_max': 3.14159,
                 'angle_increment': 0.0043,
                 'scan_time': 0.05,
-                'range_min': 0.45,
+                'range_min': 0.30,# 0.65 过滤了夹爪
                 'range_max': 10.0,
                 'use_inf': True,
                 'inf_epsilon': 1.0,
@@ -218,8 +296,8 @@ def generate_launch_description():
                 # 整个量程，否则所有格子都是 0/1，图上就是一片同色。
                 # ground 在 map 系约 -0.55m（base_link 比 motion_link 高 0.576m），
                 # 所以 offset=0.55 让地面→0；factor=100 让地面以上 1m→100。
-                'height_offset': 0.55,
-                'height_factor': 125.0,
+                'height_offset': -0.68,
+                'height_factor': 150.0,
                 # 自车（车身）点剔除：框在 base_link 下（x 前  y 左  z 上），
                 # 默认 = 雷达左后方 0.5m x 0.5m（雷达在车身右上角）。
                 'ego_filter_enable': True,
