@@ -161,7 +161,7 @@ def generate_launch_description():
             'target_frame': 'footprint_link', 'transform_tolerance': 0.1,
             # MID360 is mounted upside down; valid obstacle returns can be below
             # the base_link origin. Do not discard the complete scan at startup.
-            'min_height': -0.60, 'max_height': 4.0,
+            'min_height': -0.65, 'max_height': 4.0,
             'angle_min': -3.14159, 'angle_max': 3.14159,
             'angle_increment': 0.0043, 'scan_time': 0.3333,
             'range_min': 0.45, 'range_max': 10.0, 'use_inf': True, 'inf_epsilon': 1.0

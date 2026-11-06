@@ -32,8 +32,8 @@ launch 虽然向 `pointcloud_to_grid` 传递 `ego_filter_*`，当前节点源码
 
 ## 配置与 TF
 
-编辑 `config/reality/gripper_filter.yaml`。入口开关 `enable_gripper_filter` 默认
-`false`，`box_count` 默认 0；未实测前不启用。若开启但没有配置盒子，节点报错并
+编辑 `config/reality/gripper_filter.yaml`。当前入口开关 `enable_gripper_filter` 默认
+`true`，`box_count` 为 1，具体边界见配置文件。若开启但没有配置盒子，节点报错并
 发布空云，不将原云伪装成已过滤数据。修改参数后重新启动本 launch；不提供运行中
 自动重配 costmap 数据源的功能。
 
@@ -41,7 +41,7 @@ launch 虽然向 `pointcloud_to_grid` 传递 `ego_filter_*`，当前节点源码
 - `box_frames`：每个盒子的 TF frame，顺序对应盒子编号。
 - `box_min`、`box_max`：按盒子顺序展开的 xyz 三元组，单位米，边界包含在盒内。
 - `tf_timeout`：按输入点云时间戳等待 TF 的超时秒数；不回退到 latest TF。
-- `block_box_*`：未来被夹持方块的盒子；当前数量为 0、过滤关闭。
+- `block_box_*`：未来被夹持方块的盒子；当前数量为 1、过滤关闭。
 - 投影节点部分：目标 frame、高度、角度、量程和时间等投影参数。
 
 盒子数组长度、非有限尺寸、空 frame 或负数量等配置错误会阻止节点启动；不会
@@ -65,6 +65,27 @@ launch 虽然向 `pointcloud_to_grid` 传递 `ego_filter_*`，当前节点源码
 分别测量各部件在该 frame 下的 x/y/z 最小及最大值。使用多个紧贴部件的盒子，
 按安装与 TF 误差留有限余量，并用盒子旁的真实障碍点验证余量没有吞掉环境。
 如果夹爪会运动且没有反馈 TF，固定盒子只适用于测量时的姿态。
+
+## RViz 二维过滤范围
+
+默认 RViz 配置已启用 `Gripper Filter XY`，订阅
+`/gripper_filter/markers`（`visualization_msgs/msg/MarkerArray`）。橙色线框是
+当前生效的夹爪/车体过滤盒，蓝色线框仅在持块过滤开启且确认 `HOLDING` 时出现。
+线框直接使用过滤节点加载的盒子边界，每 0.5 秒发布一次，即使没有输入点云也可显示。
+它们投影到 `footprint_link` 的 `z=0` 平面，随机器人移动，不绘制立体盒子。
+`visualization_frame` 可更改投影平面，`visualization_topic` 可更改发布话题。
+使用其他 RViz 配置时，添加 MarkerArray 并选择该话题即可。
+
+平面范围取自 `box_min`、`box_max` 的 x/y 分量；真正过滤仍同时要求 z 落在配置的
+高度区间内（当前为 `[-0.10, 0.70]` 米）。`model.xacro` 中 `footprint_link`
+与 `base_link` 等高，`motion_link` 比它低 0.576 米。因此夹爪即使落在二维矩形内，
+若其点低于配置的 Z 下限，仍不会被删除。实时采样曾观察到框内点高度为
+`-0.045～-0.027` 米，原先 `z_min=0.0` 会保留全部这些点，因此将下限调整为
+`-0.10` 米。其他夹爪姿态仍需按实际点云测量 Z 边界。
+`OK ... removed=0` 表示该帧没有点满足三维盒子条件；`EMPTY` 是未持块状态，
+并不是输入点云为空。核对删除结果时查看 `/cloud_registered_costmap` 或
+`/scan_costmap`；原 `/cloud_registered`、`/scan` 和 `/height_grid` 仍使用原始链路。
+修改 YAML 后需要重新启动过滤节点；运行中参数更新不会重载盒子。
 
 ## 遮挡与 footprint 限制
 

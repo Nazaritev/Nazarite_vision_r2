@@ -1,26 +1,34 @@
 gripper_pointcloud_filter:
   ros__parameters:
-    # The node runs only when enable_gripper_filter:=true. Set box_count to the number
-    # of measured boxes before using it on a robot. The values below are only
-    # placeholders and are intentionally ignored while box_count is 0.
+    # The node runs only when enable_gripper_filter:=true. Bounds are expressed
+    # in box_frames; verify x/y in RViz and measure z relative to that frame.
     enabled: true
     input_topic: /cloud_registered
     output_topic: /cloud_registered_costmap
     status_topic: /gripper_filter/status
+    visualization_topic: /gripper_filter/markers
+    visualization_frame: footprint_link  # 二维投影绘制在此坐标系的 z=0 平面
     tf_timeout: 0.10
-    box_count: 0  # 待实测：夹爪/固定车体包围盒数量
+    box_count: 1  # 待实测：夹爪/固定车体包围盒数量
     box_frames: [footprint_link]  # 待实测；有夹爪 TF 后改为夹爪坐标系
-    box_min: [-0.50, -0.50, -0.50]  # 待实测，x/y/z 最小值（米）
-    box_max: [0.50, 0.50, 0.50]    # 待实测，x/y/z 最大值（米）
+    # 实时采样：框内点 z 约 -0.045～-0.027 m（footprint_link 系）；下限须覆盖负高度。
+    box_min: [-0.35, -0.58, -0.30]  # x/y/z 最小值（米）
+    box_max: [0.439, 0.31, 0.10]  # 待实测，x/y/z 最大值（米）
+    #[-0.35, -0.65, -0.30] min
+    #[0.439, 0.31, 0.10] # max 夹抓前倾
+    #[-0.35, -0.58, -0.30] min
+    #[0.439, 0.31, 0.10] # max 夹抓收起
+    #[-0.334, -0.68, -0.70] min
+    #[0.334, -0.31, 0.10] max 夹持方块
 
     # Reserved for the confirmed held block. EMPTY is the safe default and
     # no environment block is removed until a validated state source exists.
-    block_filter_enabled: false
-    block_box_count: 0  # 待实测：被夹持方块包围盒
+    block_filter_enabled: true
+    block_box_count: 1  # 待实测：被夹持方块包围盒
     block_box_frames: [footprint_link]
-    block_box_min: [-0.10, -0.10, -0.10]  # 待实测
-    block_box_max: [0.10, 0.10, 0.10]     # 待实测
-    state_input_enabled: false  # 仅未来串口接入/调试时打开
+    block_box_min: [-0.334, -0.68, -0.70]  # 待实测
+    block_box_max: [0.334, -0.31, 0.10]    # 待实测
+    state_input_enabled: true  # 仅未来串口接入/调试时打开
     state_topic: /gripper_filter/state
 
 pointcloud_to_laserscan_costmap:
@@ -28,13 +36,13 @@ pointcloud_to_laserscan_costmap:
     use_sim_time: false
     target_frame: footprint_link
     transform_tolerance: 0.10
-    min_height: -0.60  # 待按夹爪、车体及地面实测调整
+    min_height: -0.66  # 待按夹爪、车体及地面实测调整
     max_height: 4.0    # 待按场地需求实测调整
     angle_min: -3.14159
     angle_max: 3.14159
     angle_increment: 0.0043
     scan_time: 0.05
-    range_min: 0.65  # 与当前 mapping_nav2.launch.py 中原扫描相同
+    range_min: 0.30  # 与当前 mapping_nav2.launch.py 中原扫描相同
     range_max: 10.0
     use_inf: true
     inf_epsilon: 1.0

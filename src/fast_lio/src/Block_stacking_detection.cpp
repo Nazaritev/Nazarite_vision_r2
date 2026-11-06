@@ -1,8 +1,10 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <deque>
 #include <limits>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <geometry_msgs/msg/point.hpp>
@@ -30,13 +32,15 @@
 //   然后在 map 系下若干个查询点（points 参数，二维 [x,y] 对）处，
 //   各取一个竖直方柱 ROI，统计堆叠高度和层数。
 //
-//   雷达倒装（URDF 里 pitch=π），所以 odom/map 的 z 轴朝下：
-//   地面在 z = ground_z（默认 0.55m，即雷达离地高度），
-//   物体越高 z 越小，物体高度 h = ground_z - z。
-//   若哪天雷达正装，把 inverted 参数设为 false 即可。
+//   雷达物理倒装（URDF 里 base→imu pitch=π），但 laserMapping 发布 odom 时
+//   已把它对齐到启动时的 base_link（见 laserMapping.cpp 的
+//   published_odom_alignment），/cloud_registered 和 map 的 z 轴都是朝上的：
+//   地面在 z = ground_z（2026-11-04 实测约 -0.73m），高度 h = z - ground_z。
+//   ★ 换场地 / 换车必须重新标定 ground_z（RViz 里 Publish Point 点地面）。
 //
-//   层数规则：h > layer_height（默认 0.35m）算 1 层，
-//   h > 2*layer_height 算 2 层，即 layers = floor(h / layer_height)。
+//   层数规则：按每层中线判决，
+//   layers = floor((h + layer_height/2) / layer_height)，
+//   即 h≈一个块高时算 1 层、≈两个块高时算 2 层。
 //
 //   可视化（全部在 map 系）：
 //     /block_stacking/markers       查询点 ROI 框 + 堆叠顶面 + 层数文字
@@ -89,24 +93,32 @@ public:
         target_frame_ = declare_parameter<std::string>("target_frame", "map");
         tf_timeout_   = declare_parameter<double>("tf_timeout", 0.2);
 
-        // 地面高度（目标坐标系下）。雷达倒装、离地 0.55m → 地面 z=0.55
-        ground_z_ = declare_parameter<double>("ground_z", 0.55);
-        // true: z 轴朝下（倒装），高度 h = ground_z - z
-        // false: z 轴朝上，高度 h = z - ground_z
-        inverted_ = declare_parameter<bool>("inverted", true);
+        // 地面高度（目标坐标系下）。2026-11-04 用 bag 实测 map 系地面约 -0.73m
+        // ★ 换场地 / 换车必须重新标定：RViz 里 Publish Point 点一下地面读 z
+        ground_z_ = declare_parameter<double>("ground_z", -0.73);
+        // false: z 轴朝上（当前 fast_lio 的发布方式），高度 h = z - ground_z
+        // true : z 轴朝下（原始 LIO 世界系），高度 h = ground_z - z
+        inverted_ = declare_parameter<bool>("inverted", false);
 
-        // 单层高度（米）：h > 0.35 算 1 层，h > 0.70 算 2 层……
+        // 单个地块的高度（米）。层数按中线判决，见 analyze()
         layer_height_ = declare_parameter<double>("layer_height", 0.35);
         // 查询点周围的方柱半径（米），ROI 为 [x±r, y±r]
         roi_half_size_ = declare_parameter<double>("roi_half_size", 0.30);
         // 竖直方向最多往上看多高（米）
         max_stack_height_ = declare_parameter<double>("max_stack_height", 2.0);
-        // 取多少分位作为堆叠顶面，默认 95%
-        top_percentile_ = declare_parameter<double>("top_percentile", 0.95);
+        // 取多少分位作为堆叠顶面。单帧点云稀疏，0.95 会系统性偏低，默认 0.99
+        top_percentile_ = declare_parameter<double>("top_percentile", 0.99);
         // ROI 内点数少于该值视为没有物体
-        min_points_ = declare_parameter<int>("min_points", 20);
+        min_points_ = declare_parameter<int>("min_points", 10);
         // 处理节流（秒）
         process_period_ = declare_parameter<double>("process_period", 0.2);
+        // 多帧累积窗口（秒）：MID360 单帧在 0.6x0.6m 的 ROI 里只有几十个点，
+        // 顶面经常漏扫。先攒 window 秒的点云再统计，高度/层数稳定很多。
+        // <= 0 表示不累积，退回单帧
+        accumulate_window_ = declare_parameter<double>("accumulate_window", 0.2);
+        // 统计离群点去除：ROI 点数少时 meanK 不能大；<= 1 表示跳过
+        outlier_mean_k_ = declare_parameter<int>("outlier_mean_k", 8);
+        outlier_stddev_ = declare_parameter<double>("outlier_stddev", 1.0);
 
         // ---------- 查询点：扁平二维数组 [x1,y1, x2,y2, ...] ----------
         const auto flat = declare_parameter<std::vector<double>>(
@@ -161,14 +173,6 @@ public:
 private:
     void cloudCallback(const sensor_msgs::msg::PointCloud2::SharedPtr msg)
     {
-        // ---------- 0. 节流 ----------
-        const rclcpp::Time now = this->now();
-        if (last_process_time_.nanoseconds() != 0 &&
-            (now - last_process_time_).seconds() < process_period_) {
-            return;
-        }
-        last_process_time_ = now;
-
         std::string frame_id = msg->header.frame_id;
         if (!target_frame_.empty() && frame_id != target_frame_) {
             std::string tf_error;
@@ -235,14 +239,49 @@ private:
             }
         }
 
-        // ---------- 3. 逐个查询点统计 ----------
+        // ---------- 3. 累积最近 accumulate_window 秒的点云 ----------
+        //   单帧 ROI 只有几十个点，顶面经常漏扫；先攒几帧再统计。
+        const rclcpp::Time stamp(msg->header.stamp);
+        if (accumulate_window_ > 0.0) {
+            cloud_buffer_.emplace_back(stamp, cloud);
+            while (!cloud_buffer_.empty() &&
+                   (stamp - cloud_buffer_.front().first).seconds() >
+                       accumulate_window_) {
+                cloud_buffer_.pop_front();
+            }
+        }
+
+        // ---------- 4. 节流：process_period 到了才计算一次 ----------
+        const rclcpp::Time now = this->now();
+        if (last_process_time_.nanoseconds() != 0 &&
+            (now - last_process_time_).seconds() < process_period_) {
+            return;
+        }
+        last_process_time_ = now;
+
+        pcl::PointCloud<pcl::PointXYZ>::Ptr merged = cloud;
+        size_t used_frames = 1;
+        if (accumulate_window_ > 0.0 && cloud_buffer_.size() > 1) {
+            size_t total = 0;
+            for (const auto& entry : cloud_buffer_) {
+                total += entry.second->size();
+            }
+            merged.reset(new pcl::PointCloud<pcl::PointXYZ>);
+            merged->reserve(total);
+            for (const auto& entry : cloud_buffer_) {
+                *merged += *entry.second;
+            }
+            used_frames = cloud_buffer_.size();
+        }
+
+        // ---------- 5. 逐个查询点统计 ----------
         std::vector<StackResult> results;
         results.reserve(points_.size());
         for (const auto& qp : points_) {
-            results.push_back(analyze(qp, cloud));
+            results.push_back(analyze(qp, merged, used_frames));
         }
 
-        // ---------- 4. 发布 ----------
+        // ---------- 6. 发布 ----------
         std_msgs::msg::Header out_header = msg->header;
         out_header.frame_id = frame_id;
         publishVisualization(out_header, results);
@@ -250,7 +289,8 @@ private:
     }
 
     StackResult analyze(const QueryPoint& qp,
-                        const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud)
+                        const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud,
+                        size_t used_frames)
     {
         StackResult res;
         res.name = qp.name;
@@ -282,14 +322,18 @@ private:
             return res;
         }
 
-        // 去噪
+        // 去噪：ROI 点数本来就不多，meanK 不能大；点数不足 meanK 时直接跳过，
+        // 否则会把稀疏的顶面点当成离群点删掉，高度反而变低。
         pcl::PointCloud<pcl::PointXYZ>::Ptr denoised(
-            new pcl::PointCloud<pcl::PointXYZ>);
-        pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
-        sor.setInputCloud(roi_cloud);
-        sor.setMeanK(20);
-        sor.setStddevMulThresh(1.0);
-        sor.filter(*denoised);
+            new pcl::PointCloud<pcl::PointXYZ>(*roi_cloud));
+        if (outlier_mean_k_ > 1 &&
+            static_cast<int>(roi_cloud->size()) > outlier_mean_k_) {
+            pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
+            sor.setInputCloud(roi_cloud);
+            sor.setMeanK(outlier_mean_k_);
+            sor.setStddevMulThresh(outlier_stddev_);
+            sor.filter(*denoised);
+        }
         res.cloud = denoised;
 
         if (static_cast<int>(denoised->size()) < min_points_) {
@@ -311,14 +355,18 @@ private:
 
         std::sort(heights.begin(), heights.end());
         res.height = percentile(heights, static_cast<float>(top_percentile_));
-        res.layers = static_cast<int>(std::floor(res.height / layer_height_));
+        // 按每层中线判决：单块≈0.345m / layer_height 0.35 = 0.99，
+        // 直接 floor 会判成 0 层；加半层再 floor 才能得到 1 层。
+        res.layers = static_cast<int>(std::floor(
+            (res.height + 0.5f * static_cast<float>(layer_height_)) /
+            static_cast<float>(layer_height_)));
         res.has_object = res.layers > 0;
 
         RCLCPP_INFO_THROTTLE(
             get_logger(), *get_clock(), 1000,
-            "%s (%.2f, %.2f) 点数=%zu 堆叠高度=%.3fm 层数=%d",
-            res.name.c_str(), res.x, res.y, denoised->size(), res.height,
-            res.layers);
+            "%s (%.2f, %.2f) 累积%zu帧 点数=%zu 堆叠高度=%.3fm 层数=%d",
+            res.name.c_str(), res.x, res.y, used_frames, denoised->size(),
+            res.height, res.layers);
         return res;
     }
 
@@ -467,10 +515,17 @@ private:
     double top_percentile_;
     int    min_points_;
     double process_period_;
+    double accumulate_window_;
+    int    outlier_mean_k_;
+    double outlier_stddev_;
     bool tf_ready_ = false;
     std::chrono::steady_clock::time_point tf_wait_start_{std::chrono::steady_clock::now()};
 
     std::vector<QueryPoint> points_;
+
+    // 多帧累积缓冲：(点云时间戳, map 系点云)
+    std::deque<std::pair<rclcpp::Time, pcl::PointCloud<pcl::PointXYZ>::Ptr>>
+        cloud_buffer_;
 
     rclcpp::Time last_process_time_{0, 0, RCL_ROS_TIME};
 

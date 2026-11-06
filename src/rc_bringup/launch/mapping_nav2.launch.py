@@ -75,7 +75,7 @@ def build_nav2_params(config_dir, use_sim_time, enable_gripper_filter,
 def generate_launch_description():
     pkg_dir = get_package_share_directory('rc_bringup')
     config_dir = os.path.join(pkg_dir, 'config', 'reality')
-    map_yaml_file = os.path.join(pkg_dir, 'map', 'map2.yaml')
+    map_yaml_file = os.path.join(pkg_dir, 'map', 'map4.yaml')
     bt_xml_file = os.path.join(
         config_dir, 'navigate_to_pose_teb_mppi_selector.xml'
     )
@@ -96,7 +96,7 @@ def generate_launch_description():
         DeclareLaunchArgument('costmap_scan_topic', default_value='/scan_costmap'),
         DeclareLaunchArgument(
             'enable_gripper_filter',
-            default_value='false',
+            default_value='true',
             choices=['true', 'false'],
             description='Enable the measured gripper self-filtered costmap scan',
         ),
@@ -203,21 +203,28 @@ def generate_launch_description():
                 'use_sim_time': use_sim_time,
                 'cloud_topic': '/cloud_registered',
                 'target_frame': 'map',
-                'tf_timeout': 0.2,
-                'ground_z': 0.55,
-                'inverted': True,
+                 'tf_timeout': 0.2,
+                'ground_z': -0.73,
+                'inverted': False,
                 'layer_height': 0.35,
                 'roi_half_size': 0.30,
                 'max_stack_height': 2.0,
-                'top_percentile': 0.95,
-                'min_points': 20,
+                'top_percentile': 0.99,
+                'min_points': 10,
                 'process_period': 0.2,
-                'point_names': ['corner_1', 'corner_2', 'corner_3', 'corner_4'],
+                'accumulate_window': 0.2,   # 累积最近 0.2s 的多帧点云再统计
+                'outlier_mean_k': 8,        # 小点集的 SOR，不能再大
+                'outlier_stddev': 1.0,
+                'point_names': ['corner_1', 'corner_2', 'corner_3', 'corner_4','corner_5','corner_6','corner_7','corner_8'],
                 'points': [
-                    -0.58, 3.07,   # corner_1
-                     1.0, -1.0,   # corner_2
-                     1.0,  1.0,   # corner_3
-                    -1.0,  1.0,   # corner_4
+                    5.04, -2.47,   # corner_1
+                     3.37, -2.64,   # corner_2
+                     3.46,  0.06,   # corner_3
+                    5.79,  -0.05,   # corner_4
+                    7.09, -1.66,   # corner_5
+                     2.02, -1.48,   # corner_6
+                     7.23,  1.30,   # corner_7   
+                    1.96,  1.43,   # corner_8
                 ],
             }],
         ),
@@ -233,7 +240,7 @@ def generate_launch_description():
                 'use_sim_time': use_sim_time,
                 'target_frame': 'footprint_link',
                 'transform_tolerance': 0.1,
-                'min_height': -0.60,
+                'min_height': -0.70,
                 'max_height': 4.0,
                 'angle_min': -3.14159,
                 'angle_max': 3.14159,

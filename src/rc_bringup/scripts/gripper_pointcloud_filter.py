@@ -16,14 +16,16 @@ from typing import Iterable, Sequence
 
 import numpy as np
 import rclpy
-from geometry_msgs.msg import TransformStamped
+from geometry_msgs.msg import Point, TransformStamped
 from rclpy.duration import Duration
 from rclpy.executors import ExternalShutdownException, MultiThreadedExecutor
 from rclpy.node import Node
+from rclpy.qos import DurabilityPolicy, QoSProfile
 from rclpy.time import Time
 from sensor_msgs.msg import PointCloud2
 from std_msgs.msg import String
 from tf2_ros import Buffer, TransformException, TransformListener
+from visualization_msgs.msg import Marker, MarkerArray
 
 
 EMPTY = "EMPTY"
@@ -142,6 +144,37 @@ def lookup_transform_at_stamp(buffer, target_frame: str, source_frame: str, stam
     )
 
 
+def box_projection(box: Box, transform=None) -> list[Point]:
+    """Project all eight corners onto the display frame's z=0 plane.
+
+    The convex hull is a rectangle for footprint-aligned boxes, and also
+    handles boxes attached to tilted frames without drawing a 3D wireframe.
+    """
+    corners = np.array([
+        [x, y, z]
+        for x in (box.minimum[0], box.maximum[0])
+        for y in (box.minimum[1], box.maximum[1])
+        for z in (box.minimum[2], box.maximum[2])
+    ])
+    if transform is not None:
+        corners = transform_xyz(corners, transform)
+    xy = sorted(set((float(x), float(y)) for x, y, _z in corners))
+
+    def cross(a, b, c):
+        return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])
+
+    def half_hull(points):
+        hull = []
+        for point in points:
+            while len(hull) >= 2 and cross(hull[-2], hull[-1], point) <= 0:
+                hull.pop()
+            hull.append(point)
+        return hull
+
+    hull = (half_hull(xy)[:-1] + half_hull(reversed(xy))[:-1]) if len(xy) > 1 else xy
+    return [Point(x=x, y=y, z=0.0) for x, y in [*hull, hull[0]]]
+
+
 class GripperPointCloudFilter(Node):
     def __init__(self, **kwargs) -> None:
         super().__init__("gripper_pointcloud_filter", **kwargs)
@@ -149,6 +182,8 @@ class GripperPointCloudFilter(Node):
         self.declare_parameter("input_topic", "/cloud_registered")
         self.declare_parameter("output_topic", "/cloud_registered_costmap")
         self.declare_parameter("status_topic", "/gripper_filter/status")
+        self.declare_parameter("visualization_topic", "/gripper_filter/markers")
+        self.declare_parameter("visualization_frame", "footprint_link")
         self.declare_parameter("tf_timeout", 0.10)
         self.declare_parameter("box_count", 0)
         self.declare_parameter("box_frames", ["footprint_link"])
@@ -186,6 +221,13 @@ class GripperPointCloudFilter(Node):
         self.publisher = self.create_publisher(PointCloud2, self.output_topic, qos)
         self.status_publisher = self.create_publisher(
             String, str(self.get_parameter("status_topic").value), 10)
+        self.visualization_frame = str(self.get_parameter("visualization_frame").value)
+        self.marker_publisher = self.create_publisher(
+            MarkerArray, str(self.get_parameter("visualization_topic").value),
+            QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL))
+        # Independent of cloud reception so the bounds remain visible even
+        # when no input points fall inside the configured boxes.
+        self.marker_timer = self.create_timer(0.5, self._publish_box_markers)
         self.subscription = self.create_subscription(
             PointCloud2, self.input_topic, self.cloud_callback, qos)
         self.state_subscription = None
@@ -240,6 +282,42 @@ class GripperPointCloudFilter(Node):
 
     def _publish_status(self, text: str) -> None:
         self.status_publisher.publish(String(data=text))
+
+    def _publish_box_markers(self) -> None:
+        stamp = self.get_clock().now().to_msg()
+        markers = [Marker(action=Marker.DELETEALL)]
+        active_boxes = boxes_for_state(
+            self.state, self.boxes, self.block_boxes, self.block_filter_enabled)
+        for index, box in enumerate(active_boxes if self.enabled else []):
+            try:
+                # Latest TF is only for the display; filtering continues to
+                # use the exact point-cloud timestamp in cloud_callback.
+                transform = None if box.frame == self.visualization_frame else (
+                    self.tf_buffer.lookup_transform(self.visualization_frame, box.frame, Time()))
+                outline = box_projection(box, transform)
+            except (TransformException, ValueError, TypeError) as error:
+                self.get_logger().warning(
+                    f"Cannot display filter box in {self.visualization_frame}: {error}",
+                    throttle_duration_sec=5.0)
+                continue
+            is_self = index < len(self.boxes)
+            marker = Marker()
+            marker.header.frame_id = self.visualization_frame
+            marker.header.stamp = stamp
+            marker.ns = "gripper_filter_self" if is_self else "gripper_filter_block"
+            marker.id = index
+            marker.type = Marker.LINE_STRIP
+            marker.action = Marker.ADD
+            marker.pose.orientation.w = 1.0
+            marker.scale.x = 0.015
+            marker.color.r, marker.color.g, marker.color.b = (
+                (1.0, 0.45, 0.0) if is_self else (0.0, 0.6, 1.0))
+            marker.color.a = 1.0
+            marker.frame_locked = True
+            marker.lifetime = Duration(seconds=1.5).to_msg()
+            marker.points = outline
+            markers.append(marker)
+        self.marker_publisher.publish(MarkerArray(markers=markers))
 
     def cloud_callback(self, message: PointCloud2) -> None:
         if not self.enabled:
