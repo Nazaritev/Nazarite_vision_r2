@@ -16,7 +16,8 @@ class GetAndPub(Node):
         # /dev/ttyUSB0
         # /dev/pts/6
         # /dev/usbv
-        self.ser = serial.Serial('/dev/ttyUSB1',961200,timeout=1.0)
+        # 115200
+        self.ser = serial.Serial('/dev/ttyUSB0',115200,timeout=1.0)
         self.vx = 0.0
         self.vy = 0.0
         self.vw = 0.0
@@ -83,13 +84,11 @@ class GetAndPub(Node):
             vw_int = int(vw_int)
             self.get_logger().info(f'(vx={vx_int/1000},vy={vy_int/1000},vw={vw_int/10})')
             # self.get_logger().info(f'{vw_int}')
-            frame_head = struct.pack('<B h h h B B B', 
+            frame_head = struct.pack('<B h h h B', 
                                          0xA5,       # SOF (帧头，1字节)
                                          vx_int,     # Vx (2字节)
                                          vy_int,     # Vy (2字节)
                                          vw_int,     # Vw (2字节)
-                                         flag,       # Flag (1字节)
-                                         reserved,   # Reserved (1字节)
                                          mode)       # Mode (1字节)
             data_to_crc = frame_head[1:]
             crc = self.calc_crc8(data_to_crc)
@@ -158,13 +157,11 @@ class GetAndPub(Node):
         mode = int(0)
         reserved = 0  # 保留字，当前固定填 0
 
-        frame_head = struct.pack('<B h h h B B B', 
+        frame_head = struct.pack('<B h h h B', 
                                      0xA5,       # SOF (帧头，1字节)
                                      vx_int,     # Vx (2字节)
                                      vy_int,     # Vy (2字节)
                                      vw_int,     # Vw (2字节)
-                                     flag,       # Flag (1字节)
-                                     reserved,   # Reserved (1字节)
                                      mode)       # Mode (1字节)
 
         # 3. 提取纯数据部分进行 CRC 校验
@@ -224,13 +221,11 @@ class GetAndPub(Node):
                         vw_int = int(vw_int)
                         self.get_logger().info(f'(vx={vx_int/1000},vy={vy_int/1000},vw={vw_int/10})')
                         # self.get_logger().info(f'{vw_int}')
-                        frame_head = struct.pack('<B h h h B B B', 
+                        frame_head = struct.pack('<B h h h B', 
                                                      0xA5,       # SOF (帧头，1字节)
                                                      vx_int,     # Vx (2字节)
                                                      vy_int,     # Vy (2字节)
                                                      vw_int,     # Vw (2字节)
-                                                     flag,       # Flag (1字节)
-                                                     reserved,   # Reserved (1字节)
                                                      mode)       # Mode (1字节)
                         data_to_crc = frame_head[1:]
                         crc = self.calc_crc8(data_to_crc)
@@ -286,13 +281,11 @@ class GetAndPub(Node):
                         vw_int = int(vw_int)
                         self.get_logger().info(f'(vx={vx_int/1000},vy={vy_int/1000},vw={vw_int/10})')
                         # self.get_logger().info(f'{vw_int}')
-                        frame_head = struct.pack('<B h h h B B B', 
+                        frame_head = struct.pack('<B h h h B', 
                                                      0xA5,       # SOF (帧头，1字节)
                                                      vx_int,     # Vx (2字节)
                                                      vy_int,     # Vy (2字节)
                                                      vw_int,     # Vw (2字节)
-                                                     flag,       # Flag (1字节)
-                                                     reserved,   # Reserved (1字节)
                                                      mode)       # Mode (1字节)
                         data_to_crc = frame_head[1:]
                         crc = self.calc_crc8(data_to_crc)

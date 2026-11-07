@@ -9,7 +9,7 @@ def generate_launch_description():
         prefix='xterm -e',
         parameters=[{
             'speed': 0.4,   # 线速度初始值
-            'turn': 0.35,    # 角速度初始值
+            'turn': 3.14,   # 角速度初始值
         }],
     )
     action2= launch_ros.actions.Node(
