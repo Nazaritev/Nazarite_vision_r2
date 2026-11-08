@@ -32,7 +32,7 @@
     <!-- Keep the navigation body frame level with base_link at the vehicle
          footprint center. -->
     <joint name="base_to_footprint_link" type="fixed">
-        <origin rpy="0 0 0" xyz="-0.195 0.183 0"/>
+        <origin rpy="0 0 ${-pi / 2}" xyz="-0.195 0.183 0"/>
         <parent link="base_link"/>
         <child link="footprint_link"/>
         <axis xyz="0 0 0"/>
@@ -77,4 +77,3 @@
         <axis xyz="0 0 0"/>
     </joint>
 </robot>
-

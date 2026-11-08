@@ -46,8 +46,8 @@ class STM32Driver(Node):
         self.slope_curve_last_log_time = 0.0
 
         # 1. 配置串口参数（与STM32一致）
-        self.declare_parameter('serial_port', '/dev/ttyUSB1')
-        self.declare_parameter('baudrate', 961200)
+        self.declare_parameter('serial_port', '/dev/ttyUSB0')
+        self.declare_parameter('baudrate',115200)
         self.declare_parameter('timeout', 1.0)
         self.declare_parameter('spin_angular_speed', 1.5)
         self.declare_parameter('override_frequency', 20.0)
@@ -467,7 +467,7 @@ class STM32Driver(Node):
             #vy = vy + vx*-0.04
             vx_int = int(vx * 1000)
             vy_int = int(vy * 1000)
-            vw_int = int(vw * 10)
+            vw_int = int(-vw * 10)
             flag = int(flag)
             mode = int(mode)
             reserved = 0  # 保留字，当前固定填 0
@@ -479,13 +479,11 @@ class STM32Driver(Node):
             
             # 2. 打包前 10 个字节：SOF + Vx + Vy + Vw + Flag + Reserved + Mode
             # '<' 表示小端模式(STM32常用)
-            frame_head = struct.pack('<B h h h B B B', 
+            frame_head = struct.pack('<B h h h B', 
                                      0xA5,       # SOF (帧头，1字节)
                                      vx_int,     # Vx (2字节)
                                      vy_int,     # Vy (2字节)
                                      vw_int,     # Vw (2字节)
-                                     flag,       # Flag (1字节)
-                                     reserved,   # Reserved (1字节)
                                      mode)       # Mode (1字节)
             
             # 3. 提取纯数据部分进行 CRC 校验

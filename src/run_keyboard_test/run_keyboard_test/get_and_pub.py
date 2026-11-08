@@ -238,7 +238,30 @@ class GetAndPub(Node):
                         self.vw = 0
                         time.sleep(self.a_time)
                 else:
-                    pass
+                    vx_int = int(self.vx * 1000)
+                    vy_int = int(self.vy * 1000)
+                    vw_int = int(self.vw * 10)
+                    self.get_logger().info(f'(vx={vx_int/1000},vy={vy_int/1000},vw={vw_int/10})')
+                    flag = int(0)
+                    mode = int(0)
+                    reserved = 0  # 保留字，当前固定填 0
+
+                    frame_head = struct.pack('<B h h h B', 
+                                                0xA5,       # SOF (帧头，1字节)
+                                                vx_int,     # Vx (2字节)
+                                                vy_int,     # Vy (2字节)
+                                                vw_int,     # Vw (2字节)
+                                                mode)       # Mode (1字节)
+
+                    # 3. 提取纯数据部分进行 CRC 校验
+                    # 使用 [1:] 跳过第0个字节（即 0xA5 帧头），只对后面的 9 个字节的数据进行校验
+                    data_to_crc = frame_head[1:]
+                    crc = self.calc_crc8(data_to_crc)
+
+                    full_frame = frame_head + struct.pack('<B B', crc, 0xFF)
+                    # print(full_frame)
+                    # self.get_logger().info(f'{full_frame}')
+                    self.ser.write(full_frame)
             elif self.pub_bool >= 2:
                 
                 if time.time() - self.time_start > 0.09 :

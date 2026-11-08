@@ -134,6 +134,22 @@ def test_urdf_and_fastlio_extrinsics_agree(tmp_path):
                for joint in joints.values())
 
 
+def test_nav2_body_frame_points_right(tmp_path):
+    context = context_for(tmp_path, start_robot_state_publisher='true')
+    nodes = nodes_for(context)
+    robot = ET.fromstring(params(context, nodes['robot_state_publisher'])['robot_description'])
+    joint = robot.find("joint[@name='base_to_footprint_link']")
+    assert joint.find('parent').attrib['link'] == 'base_link'
+    assert joint.find('child').attrib['link'] == 'footprint_link'
+    origin = joint.find('origin')
+    assert [float(value) for value in origin.attrib['xyz'].split()] == [-0.195, 0.183, 0.0]
+    roll, pitch, yaw = [float(value) for value in origin.attrib['rpy'].split()]
+    assert roll == 0.0
+    assert pitch == 0.0
+    assert math.isclose(math.cos(yaw), 0.0, abs_tol=1e-12)
+    assert math.isclose(math.sin(yaw), -1.0, abs_tol=1e-12)
+
+
 def test_rviz_has_required_topics_and_no_motion_tool():
     rviz = yaml.safe_load((SHARE / 'rviz/cloud_localization_test.rviz').read_text())
     manager = rviz['Visualization Manager']
