@@ -34,7 +34,10 @@ slam_toolbox:
         tf_buffer_duration: 30.
         stack_size_to_use: 40000000
         enable_interactive_mode: true
-        #occupancy_threshold: 0.45 #hit命中提高阈值
+        # 矮围栏（10cm）远处每帧只有零星命中：free 更新更难覆盖已有命中，
+        # 占据判定阈值放宽，让稀疏命中能留在全局地图里。
+        min_pass_through: 5
+        occupancy_threshold: 0.05
 
         # General Parameters
         use_scan_matching: true

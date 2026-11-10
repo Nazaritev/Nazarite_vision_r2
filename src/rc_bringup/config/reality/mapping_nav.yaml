@@ -9,12 +9,19 @@ amcl:
     map_topic: /map
     tf_broadcast: true
     robot_model_type: nav2_amcl::OmniMotionModel
-    alpha1: 0.50
-    alpha2: 0.50
-    alpha3: 0.50
-    alpha4: 0.50
-    alpha5: 0.50
-    laser_model_type: likelihood_field
+    alpha1: 0.02
+    alpha2: 0.02
+    alpha3: 0.02
+    alpha4: 0.02
+    alpha5: 0.02
+    laser_model_type: likelihood_field_prob
+    # ===== 官方文档中你缺失的参数（默认值）=====
+    # 光束跳过相关（likelihood_field 模型下可选启用）
+    do_beamskip: true
+    beam_skip_distance: 0.5
+    beam_skip_threshold: 0.3
+    beam_skip_error_threshold: 0.9
+
     laser_min_range: 0.45
     laser_max_range: 10.0
     laser_likelihood_max_dist: 2.0
@@ -33,12 +40,7 @@ amcl:
     z_rand: 0.5
     sigma_hit: 0.2
 
-    # ===== 官方文档中你缺失的参数（默认值）=====
-    # 光束跳过相关（likelihood_field 模型下可选启用）
-    do_beamskip: false
-    beam_skip_distance: 0.5
-    beam_skip_threshold: 0.3
-    beam_skip_error_threshold: 0.9
+    
 
     # beam 模型专用（likelihood_field 下不生效，保留以备切换）
     lambda_short: 0.1

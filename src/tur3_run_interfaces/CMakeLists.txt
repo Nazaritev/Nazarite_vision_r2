@@ -13,6 +13,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/UseNavToPose.srv"
   "srv/NavOnce.srv"
   "msg/Slope.msg"
+  "msg/AdjYaw.msg"
   # DEPENDENCIES sensor_msgs
 )
 if(BUILD_TESTING)

@@ -75,7 +75,7 @@ def build_nav2_params(config_dir, use_sim_time, enable_gripper_filter,
 def generate_launch_description():
     pkg_dir = get_package_share_directory('rc_bringup')
     config_dir = os.path.join(pkg_dir, 'config', 'reality')
-    map_yaml_file = os.path.join(pkg_dir, 'map', 'map4.yaml')
+    map_yaml_file = os.path.join(pkg_dir, 'map', 'map6.yaml')
     bt_xml_file = os.path.join(
         config_dir, 'navigate_to_pose_teb_mppi_selector.xml'
     )
@@ -125,9 +125,9 @@ def generate_launch_description():
             }],
         ),
         Node(
-            package='stm32_driver',
-            executable='stm32_driver_node',
-            name='stm32_driver',
+            package='run_keyboard_test',
+            executable='stm32_communication',
+            name='stm32_communication',
             output='screen',
             parameters=[{'use_sim_time': use_sim_time}],
         ),
@@ -193,41 +193,41 @@ def generate_launch_description():
         # ★ points = [x1,y1, x2,y2, ...]，map 系坐标，务必按场地改
         # ★ 雷达倒装：z 轴朝下，地面在 z = ground_z（0.55，即雷达离地高度），
         #   物体高度 h = ground_z - z；layer_height=0.35 表示 h>0.35 算一层
-        # ★ 没有定位（无 map->odom）时把 target_frame 改成 'odom'
-        Node(
-            package='fast_lio',
-            executable='block_stacking_detection',
-            name='block_stacking_detection',
-            output='screen',
-            parameters=[{
-                'use_sim_time': use_sim_time,
-                'cloud_topic': '/cloud_registered',
-                'target_frame': 'map',
-                 'tf_timeout': 0.2,
-                'ground_z': -0.73,
-                'inverted': False,
-                'layer_height': 0.35,
-                'roi_half_size': 0.30,
-                'max_stack_height': 2.0,
-                'top_percentile': 0.99,
-                'min_points': 10,
-                'process_period': 0.2,
-                'accumulate_window': 0.2,   # 累积最近 0.2s 的多帧点云再统计
-                'outlier_mean_k': 8,        # 小点集的 SOR，不能再大
-                'outlier_stddev': 1.0,
-                'point_names': ['corner_1', 'corner_2', 'corner_3', 'corner_4','corner_5','corner_6','corner_7','corner_8'],
-                'points': [
-                    5.04, -2.47,   # corner_1
-                     3.37, -2.64,   # corner_2
-                     3.46,  0.06,   # corner_3
-                    5.79,  -0.05,   # corner_4
-                    7.09, -1.66,   # corner_5
-                     2.02, -1.48,   # corner_6
-                     7.23,  1.30,   # corner_7   
-                    1.96,  1.43,   # corner_8
-                ],
-            }],
-        ),
+        # # ★ 没有定位（无 map->odom）时把 target_frame 改成 'odom'
+        # Node(
+        #     package='fast_lio',
+        #     executable='block_stacking_detection',
+        #     name='block_stacking_detection',
+        #     output='screen',
+        #     parameters=[{
+        #         'use_sim_time': use_sim_time,
+        #         'cloud_topic': '/cloud_registered',
+        #         'target_frame': 'map',
+        #          'tf_timeout': 0.2,
+        #         'ground_z': -0.73,
+        #         'inverted': False,
+        #         'layer_height': 0.35,
+        #         'roi_half_size': 0.30,
+        #         'max_stack_height': 2.0,
+        #         'top_percentile': 0.99,
+        #         'min_points': 10,
+        #         'process_period': 0.2,
+        #         'accumulate_window': 0.2,   # 累积最近 0.2s 的多帧点云再统计
+        #         'outlier_mean_k': 8,        # 小点集的 SOR，不能再大
+        #         'outlier_stddev': 1.0,
+        #         'point_names': ['corner_1', 'corner_2', 'corner_3', 'corner_4','corner_5','corner_6','corner_7','corner_8'],
+        #         'points': [
+        #             5.04, -2.47,   # corner_1
+        #              3.37, -2.64,   # corner_2
+        #              3.46,  0.06,   # corner_3
+        #             5.79,  -0.05,   # corner_4
+        #             7.09, -1.66,   # corner_5
+        #              2.02, -1.48,   # corner_6
+        #              7.23,  1.30,   # corner_7   
+        #             1.96,  1.43,   # corner_8
+        #         ],
+        #   }],
+        # ),
     ]
 
     actions.extend([
@@ -240,7 +240,7 @@ def generate_launch_description():
                 'use_sim_time': use_sim_time,
                 'target_frame': 'footprint_link',
                 'transform_tolerance': 0.1,
-                'min_height': -0.70,
+                'min_height': -0.66,
                 'max_height': 4.0,
                 'angle_min': -3.14159,
                 'angle_max': 3.14159,
@@ -286,34 +286,34 @@ def generate_launch_description():
         ),
     ])
 
-    localized_actions.append(
-        Node(
-            package='pointcloud_to_grid',
-            executable='pointcloud_to_grid_node', # 注意：请确认它的可执行文件名，通常是这个
-            name='pointcloud_to_grid_node',
-            output='screen',
-            parameters=[{
-                'use_sim_time': use_sim_time,
-                'cloud_in_topic': '/cloud_registered', # 输入点云话题
-                'z_min': -2.0  ,                   # 高度筛选下限
-                'z_max':2.0  ,                     # 高度筛选上限.
-                'cell_size': 0.05 ,
-                # height_grid 的数值换算：value = (z + height_offset) * height_factor
-                # OccupancyGrid 只有 0..100（灰度），必须把关心的地面以上高度摊满
-                # 整个量程，否则所有格子都是 0/1，图上就是一片同色。
-                # ground 在 map 系约 -0.55m（base_link 比 motion_link 高 0.576m），
-                # 所以 offset=0.55 让地面→0；factor=100 让地面以上 1m→100。
-                'height_offset': -0.68,
-                'height_factor': 150.0,
-                # 自车（车身）点剔除：框在 base_link 下（x 前  y 左  z 上），
-                # 默认 = 雷达左后方 0.5m x 0.5m（雷达在车身右上角）。
-                'ego_filter_enable': True,
-                'ego_frame': 'base_link',
-                'ego_x_min': -0.5, 'ego_x_max': 0.0,
-                'ego_y_min': 0.0,  'ego_y_max': 0.5,
-            }],
-        ),
-    )
+    # localized_actions.append(
+    #     Node(
+    #         package='pointcloud_to_grid',
+    #         executable='pointcloud_to_grid_node', # 注意：请确认它的可执行文件名，通常是这个
+    #         name='pointcloud_to_grid_node',
+    #         output='screen',
+    #         parameters=[{
+    #             'use_sim_time': use_sim_time,
+    #             'cloud_in_topic': '/cloud_registered', # 输入点云话题
+    #             'z_min': -2.0  ,                   # 高度筛选下限
+    #             'z_max':2.0  ,                     # 高度筛选上限.
+    #             'cell_size': 0.05 ,
+    #             # height_grid 的数值换算：value = (z + height_offset) * height_factor
+    #             # OccupancyGrid 只有 0..100（灰度），必须把关心的地面以上高度摊满
+    #             # 整个量程，否则所有格子都是 0/1，图上就是一片同色。
+    #             # ground 在 map 系约 -0.55m（base_link 比 motion_link 高 0.576m），
+    #             # 所以 offset=0.55 让地面→0；factor=100 让地面以上 1m→100。
+    #             'height_offset': -0.68,
+    #             'height_factor': 150.0,
+    #             # 自车（车身）点剔除：框在 base_link 下（x 前  y 左  z 上），
+    #             # 默认 = 雷达左后方 0.5m x 0.5m（雷达在车身右上角）。
+    #             'ego_filter_enable': True,
+    #             'ego_frame': 'base_link',
+    #             'ego_x_min': -0.5, 'ego_x_max': 0.0,
+    #             'ego_y_min': 0.0,  'ego_y_max': 0.5,
+    #         }],
+    #     ),
+    # )
 
     navigation_nodes = [
         ('nav2_controller', 'controller_server'),
@@ -357,7 +357,7 @@ def generate_launch_description():
         )
     action_group = launch.actions.GroupAction([
         # 动作5-定时器
-        launch.actions.TimerAction(period=3.0, actions=[action1]), #2秒后执行
+        # launch.actions.TimerAction(period=3.0, actions=[action1]), #2秒后执行
         # launch.actions.TimerAction(period=3.0, actions=[action2]) #4秒后执行
         ])
 

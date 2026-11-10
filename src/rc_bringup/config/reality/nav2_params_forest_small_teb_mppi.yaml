@@ -419,7 +419,7 @@ controller_server:
         plugin: "mppi::critics::GoalCritic"
         enabled: true
         cost_power: 2
-        cost_weight: 3.0
+        cost_weight: 4.0
         threshold_to_consider: 1.2
 
       GoalAngleCritic:

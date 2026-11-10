@@ -31,6 +31,8 @@ setup(
             'scan_get=run_keyboard_test.scan_get:main',
             'nav_to_pose=run_keyboard_test.nav_to_pose:main',
             'yolo_control=run_keyboard_test.yolo_control:main',
+            'stm32_communication=run_keyboard_test.stm32_communication:main',
+            'TR=run_keyboard_test.TR:main',
         ],
     },
 )

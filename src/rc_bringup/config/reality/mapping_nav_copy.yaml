@@ -14,7 +14,9 @@ amcl:
     alpha3: 0.1
     alpha4: 0.1
     alpha5: 0.1
-    laser_model_type: beam
+    # 场地外涂黑后，真实外墙的回波端点落在占据格里，likelihood_field 对它们的
+    # 距离为 0，不会再被围栏"吸"过去；beam 模型会沿射线先撞到围栏边界，仍会错配。
+    laser_model_type: likelihood_field
     laser_min_range: 0.45
     laser_max_range: 10.0
     laser_likelihood_max_dist: 2.0

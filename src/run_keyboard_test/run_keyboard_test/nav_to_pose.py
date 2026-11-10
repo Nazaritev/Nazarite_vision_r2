@@ -25,7 +25,7 @@ class NavToPose(BasicNavigator):
         # thread = threading.Thread(target=self.get)
         self.get_pose = self.create_subscription(Odometry,'/odom',self.nav_pose_callback,1)
         self.after_slop = self.create_subscription(Slope,'/slope',self.slope_callback,1)
-        self.ser = serial.Serial('/dev/ttyUSB1',961200,timeout=1.0)
+        self.ser = serial.Serial('/dev/ttyUSB0',115200,timeout=1.0)
         # thread2 = threading.Thread(target=self.slope_thread2)
         # thread2.start()
         self.slope_publisher = self.create_publisher(Slope,'/slope',5)
@@ -34,18 +34,19 @@ class NavToPose(BasicNavigator):
         self.nav_mode_client = self.create_client(UseNavToPose, '/nav_mode/slope')
         # 初始位置
         self.pose_init(-0.45,3.2,3.1415626)
+        # self.run_dir(vw=1.0,run_time=3.14*2)
         # self.waitUntilNav2Active()
         # # 等待开始
         # while self.bool_slope != True:
         #     rclpy.spin_once(self, timeout_sec=0.1)
         # self.bool_slope = False
         # # 上斜坡
-        # self.nav2_mult([[1.8,3.6],[7.4,3.6],[8.1,2.2]])
+        self.nav2_mult([[1.8,3.6],[7.4,3.6],[8.1,2.2]])
         # time.sleep(1.0)
         # self.adj_yaw_auto(0.0)
         # time.sleep(0.1)
         # sl = Slope()
-        # sl.slope = 2
+        # sl.slope = 1
         # self.slope_publisher.publish(sl)
         # while self.bool_slope != True:
         #     rclpy.spin_once(self, timeout_sec=0.1)
@@ -107,7 +108,7 @@ class NavToPose(BasicNavigator):
         # self.run_dir(vx=-0.4,vy=-0.2,run_time=0.5)
         # # # 交接区
         # # self.nav_pose(3.45,1.44)
-        # self.nav2_mult([[4.5,1.3],[3.45,1.44]])
+        # self.nav2_mult([[4.0,1.1],[3.45,1.44]])
         # time.sleep(1.0)
         # self.adj_yaw_auto(-3.1415/2)
         # # # 调用摄像头
@@ -294,21 +295,20 @@ class NavToPose(BasicNavigator):
         return crc
 
     def run(self,vx=0,vy=0,vw=0):
+        vw = vw*1.09
         vx_int = int(vx * 1000)
-        vy_int = int((vy) * 1000)
+        vy_int = int(vy * 1000)
         vw_int = int(vw*10)
         flag = int(0)
         mode = int(0)
         reserved = 0  # 保留字，当前固定填 0
         self.get_logger().info(f'(vx={vx_int/1000},vy={vy_int/1000},vw={vw_int/10})')
         # self.get_logger().info(f'{vw_int}')
-        frame_head = struct.pack('<B h h h B B B', 
+        frame_head = struct.pack('<B h h h B', 
                                      0xA5,       # SOF (帧头，1字节)
                                      vx_int,     # Vx (2字节)
                                      vy_int,     # Vy (2字节)
                                      vw_int,     # Vw (2字节)
-                                     flag,       # Flag (1字节)
-                                     reserved,   # Reserved (1字节)
                                      mode)       # Mode (1字节)
         data_to_crc = frame_head[1:]
         crc = self.calc_crc8(data_to_crc)
