@@ -1,0 +1,59 @@
+localization_config: /home/dgut/code/Nazarite/src/rc_bringup/config/reality/rc_localization.yaml
+map_file: /home/dgut/code/Nazarite/src/rc_bringup/map/1.pcd
+output_dir: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/user_marked_pose/obstacle_filter
+approximate_footprint_xy_m:
+- 3.7
+- 0.0
+approximate_footprint_heading_rad: -1.5707963267948966
+position_source: User annotation, arrow tail, approximate; not ground truth or a production
+  seed
+tf_source: /home/dgut/code/Nazarite/src/rc_bringup/urdf/reality/model.xacro
+T_base_sensor_row_major:
+- -0.9999999999999987
+- 0.0
+- 5.3589793170057245e-08
+- 0.0
+- 0.0
+- 1.0
+- 0.0
+- 0.0
+- -5.3589793170057245e-08
+- 0.0
+- -0.9999999999999987
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 1.0
+T_base_footprint_row_major:
+- 2.220446049250313e-16
+- 1.0
+- 0.0
+- -0.195
+- -1.0
+- 2.220446049250313e-16
+- -0.0
+- 0.183
+- -0.0
+- 0.0
+- 1.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 1.0
+sensor_z_min_m: -1.5
+sensor_z_max_m: 2.0
+sensor_z_step_m: 0.25
+refine_per_gravity_sign: 2
+max_ranges_m:
+- 7.0
+- 30.0
+map_gravity_z_signs:
+- 1.0
+- -1.0
+scan_manifests:
+- /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/user_marked_pose/current_capture/bag_scans/manifest.yaml
+case_ids:
+- bag_0_226
+- bag_0_425

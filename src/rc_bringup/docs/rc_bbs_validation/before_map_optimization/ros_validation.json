@@ -1,0 +1,516 @@
+{
+  "profile": "robust",
+  "scan_rate_hz": 40.0,
+  "imu_rate_hz": 200.0,
+  "unknown_recovered": true,
+  "bad_initialpose_recovered": true,
+  "trusted_initialpose_recovered": true,
+  "rviz_2d_initialpose_recovered": true,
+  "input_loss_detected": true,
+  "input_resume_recovered": true,
+  "untrusted_gravity_refused": true,
+  "search_observed_before_seed": true,
+  "seed_during_search_recovered": true,
+  "map_reload_recovered": true,
+  "search_observed_before_map_update": true,
+  "map_update_during_search_recovered": true,
+  "map_update_epoch_advanced": true,
+  "first_pose_seconds": {
+    "unknown": 2.710015980999742,
+    "motion": 0.09954331900007674,
+    "bad_initialpose": 0.9592293280002195,
+    "trusted_initialpose": 0.6598497240001961,
+    "rviz_2d_initialpose": 0.6400240789998861,
+    "input_resume": 0.9996742150005957,
+    "seed_during_search": 0.910059036000348,
+    "map_reload": 0.8497338320003109,
+    "map_update_during_search": 2.8095596410003054
+  },
+  "errors": [
+    {
+      "phase": "unknown",
+      "translation_error_m": 0.018067888097261325,
+      "rotation_error_rad": 0.004791286453438564
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.01998447193382402,
+      "rotation_error_rad": 0.004688779532440243
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.01946319152714745,
+      "rotation_error_rad": 0.0046430997300063405
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.02319859674954285,
+      "rotation_error_rad": 0.004520394350968934
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.020563119948924433,
+      "rotation_error_rad": 0.004325201632806539
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.01900040967919237,
+      "rotation_error_rad": 0.004433346538960276
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.020895660363218986,
+      "rotation_error_rad": 0.004324595419314905
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.01924509959456667,
+      "rotation_error_rad": 0.004357063311365385
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.017431311774749284,
+      "rotation_error_rad": 0.00415027112879527
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.016251396953702042,
+      "rotation_error_rad": 0.004007608054638321
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.01941863797864706,
+      "rotation_error_rad": 0.0046776237877625216
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.02023464292279492,
+      "rotation_error_rad": 0.004929073832836561
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.018273120726870748,
+      "rotation_error_rad": 0.0046418669528962295
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.027092798226303574,
+      "rotation_error_rad": 0.006001923924112345
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.027158500466959692,
+      "rotation_error_rad": 0.006054119245054323
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.023907261077319032,
+      "rotation_error_rad": 0.005451089033924514
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.023109753822286954,
+      "rotation_error_rad": 0.005498864174403458
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.021841510888486425,
+      "rotation_error_rad": 0.005506134187313327
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.01735068847527318,
+      "rotation_error_rad": 0.0049381545643299805
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.018013632968963744,
+      "rotation_error_rad": 0.005023745574410978
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.017867949464627282,
+      "rotation_error_rad": 0.005049986051594564
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.02383010930705333,
+      "rotation_error_rad": 0.005370179771579809
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.024430309154509798,
+      "rotation_error_rad": 0.005233738385893809
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.025704076283349562,
+      "rotation_error_rad": 0.005854183708835787
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.02445401524108898,
+      "rotation_error_rad": 0.00533776909279834
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.025102055344778603,
+      "rotation_error_rad": 0.005161394994104184
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.02320735506557941,
+      "rotation_error_rad": 0.0049016739265799756
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.024574377350827344,
+      "rotation_error_rad": 0.004901865494616914
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.02215430832599619,
+      "rotation_error_rad": 0.004870537639471566
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.020441337893686885,
+      "rotation_error_rad": 0.004879906944673007
+    },
+    {
+      "phase": "bad_initialpose",
+      "translation_error_m": 0.0230645766590353,
+      "rotation_error_rad": 0.004568457599687437
+    },
+    {
+      "phase": "trusted_initialpose",
+      "translation_error_m": 0.013988177767151801,
+      "rotation_error_rad": 0.0031747801735941663
+    },
+    {
+      "phase": "rviz_2d_initialpose",
+      "translation_error_m": 0.006790584201559348,
+      "rotation_error_rad": 0.002526251309893612
+    },
+    {
+      "phase": "input_resume",
+      "translation_error_m": 0.024256630940878068,
+      "rotation_error_rad": 0.004945454107356242
+    },
+    {
+      "phase": "seed_during_search",
+      "translation_error_m": 0.003963855959912822,
+      "rotation_error_rad": 0.001956733846778908
+    },
+    {
+      "phase": "map_reload",
+      "translation_error_m": 0.004572141651574677,
+      "rotation_error_rad": 0.0022576489425841246
+    },
+    {
+      "phase": "map_update_during_search",
+      "translation_error_m": 0.012173795228695218,
+      "rotation_error_rad": 0.0031778806068336286
+    }
+  ],
+  "events": [
+    {
+      "phase": "unknown",
+      "elapsed": 0.32973959799983277,
+      "state": "UNINITIALIZED",
+      "reason": "building_map_cache",
+      "epoch": "0",
+      "active_workers": "1"
+    },
+    {
+      "phase": "unknown",
+      "elapsed": 1.8904068550000375,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "0",
+      "active_workers": "1"
+    },
+    {
+      "phase": "unknown",
+      "elapsed": 2.329817615000138,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "0",
+      "active_workers": "1"
+    },
+    {
+      "phase": "unknown",
+      "elapsed": 2.5297192200005156,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "0",
+      "active_workers": "0"
+    },
+    {
+      "phase": "motion",
+      "elapsed": 0.01992834600059723,
+      "state": "TRACKING",
+      "reason": "multiframe_verified",
+      "epoch": "1",
+      "active_workers": "1"
+    },
+    {
+      "phase": "motion",
+      "elapsed": 0.21974851000049966,
+      "state": "TRACKING",
+      "reason": "tracking_quality_pass",
+      "epoch": "1",
+      "active_workers": "1"
+    },
+    {
+      "phase": "bad_initialpose",
+      "elapsed": 0.06929806900006952,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "3",
+      "active_workers": "1"
+    },
+    {
+      "phase": "bad_initialpose",
+      "elapsed": 0.5192385589998594,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "3",
+      "active_workers": "0"
+    },
+    {
+      "phase": "bad_initialpose",
+      "elapsed": 0.7192243910003526,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "3",
+      "active_workers": "0"
+    },
+    {
+      "phase": "trusted_initialpose",
+      "elapsed": 0.16004888899988146,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "5",
+      "active_workers": "0"
+    },
+    {
+      "phase": "rviz_2d_initialpose",
+      "elapsed": 0.10014208299980965,
+      "state": "VERIFYING",
+      "reason": "rviz_initialpose_received",
+      "epoch": "7",
+      "active_workers": "1"
+    },
+    {
+      "phase": "rviz_2d_initialpose",
+      "elapsed": 0.30002714799957175,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "7",
+      "active_workers": "1"
+    },
+    {
+      "phase": "input_loss",
+      "elapsed": 0.06007620099990163,
+      "state": "TRACKING",
+      "reason": "tracking_quality_pass",
+      "epoch": "8",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_loss",
+      "elapsed": 0.6601420979995964,
+      "state": "TRACKING",
+      "reason": "scan_timestamp_stale_or_future",
+      "epoch": "8",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_loss",
+      "elapsed": 0.8603825439995489,
+      "state": "LOST",
+      "reason": "scan_timestamp_stale_or_future",
+      "epoch": "9",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_resume",
+      "elapsed": 0.17961526300041442,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "9",
+      "active_workers": "1"
+    },
+    {
+      "phase": "input_resume",
+      "elapsed": 0.5995813560002716,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "9",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_resume",
+      "elapsed": 0.7996417370004565,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "9",
+      "active_workers": "1"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.0005384010000852868,
+      "state": "TRACKING",
+      "reason": "multiframe_verified",
+      "epoch": "10",
+      "active_workers": "1"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.19987882199984597,
+      "state": "TRACKING",
+      "reason": "tracking_quality_pass",
+      "epoch": "10",
+      "active_workers": "1"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.3997878310001397,
+      "state": "LOST",
+      "reason": "gravity_prior_untrusted_need_stationary_imu_and_odometry",
+      "epoch": "11",
+      "active_workers": "0"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.6197051950002788,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "11",
+      "active_workers": "1"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.9997638610002468,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "11",
+      "active_workers": "0"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 1.2000137240002005,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "11",
+      "active_workers": "1"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 1.3998027400002684,
+      "state": "TRACKING",
+      "reason": "multiframe_verified",
+      "epoch": "12",
+      "active_workers": "1"
+    },
+    {
+      "phase": "seed_during_search",
+      "elapsed": 0.03003525000076479,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "13",
+      "active_workers": "1"
+    },
+    {
+      "phase": "seed_during_search",
+      "elapsed": 0.20007349400020757,
+      "state": "LOST",
+      "reason": "rviz_initialpose_received",
+      "epoch": "14",
+      "active_workers": "1"
+    },
+    {
+      "phase": "seed_during_search",
+      "elapsed": 0.4000031820005461,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "14",
+      "active_workers": "0"
+    },
+    {
+      "phase": "map_reload",
+      "elapsed": 0.08007101099974534,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "16",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_reload",
+      "elapsed": 0.49006038199968316,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "16",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_reload",
+      "elapsed": 0.6898945319999257,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "16",
+      "active_workers": "0"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 0.04022881600030814,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "18",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 0.20064600000023347,
+      "state": "LOST",
+      "reason": "map_file_changed",
+      "epoch": "19",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 0.39993887299988273,
+      "state": "LOST",
+      "reason": "building_map_cache",
+      "epoch": "19",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 1.9852097350003532,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "19",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 2.4003264359998866,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "19",
+      "active_workers": "0"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 2.599962346999746,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "19",
+      "active_workers": "1"
+    }
+  ],
+  "max_translation_error_m": 0.027158500466959692,
+  "max_rotation_error_rad": 0.006054119245054323
+}

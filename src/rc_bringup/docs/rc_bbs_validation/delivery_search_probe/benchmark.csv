@@ -1,0 +1,7 @@
+profile,case,has_truth,valid_source,cold_map_ms,search_ms,complete,accepted,reason,candidate_count,bbs_hit_fraction,coverage,correspondences,inlier_mse_m2,inlier_rmse_m,inlier_p95_m,capped_all_mse_m2,nonground_fraction,information_ratio,translation_error_m,rotation_error_rad,consistent_structure_correspondences,consistent_structure_fraction,roi_source_points,outside_map_points,unmodeled_points,roi_coverage,roi_source_fraction,unique_structure_voxels,structure_extent_m
+normal_range3,bag_0_425,0,8969,453.683,1926.07,0,0,candidate_cap_ambiguity_unresolved,6,0.823529,0,0,inf,inf,inf,inf,0,0,nan,nan,0,0,0,0,0,0,0,0,0
+full_range3,bag_0_425,0,8969,447.529,2115.56,0,0,candidate_cap_ambiguity_unresolved,6,1,0,0,inf,inf,inf,inf,0,0,nan,nan,0,0,0,0,0,0,0,0,0
+normal_range5,bag_0_425,0,10498,446.938,2199.59,0,0,search_timeout_or_queue_limit,4,0.627451,0,0,inf,inf,inf,inf,0,0,nan,nan,0,0,0,0,0,0,0,0,0
+full_range5,bag_0_425,0,10498,440.913,1911.07,0,0,candidate_cap_ambiguity_unresolved,6,0.882353,0,0,inf,inf,inf,inf,0,0,nan,nan,0,0,0,0,0,0,0,0,0
+normal_range7,bag_0_425,0,11435,439.923,2199.3,0,0,search_timeout_or_queue_limit,1,0.547771,0,0,inf,inf,inf,inf,0,0,nan,nan,0,0,0,0,0,0,0,0,0
+full_range7,bag_0_425,0,11435,439.236,1899.95,0,0,search_timeout_or_queue_limit,1,0.808917,0,0,inf,inf,inf,inf,0,0,nan,nan,0,0,0,0,0,0,0,0,0

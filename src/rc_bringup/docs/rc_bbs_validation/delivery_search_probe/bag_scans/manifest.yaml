@@ -1,0 +1,23 @@
+cases:
+- id: bag_0_226
+  pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/user_marked_pose/current_capture/bag_scans/bag_0_226.pcd
+  bag: /tmp/rc-bbs-landmark-check/current_bag_20261111T095912Z/current_bag_20261111T095912Z_0.db3
+  scan_frame: imu_link
+  stamp: 1794391160.6458611
+  has_ground_truth: false
+  accumulated_scan_count: 6
+  acceleration_sensor:
+  - 0.02589080670196563
+  - 0.021706874482333653
+  - -9.75712937374413
+- id: bag_0_425
+  pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/user_marked_pose/current_capture/bag_scans/bag_0_425.pcd
+  bag: /tmp/rc-bbs-landmark-check/current_bag_20261111T095912Z/current_bag_20261111T095912Z_0.db3
+  scan_frame: imu_link
+  stamp: 1794391165.6214209
+  has_ground_truth: false
+  accumulated_scan_count: 6
+  acceleration_sensor:
+  - 0.03223760857398157
+  - 0.01332430612295866
+  - -9.758207088679075

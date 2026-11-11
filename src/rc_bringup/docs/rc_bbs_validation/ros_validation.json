@@ -1,0 +1,517 @@
+{
+  "profile": "robust",
+  "scan_rate_hz": 40.0,
+  "imu_rate_hz": 200.0,
+  "unknown_recovered": true,
+  "bad_initialpose_recovered": true,
+  "trusted_initialpose_recovered": true,
+  "rviz_2d_initialpose_recovered": true,
+  "input_loss_detected": true,
+  "input_resume_recovered": true,
+  "untrusted_gravity_refused": true,
+  "search_observed_before_seed": true,
+  "seed_during_search_recovered": true,
+  "map_reload_recovered": true,
+  "search_observed_before_map_update": true,
+  "map_update_during_search_recovered": true,
+  "map_update_epoch_advanced": true,
+  "first_pose_seconds": {
+    "unknown": 1.4459843139998156,
+    "motion": 0.09979182200004288,
+    "bad_initialpose": 0.8673034840001037,
+    "trusted_initialpose": 0.6597345840000344,
+    "rviz_2d_initialpose": 0.6500965749999068,
+    "input_resume": 0.9797849689998657,
+    "seed_during_search": 0.9400755419999314,
+    "map_reload": 0.8202624959999412,
+    "map_update_during_search": 1.5502034759999788
+  },
+  "errors": [
+    {
+      "phase": "unknown",
+      "translation_error_m": 0.0060420041800591595,
+      "rotation_error_rad": 0.0025722881723437337
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.005206702376590729,
+      "rotation_error_rad": 0.0027673180516011864
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.005796495162945073,
+      "rotation_error_rad": 0.0024812247014151406
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.007421509570060737,
+      "rotation_error_rad": 0.002517092363723173
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.008395090696910445,
+      "rotation_error_rad": 0.0027213716461681184
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.009791762674877684,
+      "rotation_error_rad": 0.002806187122957366
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.01988309841920261,
+      "rotation_error_rad": 0.004230004731867008
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.022548476458660354,
+      "rotation_error_rad": 0.004800890223839262
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.02079609445855107,
+      "rotation_error_rad": 0.0046298780642381335
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.023137904832814755,
+      "rotation_error_rad": 0.005443211947514339
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.020867608793312547,
+      "rotation_error_rad": 0.00484618447121889
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.023391443698554882,
+      "rotation_error_rad": 0.005341860094763535
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.021709840058984707,
+      "rotation_error_rad": 0.005269882857920986
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.021426679608740035,
+      "rotation_error_rad": 0.005250103116013377
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.019514594134619756,
+      "rotation_error_rad": 0.004866730132972108
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.021552519174945994,
+      "rotation_error_rad": 0.0053261169372238355
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.023721409251863484,
+      "rotation_error_rad": 0.005408284166102532
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.02528633042011125,
+      "rotation_error_rad": 0.005560580120457739
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.024444941734885317,
+      "rotation_error_rad": 0.005751700105394625
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.026084397220456912,
+      "rotation_error_rad": 0.005859632842921808
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.02904020580584119,
+      "rotation_error_rad": 0.006292758701317575
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.031339492156512,
+      "rotation_error_rad": 0.0059271334428722365
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.02907143457967919,
+      "rotation_error_rad": 0.005983333473585624
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.027254616643250993,
+      "rotation_error_rad": 0.00610258224927158
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.02502905751323159,
+      "rotation_error_rad": 0.0055455889588864275
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.01761262229387891,
+      "rotation_error_rad": 0.0038928894079213465
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.01850150195128131,
+      "rotation_error_rad": 0.004041521001684369
+    },
+    {
+      "phase": "bad_initialpose",
+      "translation_error_m": 0.013087789102008241,
+      "rotation_error_rad": 0.003100884422697714
+    },
+    {
+      "phase": "trusted_initialpose",
+      "translation_error_m": 0.008669329183120904,
+      "rotation_error_rad": 0.002931087630417369
+    },
+    {
+      "phase": "rviz_2d_initialpose",
+      "translation_error_m": 0.018702485039141452,
+      "rotation_error_rad": 0.0033881817976105988
+    },
+    {
+      "phase": "input_resume",
+      "translation_error_m": 0.010678033059155536,
+      "rotation_error_rad": 0.0027500439719615544
+    },
+    {
+      "phase": "seed_during_search",
+      "translation_error_m": 0.008536485175109439,
+      "rotation_error_rad": 0.0024936566930125674
+    },
+    {
+      "phase": "map_reload",
+      "translation_error_m": 0.020995583806345086,
+      "rotation_error_rad": 0.0037679381192733444
+    },
+    {
+      "phase": "map_update_during_search",
+      "translation_error_m": 0.014017210844413576,
+      "rotation_error_rad": 0.0035612436079771677
+    }
+  ],
+  "events": [
+    {
+      "phase": "unknown",
+      "elapsed": 0.325908396999921,
+      "state": "UNINITIALIZED",
+      "reason": "building_map_cache",
+      "epoch": "0",
+      "active_workers": "1"
+    },
+    {
+      "phase": "unknown",
+      "elapsed": 0.6259846659997947,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "0",
+      "active_workers": "1"
+    },
+    {
+      "phase": "unknown",
+      "elapsed": 0.9257920659999854,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "0",
+      "active_workers": "0"
+    },
+    {
+      "phase": "unknown",
+      "elapsed": 1.1269923959998778,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "0",
+      "active_workers": "0"
+    },
+    {
+      "phase": "motion",
+      "elapsed": 0.07978694899998118,
+      "state": "TRACKING",
+      "reason": "tracking_quality_pass",
+      "epoch": "1",
+      "active_workers": "1"
+    },
+    {
+      "phase": "bad_initialpose",
+      "elapsed": 0.057328325000071345,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "3",
+      "active_workers": "1"
+    },
+    {
+      "phase": "bad_initialpose",
+      "elapsed": 0.37725398800012044,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "3",
+      "active_workers": "0"
+    },
+    {
+      "phase": "bad_initialpose",
+      "elapsed": 0.5770853129999978,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "3",
+      "active_workers": "0"
+    },
+    {
+      "phase": "trusted_initialpose",
+      "elapsed": 0.10970422199989116,
+      "state": "VERIFYING",
+      "reason": "rviz_initialpose_received",
+      "epoch": "5",
+      "active_workers": "1"
+    },
+    {
+      "phase": "trusted_initialpose",
+      "elapsed": 0.30987911499983056,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "5",
+      "active_workers": "1"
+    },
+    {
+      "phase": "rviz_2d_initialpose",
+      "elapsed": 0.04995709999980136,
+      "state": "LOST",
+      "reason": "rviz_initialpose_received",
+      "epoch": "7",
+      "active_workers": "1"
+    },
+    {
+      "phase": "rviz_2d_initialpose",
+      "elapsed": 0.2499386439999398,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "7",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_loss",
+      "elapsed": 0.0006570719999672292,
+      "state": "TRACKING",
+      "reason": "multiframe_verified",
+      "epoch": "8",
+      "active_workers": "1"
+    },
+    {
+      "phase": "input_loss",
+      "elapsed": 0.20015377499998976,
+      "state": "TRACKING",
+      "reason": "tracking_quality_pass",
+      "epoch": "8",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_loss",
+      "elapsed": 0.6000008179998986,
+      "state": "TRACKING",
+      "reason": "scan_timestamp_stale_or_future",
+      "epoch": "8",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_loss",
+      "elapsed": 0.8000867159998961,
+      "state": "LOST",
+      "reason": "scan_timestamp_stale_or_future",
+      "epoch": "9",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_resume",
+      "elapsed": 0.1801335029999791,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "9",
+      "active_workers": "1"
+    },
+    {
+      "phase": "input_resume",
+      "elapsed": 0.5996165629999268,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "9",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_resume",
+      "elapsed": 0.7996724049999102,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "9",
+      "active_workers": "1"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.019880251000131466,
+      "state": "TRACKING",
+      "reason": "multiframe_verified",
+      "epoch": "10",
+      "active_workers": "1"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.2200313210000786,
+      "state": "TRACKING",
+      "reason": "tracking_quality_pass",
+      "epoch": "10",
+      "active_workers": "1"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.42061952300014127,
+      "state": "LOST",
+      "reason": "gravity_prior_untrusted_need_stationary_imu_and_odometry",
+      "epoch": "11",
+      "active_workers": "0"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.6500129690000449,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "11",
+      "active_workers": "1"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 1.0197805790000984,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "11",
+      "active_workers": "0"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 1.2199878320000153,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "11",
+      "active_workers": "1"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 1.6197831790000237,
+      "state": "TRACKING",
+      "reason": "tracking_quality_pass",
+      "epoch": "12",
+      "active_workers": "1"
+    },
+    {
+      "phase": "seed_during_search",
+      "elapsed": 0.03035946399995737,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "13",
+      "active_workers": "1"
+    },
+    {
+      "phase": "seed_during_search",
+      "elapsed": 0.20024369199995817,
+      "state": "LOST",
+      "reason": "rviz_initialpose_received",
+      "epoch": "14",
+      "active_workers": "1"
+    },
+    {
+      "phase": "seed_during_search",
+      "elapsed": 0.4000459819999378,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "14",
+      "active_workers": "0"
+    },
+    {
+      "phase": "map_reload",
+      "elapsed": 0.06002756199995929,
+      "state": "LOST",
+      "reason": "building_map_cache",
+      "epoch": "16",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_reload",
+      "elapsed": 0.07016738399988753,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "16",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_reload",
+      "elapsed": 0.45991706399991017,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "16",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_reload",
+      "elapsed": 0.6602997739998955,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "16",
+      "active_workers": "0"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 0.04038148699987687,
+      "state": "LOST",
+      "reason": "global_search_requested",
+      "epoch": "18",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 0.04970520200004103,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "18",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 0.38997093100010716,
+      "state": "LOST",
+      "reason": "building_map_cache",
+      "epoch": "19",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 0.720382428999983,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "19",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 0.990193870999974,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "19",
+      "active_workers": "0"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 1.390329500000007,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "19",
+      "active_workers": "0"
+    }
+  ],
+  "max_translation_error_m": 0.031339492156512,
+  "max_rotation_error_rad": 0.006292758701317575
+}

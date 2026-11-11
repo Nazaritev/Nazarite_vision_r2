@@ -1,0 +1,5 @@
+profile,case,coarse_hits,coverage,correspondences,rmse_m,p95_m,nonground_fraction,information_ratio,converged,quality_reason,global_result_accepted,consistent_structure_correspondences,consistent_structure_fraction
+long_window_fullmap_080,bag_0_310,0.840278,0.841581,27380,0.166086,0.308552,0.153762,0.0090986,1,insufficient_consistent_structure_fraction,0,374,0.0136596
+long_window_fullmap_080,bag_0_621,0.8125,0.813716,26388,0.172247,0.323308,0.150675,0.0121998,1,inconsistent_source_target_structure,0,39,0.00147794
+long_window_fullmap_080,bag_1_310,0.80916,0.797362,25506,0.163802,0.325342,0.18082,0.0137678,0,gicp_not_converged_before_iteration_limit,0,646,0.0253274
+long_window_fullmap_080,bag_1_620,0.822086,0.822093,25013,0.161954,0.318054,0.179587,0.0133801,1,insufficient_consistent_structure_fraction,0,703,0.0281054

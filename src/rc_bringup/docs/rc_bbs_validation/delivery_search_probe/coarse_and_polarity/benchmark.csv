@@ -1,0 +1,5 @@
+profile,case,has_truth,valid_source,cold_map_ms,search_ms,complete,accepted,reason,candidate_count,bbs_hit_fraction,coverage,correspondences,inlier_mse_m2,inlier_rmse_m,inlier_p95_m,capped_all_mse_m2,nonground_fraction,information_ratio,translation_error_m,rotation_error_rad,consistent_structure_correspondences,consistent_structure_fraction,roi_source_points,outside_map_points,unmodeled_points,roi_coverage,roi_source_fraction,unique_structure_voxels,structure_extent_m
+coarse_range5_sign+1,bag_0_425,0,10498,435.657,571.93,0,0,candidate_cap_ambiguity_unresolved,6,0.772152,0,0,inf,inf,inf,inf,0,0,nan,nan,0,0,0,0,0,0,0,0,0
+coarse_range5_sign-1,bag_0_425,0,10498,446.285,881.739,0,0,candidate_cap_ambiguity_unresolved,6,0.683544,0,0,inf,inf,inf,inf,0,0,nan,nan,0,0,0,0,0,0,0,0,0
+coarse_range7_sign+1,bag_0_425,0,11435,441.896,876.31,0,0,candidate_cap_ambiguity_unresolved,6,0.728682,0,0,inf,inf,inf,inf,0,0,nan,nan,0,0,0,0,0,0,0,0,0
+coarse_range7_sign-1,bag_0_425,0,11435,439.583,1030.53,0,0,candidate_cap_ambiguity_unresolved,6,0.674419,0,0,inf,inf,inf,inf,0,0,nan,nan,0,0,0,0,0,0,0,0,0

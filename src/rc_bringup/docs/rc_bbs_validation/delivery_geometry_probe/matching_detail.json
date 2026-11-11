@@ -1,0 +1,302 @@
+[
+  {
+    "case": "bag_0_226",
+    "initial_z": 0.0,
+    "leaf": 0.1,
+    "counts": {
+      "matched": 1294,
+      "source_nonground_matched": 115,
+      "target_nonground_matched": 110,
+      "bilateral_matched": 2,
+      "gicp_near": 1384,
+      "source_nonground_inside": 190
+    },
+    "matched_source_nz_quantiles": [
+      0.8904302123962015,
+      0.9969633915993201,
+      0.9997893520430139
+    ]
+  },
+  {
+    "case": "bag_0_226",
+    "initial_z": 0.0,
+    "leaf": 0.15,
+    "counts": {
+      "matched": 624,
+      "source_nonground_matched": 64,
+      "target_nonground_matched": 65,
+      "bilateral_matched": 0,
+      "gicp_near": 680,
+      "source_nonground_inside": 100
+    },
+    "matched_source_nz_quantiles": [
+      0.5647186022749511,
+      0.9943123786168185,
+      0.9997113012799286
+    ]
+  },
+  {
+    "case": "bag_0_226",
+    "initial_z": 0.0,
+    "leaf": 0.2,
+    "counts": {
+      "matched": 382,
+      "source_nonground_matched": 47,
+      "target_nonground_matched": 43,
+      "bilateral_matched": 0,
+      "gicp_near": 413,
+      "source_nonground_inside": 65
+    },
+    "matched_source_nz_quantiles": [
+      0.15760785382544265,
+      0.9913270112363985,
+      0.9997149731073198
+    ],
+    "map_step_region": {
+      "count": 457,
+      "z_quantile": [
+        -0.19420747458934784,
+        0.12115872353315353,
+        0.4287535846233368,
+        0.7892709493637086,
+        0.8692221641540527
+      ]
+    },
+    "source_world_step_region": {
+      "count": 119,
+      "z_quantile": [
+        -0.0054807101238811134,
+        0.018611709306046664,
+        0.7176340478922794,
+        0.7756858006842134,
+        0.8084469688701296
+      ]
+    },
+    "roi_only_normal_change_over_30deg": 10
+  },
+  {
+    "case": "bag_0_226",
+    "initial_z": 0.25,
+    "leaf": 0.1,
+    "counts": {
+      "matched": 1308,
+      "source_nonground_matched": 117,
+      "target_nonground_matched": 122,
+      "bilateral_matched": 0,
+      "gicp_near": 1395,
+      "source_nonground_inside": 159
+    },
+    "matched_source_nz_quantiles": [
+      0.880035937042478,
+      0.9960999281278857,
+      0.9994747059454883
+    ]
+  },
+  {
+    "case": "bag_0_226",
+    "initial_z": 0.25,
+    "leaf": 0.15,
+    "counts": {
+      "matched": 628,
+      "source_nonground_matched": 63,
+      "target_nonground_matched": 65,
+      "bilateral_matched": 0,
+      "gicp_near": 687,
+      "source_nonground_inside": 89
+    },
+    "matched_source_nz_quantiles": [
+      0.7332942840541233,
+      0.992630580098052,
+      0.9993263098764483
+    ]
+  },
+  {
+    "case": "bag_0_226",
+    "initial_z": 0.25,
+    "leaf": 0.2,
+    "counts": {
+      "matched": 386,
+      "source_nonground_matched": 48,
+      "target_nonground_matched": 45,
+      "bilateral_matched": 0,
+      "gicp_near": 420,
+      "source_nonground_inside": 61
+    },
+    "matched_source_nz_quantiles": [
+      0.13704957840828091,
+      0.9881210802961516,
+      0.9993796960411336
+    ],
+    "map_step_region": {
+      "count": 457,
+      "z_quantile": [
+        -0.19420747458934784,
+        0.12115872353315353,
+        0.4287535846233368,
+        0.7892709493637086,
+        0.8692221641540527
+      ]
+    },
+    "source_world_step_region": {
+      "count": 112,
+      "z_quantile": [
+        -0.04381515621573802,
+        -0.018688328799442357,
+        0.6935120244485928,
+        0.7306761707862611,
+        0.7511803964416663
+      ]
+    },
+    "roi_only_normal_change_over_30deg": 14
+  },
+  {
+    "case": "bag_0_425",
+    "initial_z": 0.0,
+    "leaf": 0.1,
+    "counts": {
+      "matched": 1288,
+      "source_nonground_matched": 144,
+      "target_nonground_matched": 130,
+      "bilateral_matched": 30,
+      "gicp_near": 1356,
+      "source_nonground_inside": 274
+    },
+    "matched_source_nz_quantiles": [
+      0.3750286870602912,
+      0.9968071259415346,
+      0.9997542177931993
+    ]
+  },
+  {
+    "case": "bag_0_425",
+    "initial_z": 0.0,
+    "leaf": 0.15,
+    "counts": {
+      "matched": 641,
+      "source_nonground_matched": 103,
+      "target_nonground_matched": 81,
+      "bilateral_matched": 29,
+      "gicp_near": 681,
+      "source_nonground_inside": 168
+    },
+    "matched_source_nz_quantiles": [
+      0.17758400343256456,
+      0.9942354234191642,
+      0.9996907161048348
+    ]
+  },
+  {
+    "case": "bag_0_425",
+    "initial_z": 0.0,
+    "leaf": 0.2,
+    "counts": {
+      "matched": 395,
+      "source_nonground_matched": 64,
+      "target_nonground_matched": 56,
+      "bilateral_matched": 18,
+      "gicp_near": 420,
+      "source_nonground_inside": 96
+    },
+    "matched_source_nz_quantiles": [
+      0.1233326032859004,
+      0.9927580849155621,
+      0.9996968477960685
+    ],
+    "map_step_region": {
+      "count": 457,
+      "z_quantile": [
+        -0.19420747458934784,
+        0.12115872353315353,
+        0.4287535846233368,
+        0.7892709493637086,
+        0.8692221641540527
+      ]
+    },
+    "source_world_step_region": {
+      "count": 119,
+      "z_quantile": [
+        0.026681371029219733,
+        0.07068184828400705,
+        0.7482654657347325,
+        0.8133312198772353,
+        0.8674510439222409
+      ]
+    },
+    "roi_only_normal_change_over_30deg": 35
+  },
+  {
+    "case": "bag_0_425",
+    "initial_z": 0.25,
+    "leaf": 0.1,
+    "counts": {
+      "matched": 1261,
+      "source_nonground_matched": 151,
+      "target_nonground_matched": 136,
+      "bilateral_matched": 40,
+      "gicp_near": 1315,
+      "source_nonground_inside": 273
+    },
+    "matched_source_nz_quantiles": [
+      0.26037685166145363,
+      0.996848098138663,
+      0.9997631702686474
+    ]
+  },
+  {
+    "case": "bag_0_425",
+    "initial_z": 0.25,
+    "leaf": 0.15,
+    "counts": {
+      "matched": 628,
+      "source_nonground_matched": 106,
+      "target_nonground_matched": 90,
+      "bilateral_matched": 34,
+      "gicp_near": 658,
+      "source_nonground_inside": 166
+    },
+    "matched_source_nz_quantiles": [
+      0.14915864060706047,
+      0.9938312024502732,
+      0.9997047205524088
+    ]
+  },
+  {
+    "case": "bag_0_425",
+    "initial_z": 0.25,
+    "leaf": 0.2,
+    "counts": {
+      "matched": 391,
+      "source_nonground_matched": 63,
+      "target_nonground_matched": 57,
+      "bilateral_matched": 19,
+      "gicp_near": 412,
+      "source_nonground_inside": 94
+    },
+    "matched_source_nz_quantiles": [
+      0.11577837798381221,
+      0.9925013101774557,
+      0.9997040046424384
+    ],
+    "map_step_region": {
+      "count": 457,
+      "z_quantile": [
+        -0.19420747458934784,
+        0.12115872353315353,
+        0.4287535846233368,
+        0.7892709493637086,
+        0.8692221641540527
+      ]
+    },
+    "source_world_step_region": {
+      "count": 100,
+      "z_quantile": [
+        0.023052338312753246,
+        0.06054365884785067,
+        0.7318220547281864,
+        0.8026522756547059,
+        0.8566121452086732
+      ]
+    },
+    "roi_only_normal_change_over_30deg": 28
+  }
+]

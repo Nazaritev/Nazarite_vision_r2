@@ -1,0 +1,180 @@
+--- a/bbs3d/include/cpu_bbs3d/bbs3d.hpp
++++ b/bbs3d/include/cpu_bbs3d/bbs3d.hpp
+@@ -78,6 +78,11 @@
+ 
+   bool has_localized() { return has_localized_; }
+ 
++  // Nazarite extension: rerun exact discrete search excluding distinct leaf modes.
++  void set_exclusions(const std::vector<Eigen::Matrix4d>& poses, double meters, double radians) {
++    exclusions_ = poses; exclusion_m_ = meters; exclusion_rad_ = radians;
++  }
++  void set_max_queue_size(size_t n) { max_queue_size_ = n; }
+   void localize();
+ 
+   // pcd iof
+@@ -104,6 +109,9 @@
+     const std::vector<Eigen::Vector3d>& points);
+ 
+ private:
++  std::vector<Eigen::Matrix4d> exclusions_;
++  double exclusion_m_ = 1.5, exclusion_rad_ = 0.5;
++  size_t max_queue_size_ = 2000000;
+   Eigen::Matrix4d global_pose_;
+   bool has_timed_out_, has_localized_;
+   double elapsed_time_;
+--- a/bbs3d/src/cpu_bbs3d/bbs3d.cpp
++++ b/bbs3d/src/cpu_bbs3d/bbs3d.cpp
+@@ -107,13 +107,17 @@
+ }
+ 
+ std::vector<DiscreteTransformation<double>> BBS3D::create_init_transset(const AngularInfo& init_ang_info) {
+-  const int init_transset_size = (init_tx_range_.second - init_tx_range_.first + 1) * (init_ty_range_.second - init_ty_range_.first + 1) *
++  const double init_transset_size = static_cast<double>(init_tx_range_.second - init_tx_range_.first + 1) * (init_ty_range_.second - init_ty_range_.first + 1) *
+                                  (init_tz_range_.second - init_tz_range_.first + 1) * (init_ang_info.num_division.x()) *
+                                  (init_ang_info.num_division.y()) * (init_ang_info.num_division.z());
+ 
+   const int max_level = voxelmaps_ptr_->get_max_level();
+ 
+   std::vector<DiscreteTransformation<double>> transset;
++  if (init_transset_size < 0 || init_transset_size > static_cast<double>(max_queue_size_)) {
++    has_timed_out_ = true;
++    return transset;
++  }
+   transset.reserve(init_transset_size);
+   for (int tx = init_tx_range_.first; tx <= init_tx_range_.second; tx++) {
+     for (int ty = init_ty_range_.first; ty <= init_ty_range_.second; ty++) {
+@@ -147,7 +151,7 @@
+   for (int i = 0; i < points.size(); i++) {
+     const Eigen::Vector3d transed_point = transform * points[i];
+     const Eigen::Vector3i coord = (transed_point.array() * inv_res).floor().cast<int>();
+-    const std::uint32_t hash = (coord[0] * 73856093) ^ (coord[1] * 19349669) ^ (coord[2] * 83492791);
++    const std::uint32_t hash = (static_cast<std::uint32_t>(coord[0]) * 73856093) ^ (static_cast<std::uint32_t>(coord[1]) * 19349669) ^ (static_cast<std::uint32_t>(coord[2]) * 83492791);
+ 
+     for (int j = 0; j < max_bucket_scan_count; j++) {
+       const std::uint32_t bucket_index = (hash + j) % num_buckets;
+@@ -169,7 +173,7 @@
+ 
+ void BBS3D::localize() {
+   // Calc localize time limit
+-  const auto start_time = std::chrono::system_clock::now();
++  const auto start_time = std::chrono::steady_clock::now();
+   const auto time_limit = start_time + timeout_duration_;
+   has_timed_out_ = false;
+ 
+@@ -185,6 +189,23 @@
+   calc_angular_info(ang_info_vec);
+   auto init_transset = create_init_transset(ang_info_vec[max_level]);
+ 
++  // Every descendant leaf translation lies in this inclusive axis-aligned
++  // interval, even when the parent's integer coordinate is negative. Reject
++  // only subtrees whose entire interval misses the configured global domain.
++  // This is independent of the occupancy score and preserves its upper bound.
++  const auto outside_translation_domain = [&](const DiscreteTransformation<double>& trans) {
++    const double resolution = voxelmaps_ptr_->voxelmaps_res_[trans.level];
++    const double leaf_resolution = voxelmaps_ptr_->get_min_res();
++    const Eigen::Vector3d low = Eigen::Vector3d(trans.x, trans.y, trans.z) * resolution;
++    const Eigen::Vector3d high = low + Eigen::Vector3d::Constant(resolution - leaf_resolution);
++    const double slack = 1e-9 * std::max(1.0, std::max(low.cwiseAbs().maxCoeff(), high.cwiseAbs().maxCoeff()));
++    return (high.array() < min_xyz_.array() - slack).any() ||
++           (low.array() > max_xyz_.array() + slack).any();
++  };
++  init_transset.erase(std::remove_if(init_transset.begin(), init_transset.end(),
++    outside_translation_domain), init_transset.end());
++
++  if (has_timed_out_) { has_localized_ = false; return; }
+   // Calc initial transset scores
+   const auto& top_buckets = voxelmaps_ptr_->multi_buckets_[max_level];
+   double init_trans_res = voxelmaps_ptr_->voxelmaps_res_[max_level];
+@@ -192,13 +213,17 @@
+   const Eigen::Vector3d& min_rpy = ang_info_vec[max_level].min_rpy;
+ #pragma omp parallel for num_threads(num_threads_)
+   for (int i = 0; i < init_transset.size(); i++) {
++    if (use_timeout_ && std::chrono::steady_clock::now() > time_limit) continue;
+     calc_score(init_transset[i], init_trans_res, rpy_res, min_rpy, top_buckets, max_bucket_scan_count, src_points_);
+   }
+ 
++  if (use_timeout_ && std::chrono::steady_clock::now() > time_limit) {
++    has_timed_out_ = true; has_localized_ = false; return;
++  }
+   std::priority_queue<DiscreteTransformation<double>> trans_queue(init_transset.begin(), init_transset.end());
+ 
+   while (!trans_queue.empty()) {
+-    if (use_timeout_ && std::chrono::system_clock::now() > time_limit) {
++    if (use_timeout_ && std::chrono::steady_clock::now() > time_limit) {
+       has_timed_out_ = true;
+       break;
+     }
+@@ -208,10 +233,28 @@
+ 
+     // pruning
+     if (trans.score < best_score) {
+-      continue;
++      // The priority queue is descending by score. All remaining bounds are
++      // strictly smaller too; equality retains the original tied-leaf policy.
++      break;
+     }
+ 
+     if (trans.is_leaf()) {
++      const Eigen::Matrix4d pose = trans.create_matrix(voxelmaps_ptr_->get_min_res(),
++        ang_info_vec[0].rpy_res, ang_info_vec[0].min_rpy);
++      const Eigen::Vector3d t = pose.block<3, 1>(0, 3);
++      if ((t.array() < min_xyz_.array()).any() || (t.array() > max_xyz_.array()).any()) continue;
++      Eigen::Vector3d rpy(trans.roll * ang_info_vec[0].rpy_res.x() + ang_info_vec[0].min_rpy.x(),
++        trans.pitch * ang_info_vec[0].rpy_res.y() + ang_info_vec[0].min_rpy.y(),
++        trans.yaw * ang_info_vec[0].rpy_res.z() + ang_info_vec[0].min_rpy.z());
++      if ((rpy.array() < min_rpy_.array() - 1e-9).any() ||
++          (rpy.array() > max_rpy_.array() + 1e-9).any()) continue;
++      bool excluded = false;
++      for (const auto& other : exclusions_) {
++        const Eigen::Matrix3d delta = other.block<3,3>(0,0).transpose() * pose.block<3,3>(0,0);
++        if ((other.block<3,1>(0,3) - t).norm() < exclusion_m_ &&
++            Eigen::AngleAxisd(delta).angle() < exclusion_rad_) { excluded = true; break; }
++      }
++      if (excluded) continue;
+       best_trans = trans;
+       best_score = trans.score;
+     } else {
+@@ -220,11 +263,13 @@
+       const Eigen::Vector3d& rpy_res = ang_info_vec[child_level].rpy_res;
+       const Eigen::Vector3d& min_rpy = ang_info_vec[child_level].min_rpy;
+       auto children = trans.branch(child_level, static_cast<int>(v_rate_), num_division);
++      children.erase(std::remove_if(children.begin(), children.end(),
++        outside_translation_domain), children.end());
+ 
+       const auto& buckets = voxelmaps_ptr_->multi_buckets_[child_level];
+       double trans_res = voxelmaps_ptr_->voxelmaps_res_[child_level];
+ 
+-#pragma omp parallel for num_threads(num_threads_)
++#pragma omp parallel for num_threads(num_threads_) if(children.size() >= 64)
+       for (int i = 0; i < children.size(); i++) {
+         calc_score(children[i], trans_res, rpy_res, min_rpy, buckets, max_bucket_scan_count, src_points_);
+       }
+@@ -235,13 +280,16 @@
+           continue;
+         }
+ 
++        if (trans_queue.size() >= max_queue_size_) {
++          has_timed_out_ = true; has_localized_ = false; return;
++        }
+         trans_queue.push(child);
+       }
+     }
+   }
+ 
+   // Calc localization elapsed time
+-  const auto end_time = std::chrono::system_clock::now();
++  const auto end_time = std::chrono::steady_clock::now();
+   elapsed_time_ = std::chrono::duration_cast<std::chrono::nanoseconds>(end_time - start_time).count() / 1e6;
+ 
+   // Not localized
+--- a/bbs3d/src/cpu_bbs3d/voxelmaps.cpp
++++ b/bbs3d/src/cpu_bbs3d/voxelmaps.cpp
+@@ -73,7 +73,7 @@
+     for (const auto& voxel : unordered_voxelmap) {
+       Eigen::Vector4i coord;
+       coord << voxel.first.x(), voxel.first.y(), voxel.first.z(), 1;
+-      const std::uint32_t hash = (coord[0] * 73856093) ^ (coord[1] * 19349669) ^ (coord[2] * 83492791);
++      const std::uint32_t hash = (static_cast<std::uint32_t>(coord[0]) * 73856093) ^ (static_cast<std::uint32_t>(coord[1]) * 19349669) ^ (static_cast<std::uint32_t>(coord[2]) * 83492791);
+ 
+       // Find empty bucket
+       for (int i = 0; i < max_bucket_scan_count_; i++) {

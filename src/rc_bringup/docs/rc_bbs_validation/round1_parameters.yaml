@@ -1,0 +1,93 @@
+bbs_localizer:
+  ros__parameters:
+    # Coordinates: meters/radians, p_map = T_map_sensor * p_sensor.
+    # FAST-LIO body output is deskewed and already in IMU coordinates.
+    cloud_topic: /cloud_registered_body
+    odom_topic: /Odometry
+    imu_topic: /livox/imu
+    map_frame: map
+    odom_frame: odom
+    base_frame: base_link
+    sensor_frame: imu_link
+    input_is_deskewed: true
+
+    # Explicit backend. Unsupported names abort; there is no CPU/GPU fallback.
+    backend: official_cpu
+    bbs_threads: 4
+
+    # Independent map/GICP/source/BBS resolutions, meters.
+    map_leaf: 0.15
+    scan_leaf: 0.20
+    bbs_scan_leaf: 0.50
+    bbs_resolution: 0.50
+    bbs_levels: 5
+
+    # Entire configured global domain, never centered on an initial pose.
+    # The measured extent and recommended domain are recorded in the test report.
+    search_min: [-30.0, -30.0, -3.0]
+    search_max: [30.0, 30.0, 3.0]
+    yaw_min_rad: -3.141592653589793
+    yaw_max_rad: 3.141592653589793
+
+    # Odom startup resets full orientation in this repository: it is NOT a
+    # gravity reference. Use a stationary window of raw IMU accelerations.
+    gravity_source: stationary_imu
+    gravity_uncertainty_rad: 0.06
+    roll_pitch_window_rad: 0.08
+    gravity_window_sec: 0.20
+    gravity_min_samples: 20
+    gravity_accel_tolerance_mps2: 0.6
+    gravity_max_std_mps2: 0.25
+    gravity_max_gyro_radps: 0.15
+    gravity_stationary_displacement_m: 0.025
+
+    # Whole worker search budget includes preprocessing + all BBS modes + GICP.
+    # Multi-frame verification is timed separately in time_to_tracking_ms.
+    search_budget_ms: 1400
+    max_queue_size: 1000000
+    bbs_min_hit_fraction: 0.55
+    max_candidates: 3
+    candidate_separation_m: 1.5
+    candidate_separation_rad: 0.5
+    retry_interval_sec: 0.5
+    result_max_age_sec: 2.5
+
+    # Preprocessing: finite points, range, isolated outliers, then voxelization.
+    # Quality denominator retains ALL valid source points before voxelization.
+    min_range: 0.5
+    max_range: 30.0
+    outlier_radius: 0.5
+    outlier_min_neighbors: 3
+    map_abs_limit: 1000.0
+    min_points: 150
+
+    # Full 6-DoF PCL GICP refinement/tracking.
+    gicp_iterations: 35
+    gicp_optimizer_iterations: 12
+    gicp_correspondence_m: 1.0
+    max_refine_translation_m: 1.2
+    max_refine_rotation_rad: 0.35
+    normal_neighbors: 15
+
+    # Nearest-neighbor quality distances are METERS, MSE is m^2.
+    match_distance_m: 0.4
+    min_correspondences: 120
+    min_coverage: 0.65
+    max_rmse_m: 0.22
+    max_p95_m: 0.35
+    min_nonground_fraction: 0.12
+    min_information_ratio: 0.0001
+    ambiguity_coverage_margin: 0.04
+    ambiguity_rmse_margin_m: 0.04
+
+    # Three new, time-distinct scans AFTER the search scan must pass.
+    verification_frames: 3
+    verification_timeout_sec: 1.0
+    consistency_translation_m: 0.30
+    consistency_rotation_rad: 0.15
+    tracking_failure_limit: 3
+    max_data_age_sec: 0.5
+    input_timeout_sec: 0.8
+    odom_sync_tolerance_sec: 0.03
+
+    metrics_file: /tmp/rc_bbs_localization_metrics.csv

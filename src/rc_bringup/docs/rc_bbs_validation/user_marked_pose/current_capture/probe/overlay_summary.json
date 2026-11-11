@@ -1,0 +1,22 @@
+[
+  {
+    "case": "bag_0_226",
+    "gravity_sign": 1.0,
+    "range_m": 7,
+    "coverage": 0.577753,
+    "consistent_structure_fraction": 0.0,
+    "rmse_m": 0.122444,
+    "quality_reason": "insufficient_full_scan_coverage",
+    "source_xy_outside_map_bounds_fraction": 0.541371158392435
+  },
+  {
+    "case": "bag_0_226",
+    "gravity_sign": -1.0,
+    "range_m": 7,
+    "coverage": 0.632944,
+    "consistent_structure_fraction": 0.0041779,
+    "rmse_m": 0.107129,
+    "quality_reason": "insufficient_full_scan_coverage",
+    "source_xy_outside_map_bounds_fraction": 0.5460992907801419
+  }
+]

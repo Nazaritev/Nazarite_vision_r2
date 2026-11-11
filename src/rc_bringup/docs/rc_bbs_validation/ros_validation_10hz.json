@@ -1,0 +1,463 @@
+{
+  "profile": "robust",
+  "unknown_recovered": true,
+  "bad_initialpose_recovered": true,
+  "trusted_initialpose_recovered": true,
+  "rviz_2d_initialpose_recovered": true,
+  "input_loss_detected": true,
+  "input_resume_recovered": true,
+  "untrusted_gravity_refused": true,
+  "search_observed_before_seed": true,
+  "seed_during_search_recovered": true,
+  "map_reload_recovered": true,
+  "search_observed_before_map_update": true,
+  "map_update_during_search_recovered": true,
+  "map_update_epoch_advanced": true,
+  "first_pose_seconds": {
+    "unknown": 3.3515690720005296,
+    "motion": 0.1121308890005821,
+    "bad_initialpose": 1.4098436330004915,
+    "trusted_initialpose": 1.8898403519997373,
+    "rviz_2d_initialpose": 0.7110127830001147,
+    "input_resume": 1.6197913010000775,
+    "seed_during_search": 1.7298551740004768,
+    "map_reload": 1.2998530160002701,
+    "map_update_during_search": 4.069793382000171
+  },
+  "errors": [
+    {
+      "phase": "unknown",
+      "translation_error_m": 0.021965877883562083,
+      "rotation_error_rad": 0.004119744968531725
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.008079645156982097,
+      "rotation_error_rad": 0.0029534694358033645
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.01359592888906513,
+      "rotation_error_rad": 0.001965161920346685
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.012352483832753483,
+      "rotation_error_rad": 0.002204300984236567
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.00935116740254733,
+      "rotation_error_rad": 0.0026892883603294665
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.012388051316328239,
+      "rotation_error_rad": 0.0031155793367534097
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.012585860684709781,
+      "rotation_error_rad": 0.00382709605923032
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.019313791216697646,
+      "rotation_error_rad": 0.00464439425805396
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.017505516302463425,
+      "rotation_error_rad": 0.004516375331646241
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.019331692833348194,
+      "rotation_error_rad": 0.004777737591902246
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.015665787717680617,
+      "rotation_error_rad": 0.004438093455472291
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.019312644873539613,
+      "rotation_error_rad": 0.004940928004397909
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.016434066555227316,
+      "rotation_error_rad": 0.0035640290281529325
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.01075763009731754,
+      "rotation_error_rad": 0.003514529482312461
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.016844980542847072,
+      "rotation_error_rad": 0.00319735333974354
+    },
+    {
+      "phase": "bad_initialpose",
+      "translation_error_m": 0.004427144588670349,
+      "rotation_error_rad": 0.0017557523338744972
+    },
+    {
+      "phase": "trusted_initialpose",
+      "translation_error_m": 0.014402593741126344,
+      "rotation_error_rad": 0.0027449659072038553
+    },
+    {
+      "phase": "rviz_2d_initialpose",
+      "translation_error_m": 0.02014003061761061,
+      "rotation_error_rad": 0.0025225494424371943
+    },
+    {
+      "phase": "input_resume",
+      "translation_error_m": 0.010400425776068228,
+      "rotation_error_rad": 0.002101262292058191
+    },
+    {
+      "phase": "seed_during_search",
+      "translation_error_m": 0.013778753906249807,
+      "rotation_error_rad": 0.0027791848270848126
+    },
+    {
+      "phase": "map_reload",
+      "translation_error_m": 0.00836107860155268,
+      "rotation_error_rad": 0.0017023422618841944
+    },
+    {
+      "phase": "map_update_during_search",
+      "translation_error_m": 0.013995756008729543,
+      "rotation_error_rad": 0.0024217264031353315
+    }
+  ],
+  "events": [
+    {
+      "phase": "unknown",
+      "elapsed": 0.3322300429999814,
+      "state": "UNINITIALIZED",
+      "reason": "building_map_cache",
+      "epoch": "0",
+      "active_workers": "1"
+    },
+    {
+      "phase": "unknown",
+      "elapsed": 1.8722285470003044,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "0",
+      "active_workers": "1"
+    },
+    {
+      "phase": "unknown",
+      "elapsed": 2.7320634400002746,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "0",
+      "active_workers": "0"
+    },
+    {
+      "phase": "unknown",
+      "elapsed": 3.1318069450007897,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "0",
+      "active_workers": "1"
+    },
+    {
+      "phase": "motion",
+      "elapsed": 0.18036178600050334,
+      "state": "TRACKING",
+      "reason": "tracking_quality_pass",
+      "epoch": "1",
+      "active_workers": "1"
+    },
+    {
+      "phase": "bad_initialpose",
+      "elapsed": 0.08018387500032986,
+      "state": "VERIFYING",
+      "reason": "rviz_initialpose_received",
+      "epoch": "2",
+      "active_workers": "1"
+    },
+    {
+      "phase": "bad_initialpose",
+      "elapsed": 0.18032373599999119,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "3",
+      "active_workers": "1"
+    },
+    {
+      "phase": "bad_initialpose",
+      "elapsed": 0.8798059070004456,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "3",
+      "active_workers": "0"
+    },
+    {
+      "phase": "bad_initialpose",
+      "elapsed": 1.07973027800017,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "3",
+      "active_workers": "0"
+    },
+    {
+      "phase": "trusted_initialpose",
+      "elapsed": 0.06995879199985211,
+      "state": "VERIFYING",
+      "reason": "rviz_initialpose_received",
+      "epoch": "5",
+      "active_workers": "1"
+    },
+    {
+      "phase": "trusted_initialpose",
+      "elapsed": 0.270349460000034,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "5",
+      "active_workers": "1"
+    },
+    {
+      "phase": "trusted_initialpose",
+      "elapsed": 0.3699509190000754,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "6",
+      "active_workers": "1"
+    },
+    {
+      "phase": "trusted_initialpose",
+      "elapsed": 1.2698790510003164,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "6",
+      "active_workers": "0"
+    },
+    {
+      "phase": "trusted_initialpose",
+      "elapsed": 1.6698998729998493,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "6",
+      "active_workers": "1"
+    },
+    {
+      "phase": "rviz_2d_initialpose",
+      "elapsed": 0.1806599510000524,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "8",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_loss",
+      "elapsed": 0.06986899499952415,
+      "state": "TRACKING",
+      "reason": "multiframe_verified",
+      "epoch": "9",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_loss",
+      "elapsed": 0.46904909200020484,
+      "state": "TRACKING",
+      "reason": "scan_timestamp_stale_or_future",
+      "epoch": "9",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_loss",
+      "elapsed": 0.8689209059994027,
+      "state": "LOST",
+      "reason": "scan_timestamp_stale_or_future",
+      "epoch": "10",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_resume",
+      "elapsed": 0.20001915699958772,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "10",
+      "active_workers": "1"
+    },
+    {
+      "phase": "input_resume",
+      "elapsed": 0.9999660639996364,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "10",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_resume",
+      "elapsed": 1.399940018000052,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "10",
+      "active_workers": "1"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.1802789120001762,
+      "state": "TRACKING",
+      "reason": "tracking_quality_pass",
+      "epoch": "11",
+      "active_workers": "1"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.3801013230004173,
+      "state": "LOST",
+      "reason": "gravity_prior_untrusted_need_stationary_imu_and_odometry",
+      "epoch": "12",
+      "active_workers": "0"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.6800759180005116,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "12",
+      "active_workers": "1"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 1.3801622829996631,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "12",
+      "active_workers": "0"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 1.580190106000373,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "12",
+      "active_workers": "0"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 1.980300234000424,
+      "state": "TRACKING",
+      "reason": "multiframe_verified",
+      "epoch": "13",
+      "active_workers": "1"
+    },
+    {
+      "phase": "seed_during_search",
+      "elapsed": 0.0999757250001494,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "14",
+      "active_workers": "1"
+    },
+    {
+      "phase": "seed_during_search",
+      "elapsed": 0.19982685899958597,
+      "state": "LOST",
+      "reason": "rviz_initialpose_received",
+      "epoch": "15",
+      "active_workers": "1"
+    },
+    {
+      "phase": "seed_during_search",
+      "elapsed": 0.9997637670003314,
+      "state": "VERIFYING",
+      "reason": "rviz_initialpose_received",
+      "epoch": "15",
+      "active_workers": "1"
+    },
+    {
+      "phase": "seed_during_search",
+      "elapsed": 1.2001433750001524,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "15",
+      "active_workers": "0"
+    },
+    {
+      "phase": "map_reload",
+      "elapsed": 0.06982402199992066,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "17",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_reload",
+      "elapsed": 0.6699205760005498,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "17",
+      "active_workers": "0"
+    },
+    {
+      "phase": "map_reload",
+      "elapsed": 1.069872839000709,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "17",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 0.07004936999965139,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "19",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 0.30003811400001723,
+      "state": "LOST",
+      "reason": "map_file_changed",
+      "epoch": "20",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 0.6998544440002661,
+      "state": "LOST",
+      "reason": "building_map_cache",
+      "epoch": "20",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 2.5301243410003735,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "20",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 3.4998639220002588,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "20",
+      "active_workers": "0"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 3.699812868000663,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "20",
+      "active_workers": "0"
+    }
+  ],
+  "max_translation_error_m": 0.021965877883562083,
+  "max_rotation_error_rad": 0.004940928004397909
+}

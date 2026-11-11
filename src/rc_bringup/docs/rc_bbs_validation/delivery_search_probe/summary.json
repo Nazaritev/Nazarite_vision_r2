@@ -1,0 +1,151 @@
+[
+  {
+    "profile": "normal_range3",
+    "search_ms": 1926.07,
+    "complete": false,
+    "accepted_candidate": false,
+    "reason": "candidate_cap_ambiguity_unresolved",
+    "candidate_count": 6,
+    "diagnostic_candidates_within_1m_of_user_annotation": 0,
+    "local_quality_passes": []
+  },
+  {
+    "profile": "full_range3",
+    "search_ms": 2115.56,
+    "complete": false,
+    "accepted_candidate": false,
+    "reason": "candidate_cap_ambiguity_unresolved",
+    "candidate_count": 6,
+    "diagnostic_candidates_within_1m_of_user_annotation": 0,
+    "local_quality_passes": []
+  },
+  {
+    "profile": "normal_range5",
+    "search_ms": 2199.59,
+    "complete": false,
+    "accepted_candidate": false,
+    "reason": "search_timeout_or_queue_limit",
+    "candidate_count": 4,
+    "diagnostic_candidates_within_1m_of_user_annotation": 0,
+    "local_quality_passes": []
+  },
+  {
+    "profile": "full_range5",
+    "search_ms": 1911.07,
+    "complete": false,
+    "accepted_candidate": false,
+    "reason": "candidate_cap_ambiguity_unresolved",
+    "candidate_count": 6,
+    "diagnostic_candidates_within_1m_of_user_annotation": 0,
+    "local_quality_passes": []
+  },
+  {
+    "profile": "normal_range7",
+    "search_ms": 2199.3,
+    "complete": false,
+    "accepted_candidate": false,
+    "reason": "search_timeout_or_queue_limit",
+    "candidate_count": 1,
+    "diagnostic_candidates_within_1m_of_user_annotation": 0,
+    "local_quality_passes": []
+  },
+  {
+    "profile": "full_range7",
+    "search_ms": 1899.95,
+    "complete": false,
+    "accepted_candidate": false,
+    "reason": "search_timeout_or_queue_limit",
+    "candidate_count": 1,
+    "diagnostic_candidates_within_1m_of_user_annotation": 0,
+    "local_quality_passes": []
+  },
+  {
+    "profile": "coarse_range5_sign+1",
+    "search_ms": 571.93,
+    "complete": false,
+    "accepted_candidate": false,
+    "reason": "candidate_cap_ambiguity_unresolved",
+    "candidate_count": 6,
+    "diagnostic_candidates_within_1m_of_user_annotation": 0,
+    "local_quality_passes": []
+  },
+  {
+    "profile": "coarse_range5_sign-1",
+    "search_ms": 881.739,
+    "complete": false,
+    "accepted_candidate": false,
+    "reason": "candidate_cap_ambiguity_unresolved",
+    "candidate_count": 6,
+    "diagnostic_candidates_within_1m_of_user_annotation": 0,
+    "local_quality_passes": []
+  },
+  {
+    "profile": "coarse_range7_sign+1",
+    "search_ms": 876.31,
+    "complete": false,
+    "accepted_candidate": false,
+    "reason": "candidate_cap_ambiguity_unresolved",
+    "candidate_count": 6,
+    "diagnostic_candidates_within_1m_of_user_annotation": 0,
+    "local_quality_passes": [
+      {
+        "footprint_xy_m": [
+          5.351815206561238,
+          -3.6505609304755926
+        ],
+        "distance_from_approximate_user_annotation_m": 4.00688015589957,
+        "local_quality_reason": "quality_pass"
+      }
+    ]
+  },
+  {
+    "profile": "coarse_range7_sign-1",
+    "search_ms": 1030.53,
+    "complete": false,
+    "accepted_candidate": false,
+    "reason": "candidate_cap_ambiguity_unresolved",
+    "candidate_count": 6,
+    "diagnostic_candidates_within_1m_of_user_annotation": 0,
+    "local_quality_passes": []
+  },
+  {
+    "profile": "coarse_range7_sign+1_threshold0.6",
+    "search_ms": 849.106,
+    "complete": true,
+    "accepted_candidate": true,
+    "reason": "candidate_requires_fresh_multiframe_validation",
+    "candidate_count": 5,
+    "diagnostic_candidates_within_1m_of_user_annotation": 0,
+    "local_quality_passes": []
+  },
+  {
+    "profile": "coarse_range7_sign+1_threshold0.7",
+    "search_ms": 115.754,
+    "complete": true,
+    "accepted_candidate": false,
+    "reason": "insufficient_static_gicp_support",
+    "candidate_count": 1,
+    "diagnostic_candidates_within_1m_of_user_annotation": 0,
+    "local_quality_passes": []
+  },
+  {
+    "profile": "coarse_range7_sign-1_threshold0.6",
+    "search_ms": 469.727,
+    "complete": true,
+    "accepted_candidate": false,
+    "reason": "ground_dominated",
+    "candidate_count": 3,
+    "diagnostic_candidates_within_1m_of_user_annotation": 0,
+    "local_quality_passes": []
+  },
+  {
+    "profile": "coarse_range7_sign-1_threshold0.7",
+    "search_ms": 48.5311,
+    "complete": true,
+    "accepted_candidate": false,
+    "reason": "no_bbs_candidate_after_partial_overlap_search",
+    "candidate_count": 0,
+    "diagnostic_candidates_within_1m_of_user_annotation": 0,
+    "local_quality_passes": []
+  }
+]

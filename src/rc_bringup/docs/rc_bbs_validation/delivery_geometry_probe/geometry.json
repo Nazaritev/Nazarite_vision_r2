@@ -1,0 +1,271 @@
+{
+  "diagnostic_only": true,
+  "normal_analysis": [
+    {
+      "case": "bag_0_226",
+      "initial_sensor_z_m": 0.0,
+      "voxel_source_count": 846,
+      "roi_count": 419,
+      "static_distance_count": 411,
+      "actual_gicp_points": 290,
+      "normal_radii": [
+        {
+          "radius_m": 0.2,
+          "valid_normals": 72,
+          "source_nonground": 55,
+          "source_nonground_inside_roi": 20,
+          "source_nonground_static_distance": 20,
+          "bilateral_matched_nonground_voxels": 4,
+          "normal_rejected_static_near": 18,
+          "kept_gicp_like": 393,
+          "median_planarity_nonground": 0.3809244632720947
+        },
+        {
+          "radius_m": 0.3,
+          "valid_normals": 587,
+          "source_nonground": 243,
+          "source_nonground_inside_roi": 79,
+          "source_nonground_static_distance": 75,
+          "bilateral_matched_nonground_voxels": 2,
+          "normal_rejected_static_near": 100,
+          "kept_gicp_like": 311,
+          "median_planarity_nonground": 0.40035000443458557
+        },
+        {
+          "radius_m": 0.45,
+          "valid_normals": 798,
+          "source_nonground": 262,
+          "source_nonground_inside_roi": 67,
+          "source_nonground_static_distance": 59,
+          "bilateral_matched_nonground_voxels": 0,
+          "normal_rejected_static_near": 98,
+          "kept_gicp_like": 313,
+          "median_planarity_nonground": 0.4183233976364136
+        },
+        {
+          "radius_m": 0.6,
+          "valid_normals": 827,
+          "source_nonground": 293,
+          "source_nonground_inside_roi": 86,
+          "source_nonground_static_distance": 78,
+          "bilateral_matched_nonground_voxels": 12,
+          "normal_rejected_static_near": 94,
+          "kept_gicp_like": 317,
+          "median_planarity_nonground": 0.4189809560775757
+        }
+      ]
+    },
+    {
+      "case": "bag_0_226",
+      "initial_sensor_z_m": 0.25,
+      "voxel_source_count": 846,
+      "roi_count": 425,
+      "static_distance_count": 421,
+      "actual_gicp_points": 306,
+      "normal_radii": [
+        {
+          "radius_m": 0.2,
+          "valid_normals": 72,
+          "source_nonground": 54,
+          "source_nonground_inside_roi": 22,
+          "source_nonground_static_distance": 22,
+          "bilateral_matched_nonground_voxels": 0,
+          "normal_rejected_static_near": 25,
+          "kept_gicp_like": 396,
+          "median_planarity_nonground": 0.3809244632720947
+        },
+        {
+          "radius_m": 0.3,
+          "valid_normals": 587,
+          "source_nonground": 243,
+          "source_nonground_inside_roi": 77,
+          "source_nonground_static_distance": 76,
+          "bilateral_matched_nonground_voxels": 0,
+          "normal_rejected_static_near": 109,
+          "kept_gicp_like": 312,
+          "median_planarity_nonground": 0.39256149530410767
+        },
+        {
+          "radius_m": 0.45,
+          "valid_normals": 798,
+          "source_nonground": 261,
+          "source_nonground_inside_roi": 60,
+          "source_nonground_static_distance": 56,
+          "bilateral_matched_nonground_voxels": 0,
+          "normal_rejected_static_near": 103,
+          "kept_gicp_like": 318,
+          "median_planarity_nonground": 0.41867130994796753
+        },
+        {
+          "radius_m": 0.6,
+          "valid_normals": 827,
+          "source_nonground": 293,
+          "source_nonground_inside_roi": 80,
+          "source_nonground_static_distance": 76,
+          "bilateral_matched_nonground_voxels": 10,
+          "normal_rejected_static_near": 100,
+          "kept_gicp_like": 321,
+          "median_planarity_nonground": 0.4189809560775757
+        }
+      ]
+    },
+    {
+      "case": "bag_0_425",
+      "initial_sensor_z_m": 0.0,
+      "voxel_source_count": 868,
+      "roi_count": 441,
+      "static_distance_count": 425,
+      "actual_gicp_points": 327,
+      "normal_radii": [
+        {
+          "radius_m": 0.2,
+          "valid_normals": 76,
+          "source_nonground": 67,
+          "source_nonground_inside_roi": 17,
+          "source_nonground_static_distance": 16,
+          "bilateral_matched_nonground_voxels": 1,
+          "normal_rejected_static_near": 17,
+          "kept_gicp_like": 408,
+          "median_planarity_nonground": 0.34663668274879456
+        },
+        {
+          "radius_m": 0.3,
+          "valid_normals": 600,
+          "source_nonground": 263,
+          "source_nonground_inside_roi": 103,
+          "source_nonground_static_distance": 96,
+          "bilateral_matched_nonground_voxels": 21,
+          "normal_rejected_static_near": 95,
+          "kept_gicp_like": 330,
+          "median_planarity_nonground": 0.37926048040390015
+        },
+        {
+          "radius_m": 0.45,
+          "valid_normals": 821,
+          "source_nonground": 280,
+          "source_nonground_inside_roi": 94,
+          "source_nonground_static_distance": 78,
+          "bilateral_matched_nonground_voxels": 17,
+          "normal_rejected_static_near": 87,
+          "kept_gicp_like": 338,
+          "median_planarity_nonground": 0.3608134984970093
+        },
+        {
+          "radius_m": 0.6,
+          "valid_normals": 854,
+          "source_nonground": 307,
+          "source_nonground_inside_roi": 100,
+          "source_nonground_static_distance": 84,
+          "bilateral_matched_nonground_voxels": 17,
+          "normal_rejected_static_near": 96,
+          "kept_gicp_like": 329,
+          "median_planarity_nonground": 0.40906327962875366
+        }
+      ]
+    },
+    {
+      "case": "bag_0_425",
+      "initial_sensor_z_m": 0.25,
+      "voxel_source_count": 868,
+      "roi_count": 429,
+      "static_distance_count": 413,
+      "actual_gicp_points": 348,
+      "normal_radii": [
+        {
+          "radius_m": 0.2,
+          "valid_normals": 76,
+          "source_nonground": 67,
+          "source_nonground_inside_roi": 18,
+          "source_nonground_static_distance": 16,
+          "bilateral_matched_nonground_voxels": 1,
+          "normal_rejected_static_near": 17,
+          "kept_gicp_like": 396,
+          "median_planarity_nonground": 0.34663668274879456
+        },
+        {
+          "radius_m": 0.3,
+          "valid_normals": 600,
+          "source_nonground": 263,
+          "source_nonground_inside_roi": 101,
+          "source_nonground_static_distance": 93,
+          "bilateral_matched_nonground_voxels": 25,
+          "normal_rejected_static_near": 76,
+          "kept_gicp_like": 337,
+          "median_planarity_nonground": 0.37926048040390015
+        },
+        {
+          "radius_m": 0.45,
+          "valid_normals": 821,
+          "source_nonground": 280,
+          "source_nonground_inside_roi": 92,
+          "source_nonground_static_distance": 76,
+          "bilateral_matched_nonground_voxels": 20,
+          "normal_rejected_static_near": 69,
+          "kept_gicp_like": 344,
+          "median_planarity_nonground": 0.3608134984970093
+        },
+        {
+          "radius_m": 0.6,
+          "valid_normals": 854,
+          "source_nonground": 307,
+          "source_nonground_inside_roi": 98,
+          "source_nonground_static_distance": 82,
+          "bilateral_matched_nonground_voxels": 18,
+          "normal_rejected_static_near": 80,
+          "kept_gicp_like": 333,
+          "median_planarity_nonground": 0.40906327962875366
+        }
+      ]
+    }
+  ],
+  "map_planes": [
+    {
+      "region": "upper_platform",
+      "points": 753,
+      "z_ax_by_c": [
+        0.021438418433704046,
+        -0.005347102934495029,
+        0.6902177655472935
+      ],
+      "median_abs_residual_m": 0.01179378364099537,
+      "tilt_rad": 0.02209159258884767,
+      "z_quantile_10_50_90": [
+        0.705448567867279,
+        0.7506003975868225,
+        0.8015424013137818
+      ]
+    },
+    {
+      "region": "middle_platform",
+      "points": 551,
+      "z_ax_by_c": [
+        -0.020878212070890564,
+        -0.012408514071919112,
+        0.13830101021283978
+      ],
+      "median_abs_residual_m": 0.021838367255382463,
+      "tilt_rad": 0.024282485466589402,
+      "z_quantile_10_50_90": [
+        0.12395653873682022,
+        0.15149541199207306,
+        0.19449184834957123
+      ]
+    },
+    {
+      "region": "lower_left",
+      "points": 624,
+      "z_ax_by_c": [
+        -0.1490490001491694,
+        -0.06665633166582005,
+        0.3304891838969537
+      ],
+      "median_abs_residual_m": 0.07801754320856852,
+      "tilt_rad": 0.16184671046886123,
+      "z_quantile_10_50_90": [
+        0.40906516313552865,
+        0.7638783156871796,
+        0.8635266423225403
+      ]
+    }
+  ]
+}

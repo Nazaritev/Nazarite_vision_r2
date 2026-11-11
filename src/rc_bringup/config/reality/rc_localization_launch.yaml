@@ -1,0 +1,14 @@
+# Only this file and rc_localization.yaml need editing; no launch CLI overrides.
+# live: starts MID360 + FAST-LIO + robot TF. external: reuses running inputs/bag.
+input_mode: live
+
+# local: isolate standalone DDS from the host's eno1-only profile, which lacks
+# a localhost peer. system: inherit existing DDS settings for external inputs.
+dds_profile: local
+ros_domain_id: 0
+start_robot_state_publisher: true
+start_rviz: true
+use_sim_time: false
+
+# Absolute path as requested. The localizer rejects missing/invalid maps.
+map_file: /home/dgut/code/Nazarite/src/rc_bringup/map/1.pcd

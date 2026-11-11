@@ -1,0 +1,5 @@
+https://github.com/KOKIAOKI/3d_bbs
+commit 41529a34a2fb9618b5ff560fb3c2363f1615666d
+Vendored bbs3d/ is byte-for-byte upstream, including optional GPU sources.
+MIT license in LICENSE. No network download is needed at build time.
+CPU extension is applied ONLY to a build-directory copy via cpu_safety.patch.

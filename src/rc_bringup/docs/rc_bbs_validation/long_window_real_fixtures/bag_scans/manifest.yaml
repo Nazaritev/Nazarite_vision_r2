@@ -1,0 +1,45 @@
+cases:
+- id: bag_0_310
+  pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/long_window_real_fixtures/bag_scans/bag_0_310.pcd
+  bag: /tmp/rc_bbs_overlap_live/accumulated_structure_map/accumulated_structure_map_0.db3
+  scan_frame: imu_link
+  stamp: 1794389436.7630734
+  has_ground_truth: false
+  accumulated_scan_count: 17
+  acceleration_sensor:
+  - 0.031099974182434376
+  - 0.02266488229483367
+  - -9.757308970972897
+- id: bag_0_621
+  pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/long_window_real_fixtures/bag_scans/bag_0_621.pcd
+  bag: /tmp/rc_bbs_overlap_live/accumulated_structure_map/accumulated_structure_map_0.db3
+  scan_frame: imu_link
+  stamp: 1794389444.5380728
+  has_ground_truth: false
+  accumulated_scan_count: 17
+  acceleration_sensor:
+  - 0.026429685982293456
+  - 0.021826625458896163
+  - -9.757488612055779
+- id: bag_1_310
+  pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/long_window_real_fixtures/bag_scans/bag_1_310.pcd
+  bag: /tmp/rc_bbs_overlap_live/accumulated_full_map/accumulated_full_map_0.db3
+  scan_frame: imu_link
+  stamp: 1794389467.6030862
+  has_ground_truth: false
+  accumulated_scan_count: 17
+  acceleration_sensor:
+  - 0.024214292573276903
+  - 0.022485255829989916
+  - -9.759823770716785
+- id: bag_1_620
+  pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/long_window_real_fixtures/bag_scans/bag_1_620.pcd
+  bag: /tmp/rc_bbs_overlap_live/accumulated_full_map/accumulated_full_map_0.db3
+  scan_frame: imu_link
+  stamp: 1794389475.3534403
+  has_ground_truth: false
+  accumulated_scan_count: 16
+  acceleration_sensor:
+  - 0.031219725158996885
+  - 0.01709646188467741
+  - -9.747848673060538

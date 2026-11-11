@@ -1,0 +1,9 @@
+profile,case,has_truth,valid_source,cold_map_ms,search_ms,complete,accepted,reason,candidate_count,bbs_hit_fraction,coverage,correspondences,inlier_mse_m2,inlier_rmse_m,inlier_p95_m,capped_all_mse_m2,nonground_fraction,information_ratio,translation_error_m,rotation_error_rad,consistent_structure_correspondences,consistent_structure_fraction
+long_window_production,bag_0_310,0,33288,450.859,9.79029,1,0,no_bbs_candidate,0,nan,0,0,inf,inf,inf,inf,0,0,nan,nan,0,0
+long_window_production,bag_0_621,0,33228,450.859,9.15969,1,0,no_bbs_candidate,0,nan,0,0,inf,inf,inf,inf,0,0,nan,nan,0,0
+long_window_production,bag_1_310,0,32943,450.859,9.48215,1,0,no_bbs_candidate,0,nan,0,0,inf,inf,inf,inf,0,0,nan,nan,0,0
+long_window_production,bag_1_620,0,31189,450.859,8.53209,1,0,no_bbs_candidate,0,nan,0,0,inf,inf,inf,inf,0,0,nan,nan,0,0
+long_window_fullmap_080,bag_0_310,0,32534,438.702,1476.12,1,0,excessive_coarse_refine_correction,1,0.840278,0.838384,27276,0.0271504,0.164774,0.309024,0.048621,0.148665,0.00925125,nan,nan,248,0.00909224
+long_window_fullmap_080,bag_0_621,0,32429,438.702,1412.61,1,0,excessive_coarse_refine_correction,1,0.8125,0.812483,26348,0.0293029,0.171181,0.322785,0.0538109,0.150865,0.0123913,nan,nan,37,0.00140428
+long_window_fullmap_080,bag_1_310,0,31988,438.702,1407.89,1,0,excessive_coarse_refine_correction,1,0.80916,0.79211,25338,0.0280793,0.167569,0.338399,0.0555044,0.198121,0.0148835,nan,nan,10,0.000394664
+long_window_fullmap_080,bag_1_620,0,30426,438.702,1491.55,1,0,excessive_coarse_refine_correction,1,0.822086,0.821863,25006,0.0261851,0.161818,0.317464,0.0500225,0.179757,0.0133994,nan,nan,705,0.0281932

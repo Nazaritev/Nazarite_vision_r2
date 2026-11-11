@@ -1,0 +1,33 @@
+candidates:
+  - profile: low_score_diagnostic_only
+    case: bag_0_13
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: inconsistent_source_target_structure
+    consistent_structure_correspondences: 22
+    consistent_structure_fraction: 0.01049618320610687
+    T_map_sensor_row_major: [0.085508368909358978, -0.99429124593734741, 0.063821867108345032, 3.0039420127868652, -0.97001457214355469, -0.097705252468585968, -0.22254294157028198, -8.112060546875, 0.22750821709632874, -0.042878851294517517, -0.97283166646957397, 1.3049678802490234, 0, 0, 0, 1]
+  - profile: low_score_diagnostic_only
+    case: bag_0_13
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: inconsistent_source_target_structure
+    consistent_structure_correspondences: 5
+    consistent_structure_fraction: 0.0023809523809523812
+    T_map_sensor_row_major: [-0.04039417952299118, -0.98456156253814697, -0.17031371593475342, 1.8364460468292236, -0.99500393867492676, 0.055211331695318222, -0.083179309964179993, -7.2364645004272461, 0.091298401355743408, 0.16610285639762878, -0.98187291622161865, 1.1433330774307251, 0, 0, 0, 1]
+  - profile: low_score_diagnostic_only
+    case: bag_1_156
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: ground_dominated
+    consistent_structure_correspondences: 0
+    consistent_structure_fraction: 0
+    T_map_sensor_row_major: [0.37985751032829285, 0.92200011014938354, -0.074993327260017395, 2.6290781497955322, 0.92341154813766479, -0.37312296032905579, 0.089946284890174866, -3.4639077186584473, 0.054948754608631134, -0.10341648757457733, -0.99311912059783936, 0.69222146272659302, 0, 0, 0, 1]
+  - profile: low_score_diagnostic_only
+    case: bag_1_156
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: inconsistent_source_target_structure
+    consistent_structure_correspondences: 0
+    consistent_structure_fraction: 0
+    T_map_sensor_row_major: [-0.55167526006698608, -0.79599738121032715, -0.24908319115638733, 0.28471636772155762, -0.81976133584976196, 0.57253354787826538, -0.014023898169398308, -3.2732734680175781, 0.15377146005630493, 0.19645214080810547, -0.96838051080703735, 1.1639399528503418, 0, 0, 0, 1]

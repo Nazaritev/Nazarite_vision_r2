@@ -1,0 +1,5 @@
+profile,case,coarse_hits,coverage,correspondences,rmse_m,p95_m,nonground_fraction,information_ratio,converged,quality_reason,global_result_accepted,consistent_structure_correspondences,consistent_structure_fraction
+low_score_diagnostic_only,bag_0_13,0.710526,0.940332,2096,0.17986,0.273786,0.269084,0.00833599,1,inconsistent_source_target_structure,0,22,0.0104962
+low_score_diagnostic_only,bag_0_13,0.644737,0.942127,2100,0.162443,0.280172,0.158571,0.0048973,1,inconsistent_source_target_structure,0,5,0.00238095
+low_score_diagnostic_only,bag_1_156,0.431034,0.940952,2470,0.117536,0.21768,0.0785425,0.0190887,1,ground_dominated,0,0,0
+low_score_diagnostic_only,bag_1_156,0.431034,0.909714,2388,0.139559,0.22748,0.214824,0.00574403,1,inconsistent_source_target_structure,0,0,0

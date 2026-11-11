@@ -1,0 +1,31 @@
+cases:
+  - id: synthetic_0
+    pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/fixtures/synthetic_0.pcd
+    xyz: [0.668764, -9.62629, 0.885028]
+    quaternion_xyzw: [0.996618, -0.033097, -0.0728976, 0.0185037]
+    acceleration: [-1.70318, 0.113003, -9.66036]
+  - id: synthetic_1
+    pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/fixtures/synthetic_1.pcd
+    xyz: [3.18294, -6.21935, 0.885028]
+    quaternion_xyzw: [0.996394, 0.0686705, -0.0493524, -0.00689165]
+    acceleration: [-0.661932, 0.0925641, -9.7872]
+  - id: synthetic_2
+    pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/fixtures/synthetic_2.pcd
+    xyz: [3.05216, -3.57617, 0.885028]
+    quaternion_xyzw: [0.856073, -0.510408, -0.0555434, 0.05948]
+    acceleration: [-0.0430175, 1.26493, -9.72801]
+  - id: synthetic_3
+    pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/fixtures/synthetic_3.pcd
+    xyz: [-0.482212, -9.80414, 0.885028]
+    quaternion_xyzw: [-0.131081, 0.990878, 0.00549873, -0.0307951]
+    acceleration: [0.290419, 0.480468, -9.79392]
+  - id: synthetic_4
+    pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/fixtures/synthetic_4.pcd
+    xyz: [-0.190132, -1.24608, 0.885028]
+    quaternion_xyzw: [0.64262, 0.7645, 0.0226413, -0.0454624]
+    acceleration: [1.2592, -0.526858, -9.71457]
+  - id: synthetic_5
+    pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/fixtures/synthetic_5.pcd
+    xyz: [-0.19331, -7.20216, 0.885028]
+    quaternion_xyzw: [0.913804, 0.39886, -0.0717333, 0.0269672]
+    acceleration: [-1.20511, 0.216088, -9.7333]

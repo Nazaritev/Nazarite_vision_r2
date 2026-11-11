@@ -1,0 +1,33 @@
+candidates:
+  - profile: long_window_fullmap_080
+    case: bag_0_310
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: insufficient_consistent_structure_fraction
+    consistent_structure_correspondences: 374
+    consistent_structure_fraction: 0.013659605551497443
+    T_map_sensor_row_major: [-0.39971128106117249, 0.91653972864151001, -0.013632811605930328, 3.2022974491119385, 0.89221131801605225, 0.39242610335350037, 0.22351902723312378, -1.9694358110427856, 0.21021392941474915, 0.077179744839668274, -0.97460424900054932, 1.0707707405090332, 0, 0, 0, 1]
+  - profile: long_window_fullmap_080
+    case: bag_0_621
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: inconsistent_source_target_structure
+    consistent_structure_correspondences: 39
+    consistent_structure_fraction: 0.0014779445202364712
+    T_map_sensor_row_major: [-0.79221749305725098, 0.60108661651611328, -0.10529094934463501, 3.0052268505096436, 0.57973289489746094, 0.79519772529602051, 0.17768073081970215, -1.9380873441696167, 0.19052864611148834, 0.079721152782440186, -0.97843927145004272, 1.0564783811569214, 0, 0, 0, 1]
+  - profile: long_window_fullmap_080
+    case: bag_1_310
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: gicp_not_converged_before_iteration_limit
+    consistent_structure_correspondences: 646
+    consistent_structure_fraction: 0.025327373951227163
+    T_map_sensor_row_major: [-0.27014243602752686, 0.96225911378860474, -0.032872963696718216, 3.6280608177185059, 0.93181180953979492, 0.26988491415977478, 0.24267028272151947, -2.1455137729644775, 0.24238356947898865, 0.034924130886793137, -0.96955174207687378, 0.99928498268127441, 0, 0, 0, 1]
+  - profile: long_window_fullmap_080
+    case: bag_1_620
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: insufficient_consistent_structure_fraction
+    consistent_structure_correspondences: 703
+    consistent_structure_fraction: 0.028105385199696159
+    T_map_sensor_row_major: [-0.24063161015510559, 0.9705425500869751, -0.011982036754488945, 3.6131985187530518, 0.94098949432373047, 0.23629559576511383, 0.24228756129741669, -2.1152992248535156, 0.23798169195652008, 0.047027066349983215, -0.97013044357299805, 0.99738061428070068, 0, 0, 0, 1]

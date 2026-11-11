@@ -1,0 +1,468 @@
+{
+  "profile": "known_gravity_fast",
+  "unknown_recovered": true,
+  "bad_initialpose_recovered": true,
+  "trusted_initialpose_recovered": true,
+  "rviz_2d_initialpose_recovered": true,
+  "input_loss_detected": true,
+  "input_resume_recovered": true,
+  "untrusted_gravity_refused": true,
+  "search_observed_before_seed": true,
+  "seed_during_search_recovered": true,
+  "map_reload_recovered": true,
+  "search_observed_before_map_update": true,
+  "map_update_during_search_recovered": true,
+  "map_update_epoch_advanced": true,
+  "first_pose_seconds": {
+    "unknown": 3.136004273999788,
+    "motion": 0.0898113960001865,
+    "bad_initialpose": 0.9999192570003288,
+    "trusted_initialpose": 0.7994565740000326,
+    "rviz_2d_initialpose": 0.7900668860002042,
+    "input_resume": 1.3799772689999372,
+    "seed_during_search": 0.8894929090001824,
+    "map_reload": 0.8900392460000148,
+    "map_update_during_search": 2.759965468999326
+  },
+  "errors": [
+    {
+      "phase": "unknown",
+      "translation_error_m": 0.03497137985785566,
+      "rotation_error_rad": 0.005971145083035705
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.02496460823244951,
+      "rotation_error_rad": 0.005171671360088036
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.020124664339685096,
+      "rotation_error_rad": 0.004280077175473567
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.006781741187710026,
+      "rotation_error_rad": 0.002587554874925419
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.014582821765531282,
+      "rotation_error_rad": 0.0018256227306970442
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.00876670754662955,
+      "rotation_error_rad": 0.0025795265531084006
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.008512544296593892,
+      "rotation_error_rad": 0.00294369819999413
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.011485909235022903,
+      "rotation_error_rad": 0.0027459471108226123
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.010746506554998071,
+      "rotation_error_rad": 0.003329963348111488
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.018709906384270985,
+      "rotation_error_rad": 0.003726544041704567
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.015242729981868009,
+      "rotation_error_rad": 0.003780543773530184
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.017481497257513547,
+      "rotation_error_rad": 0.004035315785473758
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.01160885866264475,
+      "rotation_error_rad": 0.0028386123654194173
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.013606577839009579,
+      "rotation_error_rad": 0.0031498184011687783
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.01597931749050815,
+      "rotation_error_rad": 0.0027360320251593006
+    },
+    {
+      "phase": "motion",
+      "translation_error_m": 0.011504178322765696,
+      "rotation_error_rad": 0.002131786273556567
+    },
+    {
+      "phase": "bad_initialpose",
+      "translation_error_m": 0.011056177175316177,
+      "rotation_error_rad": 0.0026211065364734262
+    },
+    {
+      "phase": "trusted_initialpose",
+      "translation_error_m": 0.013316372314949664,
+      "rotation_error_rad": 0.0025293298928670445
+    },
+    {
+      "phase": "rviz_2d_initialpose",
+      "translation_error_m": 0.009393050195700414,
+      "rotation_error_rad": 0.0021310300699255787
+    },
+    {
+      "phase": "input_resume",
+      "translation_error_m": 0.016377248610099038,
+      "rotation_error_rad": 0.0030708505252417845
+    },
+    {
+      "phase": "seed_during_search",
+      "translation_error_m": 0.005946438523639839,
+      "rotation_error_rad": 0.0019367370341102507
+    },
+    {
+      "phase": "map_reload",
+      "translation_error_m": 0.017263417754153326,
+      "rotation_error_rad": 0.0035511201780806397
+    },
+    {
+      "phase": "map_update_during_search",
+      "translation_error_m": 0.007455402358194109,
+      "rotation_error_rad": 0.0018694526112184552
+    }
+  ],
+  "events": [
+    {
+      "phase": "unknown",
+      "elapsed": 0.3459301109996886,
+      "state": "UNINITIALIZED",
+      "reason": "building_map_cache",
+      "epoch": "0",
+      "active_workers": "1"
+    },
+    {
+      "phase": "unknown",
+      "elapsed": 1.906053554999744,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "0",
+      "active_workers": "1"
+    },
+    {
+      "phase": "unknown",
+      "elapsed": 2.545881164999628,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "0",
+      "active_workers": "0"
+    },
+    {
+      "phase": "unknown",
+      "elapsed": 2.7459904099996493,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "0",
+      "active_workers": "0"
+    },
+    {
+      "phase": "motion",
+      "elapsed": 0.009905128000355035,
+      "state": "TRACKING",
+      "reason": "multiframe_verified",
+      "epoch": "1",
+      "active_workers": "0"
+    },
+    {
+      "phase": "motion",
+      "elapsed": 0.20985611800006154,
+      "state": "TRACKING",
+      "reason": "tracking_quality_pass",
+      "epoch": "1",
+      "active_workers": "0"
+    },
+    {
+      "phase": "bad_initialpose",
+      "elapsed": 0.10937956999987364,
+      "state": "LOST",
+      "reason": "gicp_not_converged_before_iteration_limit",
+      "epoch": "3",
+      "active_workers": "0"
+    },
+    {
+      "phase": "bad_initialpose",
+      "elapsed": 0.1693701570002304,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "3",
+      "active_workers": "1"
+    },
+    {
+      "phase": "bad_initialpose",
+      "elapsed": 0.5094931940002425,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "3",
+      "active_workers": "0"
+    },
+    {
+      "phase": "bad_initialpose",
+      "elapsed": 0.7095144960003381,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "3",
+      "active_workers": "0"
+    },
+    {
+      "phase": "trusted_initialpose",
+      "elapsed": 0.10954834399944957,
+      "state": "VERIFYING",
+      "reason": "rviz_initialpose_received",
+      "epoch": "5",
+      "active_workers": "1"
+    },
+    {
+      "phase": "trusted_initialpose",
+      "elapsed": 0.30941514799997094,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "5",
+      "active_workers": "0"
+    },
+    {
+      "phase": "rviz_2d_initialpose",
+      "elapsed": 0.11027917499995965,
+      "state": "VERIFYING",
+      "reason": "rviz_initialpose_received",
+      "epoch": "7",
+      "active_workers": "1"
+    },
+    {
+      "phase": "rviz_2d_initialpose",
+      "elapsed": 0.3099988140002097,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "7",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_loss",
+      "elapsed": 0.11989016400002583,
+      "state": "TRACKING",
+      "reason": "multiframe_verified",
+      "epoch": "8",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_loss",
+      "elapsed": 0.5199824789997365,
+      "state": "TRACKING",
+      "reason": "scan_timestamp_stale_or_future",
+      "epoch": "8",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_loss",
+      "elapsed": 0.9199828319997323,
+      "state": "LOST",
+      "reason": "scan_timestamp_stale_or_future",
+      "epoch": "9",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_resume",
+      "elapsed": 0.19991488300001947,
+      "state": "LOST",
+      "reason": "gravity_prior_untrusted_need_stationary_imu_and_odometry",
+      "epoch": "9",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_resume",
+      "elapsed": 0.25975005100008275,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "9",
+      "active_workers": "1"
+    },
+    {
+      "phase": "input_resume",
+      "elapsed": 0.7998339660007332,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "9",
+      "active_workers": "0"
+    },
+    {
+      "phase": "input_resume",
+      "elapsed": 0.9998487150005531,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "9",
+      "active_workers": "0"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.01983373900020524,
+      "state": "TRACKING",
+      "reason": "multiframe_verified",
+      "epoch": "10",
+      "active_workers": "0"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.21996947299976455,
+      "state": "TRACKING",
+      "reason": "tracking_quality_pass",
+      "epoch": "10",
+      "active_workers": "0"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.4198609819995909,
+      "state": "LOST",
+      "reason": "gravity_prior_untrusted_need_stationary_imu_and_odometry",
+      "epoch": "11",
+      "active_workers": "0"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 0.6811914129993966,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "11",
+      "active_workers": "1"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 1.2197808689998055,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "11",
+      "active_workers": "0"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 1.4199406979996638,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "11",
+      "active_workers": "0"
+    },
+    {
+      "phase": "untrusted_gravity",
+      "elapsed": 1.8202227550000316,
+      "state": "TRACKING",
+      "reason": "multiframe_verified",
+      "epoch": "12",
+      "active_workers": "0"
+    },
+    {
+      "phase": "seed_during_search",
+      "elapsed": 0.05941072800032998,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "13",
+      "active_workers": "1"
+    },
+    {
+      "phase": "seed_during_search",
+      "elapsed": 0.19962665700040816,
+      "state": "VERIFYING",
+      "reason": "rviz_initialpose_received",
+      "epoch": "14",
+      "active_workers": "1"
+    },
+    {
+      "phase": "seed_during_search",
+      "elapsed": 0.3996551720001662,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "14",
+      "active_workers": "0"
+    },
+    {
+      "phase": "map_reload",
+      "elapsed": 0.06990295900050114,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "16",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_reload",
+      "elapsed": 0.3100828010001351,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "16",
+      "active_workers": "0"
+    },
+    {
+      "phase": "map_reload",
+      "elapsed": 0.5099770450005963,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "16",
+      "active_workers": "0"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 0.01998135300073045,
+      "state": "LOST",
+      "reason": "global_search_requested",
+      "epoch": "18",
+      "active_workers": "0"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 0.0797580120006387,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "18",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 0.14032543299981626,
+      "state": "LOST",
+      "reason": "building_map_cache",
+      "epoch": "19",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 1.9605248739999297,
+      "state": "SEARCHING",
+      "reason": "global_search_running",
+      "epoch": "19",
+      "active_workers": "1"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 2.1404992289999427,
+      "state": "VERIFYING",
+      "reason": "candidate_requires_fresh_multiframe_validation",
+      "epoch": "19",
+      "active_workers": "0"
+    },
+    {
+      "phase": "map_update_during_search",
+      "elapsed": 2.540122460999555,
+      "state": "VERIFYING",
+      "reason": "awaiting_fresh_consistent_frames",
+      "epoch": "19",
+      "active_workers": "1"
+    }
+  ],
+  "max_translation_error_m": 0.03497137985785566,
+  "max_rotation_error_rad": 0.005971145083035705
+}

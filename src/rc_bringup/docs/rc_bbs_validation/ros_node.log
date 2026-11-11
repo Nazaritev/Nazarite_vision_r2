@@ -1,0 +1,6 @@
+[INFO] [1794389790.266569307] [bbs_localizer]: Map gravity hypotheses: +Z -Z  (all share the search deadline)
+[INFO] [1794389790.266666678] [bbs_localizer]: Backend=official_cpu+distinct_leaf_extension; local=PCL_GICP; p_map=T_map_sensor*p_sensor; gravity=stationary IMU, combined IMU/map uncertainty 0.100 rad
+[INFO] [1794389790.766674730] [bbs_localizer]: Map cache 7d99205162081573341caafa0af7a977baae5607ad677d806843311e857f7e81: 5415 points; cold construction 480.8 ms
+[INFO] [1794389799.676441161] [bbs_localizer]: Map cache 7d99205162081573341caafa0af7a977baae5607ad677d806843311e857f7e81: 5415 points; cold construction 480.8 ms
+[INFO] [1794389801.196670260] [bbs_localizer]: Map cache 9bb84e8d90b4df58a746b65a1fe3e6376cefba3e456f4483fab2e63d7356425c: 5415 points; cold construction 451.8 ms
+[INFO] [1794389802.230371490] [rclcpp]: signal_handler(SIGINT/SIGTERM)

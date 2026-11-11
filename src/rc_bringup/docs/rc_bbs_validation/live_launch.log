@@ -1,0 +1,279 @@
+[INFO] [launch]: All log files can be found below /tmp/rc-bbs-structure-final-logs/2026-11-11-17-37-54-892039-dgut-shijue-374
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [launch.user]: PCD localization: /home/dgut/code/Nazarite/src/rc_bringup/map/1.pcd; input_mode=live. Localization starts without an initial position. RViz 2D Pose Estimate publishes a map-frame base_link seed to /initialpose.
+[INFO] [robot_state_publisher-1]: process started with pid [376]
+[INFO] [livox_ros_driver2_node-2]: process started with pid [378]
+[INFO] [fastlio_mapping-3]: process started with pid [380]
+[INFO] [bbs_localizer-4]: process started with pid [382]
+[INFO] [rviz2-5]: process started with pid [384]
+[livox_ros_driver2_node-2] [INFO] [1794389874.989620285] [bbs_livox]: Livox Ros Driver2 Version: 1.2.4
+[livox_ros_driver2_node-2] [INFO] [1794389874.989749616] [bbs_livox]: Data Source is raw lidar.
+[livox_ros_driver2_node-2] [INFO] [1794389874.989758793] [bbs_livox]: Config file : /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/MID360_driver.json
+[livox_ros_driver2_node-2] LdsLidar *GetInstance
+[livox_ros_driver2_node-2] config lidar type: 8
+[livox_ros_driver2_node-2] successfully parse base config, counts: 1
+[livox_ros_driver2_node-2] [INFO] [1794389874.990490604] [bbs_livox]: Init lds lidar success!
+[robot_state_publisher-1] [INFO] [1794389874.994470044] [bbs_robot_state_publisher]: got segment base_link
+[robot_state_publisher-1] [INFO] [1794389874.994536528] [bbs_robot_state_publisher]: got segment camera_link1
+[robot_state_publisher-1] [INFO] [1794389874.994542960] [bbs_robot_state_publisher]: got segment camera_link2
+[robot_state_publisher-1] [INFO] [1794389874.994547218] [bbs_robot_state_publisher]: got segment footprint_link
+[robot_state_publisher-1] [INFO] [1794389874.994550875] [bbs_robot_state_publisher]: got segment imu_link
+[robot_state_publisher-1] [INFO] [1794389874.994555223] [bbs_robot_state_publisher]: got segment livox_frame
+[robot_state_publisher-1] [INFO] [1794389874.994560372] [bbs_robot_state_publisher]: got segment motion_link
+[robot_state_publisher-1] [INFO] [1794389874.994565562] [bbs_robot_state_publisher]: got segment zed_camera_link
+[rviz2-5] Warning: Ignoring XDG_SESSION_TYPE=wayland on Gnome. Use QT_QPA_PLATFORM=wayland to run on Wayland anyway.
+[bbs_localizer-4] [INFO] [1794389875.015721345] [bbs_localizer]: Map gravity hypotheses: +Z -Z  (all share the search deadline)
+[bbs_localizer-4] [INFO] [1794389875.015792517] [bbs_localizer]: Backend=official_cpu+distinct_leaf_extension; local=PCL_GICP; p_map=T_map_sensor*p_sensor; gravity=stationary IMU, combined IMU/map uncertainty 0.100 rad
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.020: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.020: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.020: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.020: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.020: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.020: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.020: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.020: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.020: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.020: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.020: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.020: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.021: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.021: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.021: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.021: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.021: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.021: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.021: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.021: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.021: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.021: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.039: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.039: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.041: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.041: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[fastlio_mapping-3] [INFO] [1794389875.045321922] [bbs_fast_lio]: p_pre->lidar_type 1
+[fastlio_mapping-3] Multi thread started 
+[fastlio_mapping-3] ~~~~/home/dgut/code/Nazarite/src/fast_lio/ file opened
+[fastlio_mapping-3] [INFO] [1794389875.048718158] [bbs_fast_lio]: Node init finished.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.061: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] amdgpu: drmGetDevice2 failed.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.134: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] [INFO] [1794389875.211399060] [rviz2]: Stereo is NOT SUPPORTED
+[rviz2-5] [INFO] [1794389875.211487765] [rviz2]: OpenGl version: 4.6 (GLSL 4.6)
+[rviz2-5] [INFO] [1794389875.226698001] [rviz2]: Stereo is NOT SUPPORTED
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.270: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.278: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.278: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.293: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.327: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.327: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.380: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.381: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.382: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.382: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.382: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.382: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.382: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.382: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.382: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.382: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.383: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.383: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.383: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.383: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.383: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.383: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.383: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.383: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.383: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.383: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.383: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.383: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.405: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.405: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.406: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.406: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.425: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[rviz2-5] 
+[rviz2-5] (rviz2:384): dconf-CRITICAL **: 17:37:55.425: unable to create file '/run/user/1000/dconf/user': 只读文件系统.  dconf will not work properly.
+[bbs_localizer-4] [INFO] [1794389875.506088335] [bbs_localizer]: Map cache 7d99205162081573341caafa0af7a977baae5607ad677d806843311e857f7e81: 5415 points; cold construction 471.7 ms
+[livox_ros_driver2_node-2] GetFreeIndex key:livox_lidar_2483136704.
+[livox_ros_driver2_node-2] Init queue, real query size:64.
+[livox_ros_driver2_node-2] Lidar[0] storage queue size: 41
+[livox_ros_driver2_node-2] set pcl data type, handle: 2483136704, data type: 1
+[livox_ros_driver2_node-2] set scan pattern, handle: 2483136704, scan pattern: 0
+[livox_ros_driver2_node-2] begin to change work mode to 'Normal', handle: 2483136704
+[livox_ros_driver2_node-2] successfully set data type, handle: 2483136704, set_bit: 2
+[livox_ros_driver2_node-2] successfully set pattern mode, handle: 2483136704, set_bit: 0
+[livox_ros_driver2_node-2] successfully set lidar attitude, ip: 192.168.1.148
+[livox_ros_driver2_node-2] successfully change work mode, handle: 2483136704
+[livox_ros_driver2_node-2] successfully enable Livox Lidar imu, ip: 192.168.1.148
+[livox_ros_driver2_node-2] [INFO] [1794389877.990759419] [bbs_livox]: livox/imu publish use imu format
+[livox_ros_driver2_node-2] [INFO] [1794389877.990847784] [bbs_livox]: livox/lidar publish use livox custom format
+[fastlio_mapping-3] [WARN] [1794389878.008601820] [bbs_fast_lio]: No point, skip this scan!
+[fastlio_mapping-3] 
+[fastlio_mapping-3] IMU Initial Done
+[fastlio_mapping-3] [WARN] [1794389878.018632864] [bbs_fast_lio]: No point, skip this scan!
+[fastlio_mapping-3] 
+[fastlio_mapping-3] [INFO] [1794389878.028925926] [bbs_fast_lio]: Initialize the map kdtree
+[fastlio_mapping-3] [INFO] [1794389878.043585318] [bbs_fast_lio]: Initialized published odom at the startup base_link pose.
+[fastlio_mapping-3] [WARN] [1794389878.131965295] [bbs_fast_lio]: Degeneracy suspect: eff=1612 res=0.0068 horiz=0.833 vert=0.060 pose_ratio=0.017968 trans_ratio=0.063692 rot_ratio=0.078486
+[fastlio_mapping-3] [WARN] [1794389879.503559345] [bbs_fast_lio]: Degeneracy suspect: eff=2173 res=0.0051 horiz=0.806 vert=0.066 pose_ratio=0.036367 trans_ratio=0.088155 rot_ratio=0.078105
+[fastlio_mapping-3] [WARN] [1794389881.102460981] [bbs_fast_lio]: Degeneracy suspect: eff=1661 res=0.0058 horiz=0.808 vert=0.054 pose_ratio=0.020449 trans_ratio=0.075187 rot_ratio=0.071583
+[fastlio_mapping-3] [WARN] [1794389883.633063662] [bbs_fast_lio]: Degeneracy suspect: eff=1747 res=0.0055 horiz=0.801 vert=0.042 pose_ratio=0.025206 trans_ratio=0.085045 rot_ratio=0.080204
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[fastlio_mapping-3] catch sig 2
+[INFO] [rviz2-5]: sending signal 'SIGINT' to process[rviz2-5]
+[INFO] [bbs_localizer-4]: sending signal 'SIGINT' to process[bbs_localizer-4]
+[INFO] [fastlio_mapping-3]: sending signal 'SIGINT' to process[fastlio_mapping-3]
+[INFO] [livox_ros_driver2_node-2]: sending signal 'SIGINT' to process[livox_ros_driver2_node-2]
+[INFO] [robot_state_publisher-1]: sending signal 'SIGINT' to process[robot_state_publisher-1]
+[livox_ros_driver2_node-2] [INFO] [1794389892.734016334] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[rviz2-5] [INFO] [1794389892.734015442] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[robot_state_publisher-1] [INFO] [1794389892.734021794] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[bbs_localizer-4] [INFO] [1794389892.734038455] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[rviz2-5] [INFO] [1794389892.735833713] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[bbs_localizer-4] [INFO] [1794389892.736091823] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[livox_ros_driver2_node-2] [INFO] [1794389892.736580232] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[robot_state_publisher-1] [INFO] [1794389892.736807174] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ERROR] [fastlio_mapping-3]: process has died [pid 380, exit code -2, cmd '/home/dgut/code/Nazarite/install/fast_lio/lib/fast_lio/fastlio_mapping --ros-args -r __node:=bbs_fast_lio --params-file /home/dgut/code/Nazarite/install/rc_bringup/share/rc_bringup/config/reality/fast_lio.yaml --params-file /tmp/launch_params_gjt29lnl --params-file /tmp/launch_params_xcnsm5vu'].
+[rviz2-5] [ERROR] [1794389892.755061882] [rviz2]: Failed to open /home/dgut/.rviz2/persistent_settings for writing.
+[INFO] [robot_state_publisher-1]: process has finished cleanly [pid 376]
+[INFO] [bbs_localizer-4]: process has finished cleanly [pid 382]
+[INFO] [rviz2-5]: process has finished cleanly [pid 384]
+[livox_ros_driver2_node-2] Livox Lidar SDK Deinit completely!
+[livox_ros_driver2_node-2] lddc destory!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+[livox_ros_driver2_node-2] lds destory!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+[INFO] [livox_ros_driver2_node-2]: process has finished cleanly [pid 378]

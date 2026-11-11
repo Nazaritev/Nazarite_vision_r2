@@ -1,0 +1,139 @@
+bbs_localizer:
+  ros__parameters:
+    # Coordinates: meters/radians, p_map = T_map_sensor * p_sensor.
+    # FAST-LIO body output is deskewed and already in IMU coordinates.
+    cloud_topic: /cloud_registered_body
+    odom_topic: /Odometry
+    imu_topic: /livox/imu
+    map_frame: map
+    odom_frame: odom
+    base_frame: base_link
+    sensor_frame: imu_link
+    input_is_deskewed: true
+    accumulation_sec: 0.15
+    accumulation_max_frames: 8
+
+    # Explicit backend. Unsupported names abort; there is no CPU/GPU fallback.
+    backend: official_cpu
+    bbs_threads: 4
+
+    # Independent map/GICP/source/BBS resolutions, meters.
+    map_leaf: 0.15
+    # Use raw occupancy to prove radius support inside dense map voxels.
+    # false restores per-raw-point outlier filtering for comparisons.
+    map_filter_voxel_support: true
+    # The PCD contains the bare arena; surrounding objects are not map landmarks.
+    # ROI comes from map XY support and never from a supplied robot position.
+    unmapped_obstacle_filter: true
+    map_roi_margin_m: 0.35
+    min_roi_source_fraction: 0.25
+    # Bounded unmatched fraction INSIDE the map; raw coverage is still reported.
+    max_unmapped_fraction: 0.65
+    static_support_distance_m: 0.75
+    # Global search retains absolute voxel hit counts / admissible bounds.
+    # This allows partial overlap; it does not declare obstacle identities.
+    bbs_max_unmapped_fraction: 0.65
+    bbs_min_matched_points: 20
+    min_unique_structure_voxels: 12
+    structure_voxel_m: 0.30
+    min_structure_extent_m: 1.0
+    scan_leaf: 0.20
+    bbs_scan_leaf: 0.35
+    bbs_resolution: 0.30
+    bbs_levels: 5
+
+    # Entire configured global domain, never centered on an initial pose.
+    # The measured extent and recommended domain are recorded in the test report.
+    search_min: [-2.0, -11.5, -1.5]
+    search_max: [7.0, 2.0, 2.0]
+    yaw_min_rad: -3.141592653589793
+    yaw_max_rad: 3.141592653589793
+
+    # Odom startup resets full orientation in this repository: it is NOT a
+    # gravity reference. Use a stationary window of raw IMU accelerations.
+    gravity_source: stationary_imu
+    # This PCD has no certified gravity metadata. Search BOTH map-up conventions;
+    # both must finish, and conflicting plausible poses cause rejection.
+    # A known map convention can explicitly reduce this to [1.0] or [-1.0].
+    map_gravity_z_signs: [1.0, -1.0]
+    # Combined envelope: IMU 0.06 rad + map gravity-axis uncertainty 0.04 rad.
+    # Map dominant plane differs from Z by about 2 degrees; it is not certified metadata.
+    gravity_uncertainty_rad: 0.10
+    roll_pitch_window_rad: 0.12
+    gravity_window_sec: 0.20
+    gravity_min_samples: 20
+    gravity_accel_tolerance_mps2: 0.6
+    gravity_max_std_mps2: 0.25
+    gravity_max_gyro_radps: 0.15
+    gravity_stationary_displacement_m: 0.025
+
+    # Whole worker search budget includes preprocessing + all BBS modes + GICP.
+    # Multi-frame verification is timed separately in time_to_tracking_ms.
+    # Robust default: unknown map gravity polarity + wider tilt uncertainty.
+    # 700 ms is also benchmarked, but must reject jobs that cannot finish.
+    search_budget_ms: 1400
+    max_queue_size: 1000000
+    bbs_min_hit_fraction: 0.90
+    max_candidates: 6
+    candidate_separation_m: 0.75
+    candidate_separation_rad: 0.35
+    retry_interval_sec: 0.5
+    result_max_age_sec: 2.5
+
+    # Preprocessing: finite points, range, isolated outliers, then voxelization.
+    # Quality denominator retains ALL valid source points before voxelization.
+    min_range: 0.5
+    max_range: 30.0
+    outlier_radius: 0.5
+    outlier_min_neighbors: 3
+    map_abs_limit: 1000.0
+    min_points: 150
+
+    # Full 6-DoF PCL GICP refinement/tracking.
+    gicp_iterations: 60
+    gicp_optimizer_iterations: 12
+    gicp_correspondence_m: 1.0
+    max_refine_translation_m: 1.2
+    max_refine_rotation_rad: 0.35
+    normal_min_neighbors: 6
+    normal_radius_m: 0.45
+    # Structure evidence requires non-ground normals on source AND map.
+    # Normal signs are arbitrary; use the acute angle between the surfaces.
+    normal_consistency_rad: 0.5235987755982988
+    min_consistent_structure_correspondences: 120
+    # Count alone grows with accumulated duplicate returns; require a fraction too.
+    min_consistent_structure_fraction: 0.05
+    bbs_use_nonground: true
+    bbs_filter_map_by_normals: true
+    bbs_normal_z_max: 0.85
+    bbs_min_structure_points: 40
+
+    # Nearest-neighbor quality distances are METERS, MSE is m^2.
+    match_distance_m: 0.4
+    min_correspondences: 120
+    min_coverage: 0.65
+    max_rmse_m: 0.22
+    max_p95_m: 0.35
+    # Normal-incompatible pairs no longer count; require independent geometry
+    # and >=5% bilateral structure as well as this target-side fraction.
+    min_nonground_fraction: 0.08
+    min_nonground_correspondences: 120
+    min_information_ratio: 0.0001
+    ambiguity_coverage_margin: 0.04
+    ambiguity_rmse_margin_m: 0.04
+
+    # Three new, time-distinct scans AFTER the search scan must pass.
+    verification_frames: 3
+    # At least one full accumulation window between validation scans.
+    verification_min_interval_sec: 0.15
+    verification_timeout_sec: 1.0
+    consistency_translation_m: 0.30
+    consistency_rotation_rad: 0.15
+    tracking_failure_limit: 3
+    max_data_age_sec: 0.5
+    input_timeout_sec: 0.8
+    odom_sync_tolerance_sec: 0.03
+    odom_jump_translation_m: 2.0
+    odom_jump_rotation_rad: 0.8
+
+    metrics_file: /tmp/rc_bbs_localization_metrics.csv

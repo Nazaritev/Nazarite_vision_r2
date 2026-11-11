@@ -1,0 +1,10 @@
+profile,case,coarse_hits,coverage,correspondences,rmse_m,p95_m,nonground_fraction,information_ratio,converged,quality_reason,global_result_accepted,consistent_structure_correspondences,consistent_structure_fraction,roi_source_points,outside_map_points,unmodeled_points,roi_coverage,roi_source_fraction,unique_structure_voxels,structure_extent_m
+coarse_range7_sign+1_threshold0.6,bag_0_425,0.620155,0.354788,4057,0.153747,0.325709,0.0663052,0.00384163,1,ground_dominated,1,211,0.0520089,7416,4019,3359,0.54706,0.648535,10,5.35108
+coarse_range7_sign+1_threshold0.6,bag_0_425,0.620155,0.561347,6419,0.185146,0.345145,0.00794516,0.00529414,1,insufficient_nonground_correspondences,1,0,0,10460,975,4041,0.613671,0.914735,0,0
+coarse_range7_sign+1_threshold0.6,bag_0_425,0.612403,0.552951,6323,0.165176,0.292071,0.0759133,0.0129083,1,ground_dominated,1,279,0.0441246,10581,854,4258,0.597581,0.925317,14,7.62998
+coarse_range7_sign+1_threshold0.6,bag_0_425,0.728682,0.0557936,638,0.211259,0.363258,0.680251,0.0188748,0,insufficient_static_gicp_support,1,434,0.680251,4924,6511,4286,0.129569,0.430608,13,7.16408
+coarse_range7_sign+1_threshold0.6,bag_0_425,0.604651,0.01784,204,0.314903,0.379853,0.54902,0.000567138,0,insufficient_static_gicp_support,1,26,0.127451,6279,5156,6075,0.0324892,0.549104,4,2.62178
+coarse_range7_sign+1_threshold0.7,bag_0_425,0.728682,0.0557936,638,0.211259,0.363258,0.680251,0.0188748,0,insufficient_static_gicp_support,0,434,0.680251,4924,6511,4286,0.129569,0.430608,13,7.16408
+coarse_range7_sign-1_threshold0.6,bag_0_425,0.635659,0.408658,4673,0.164112,0.290679,0.0141237,0.00690947,1,insufficient_nonground_correspondences,0,0,0,8790,2645,4117,0.531627,0.768693,0,0
+coarse_range7_sign-1_threshold0.6,bag_0_425,0.627907,0.477481,5460,0.165788,0.265598,0.0282051,0.00160211,1,ground_dominated,0,85,0.0155678,10048,1387,4588,0.543392,0.878706,3,0.838907
+coarse_range7_sign-1_threshold0.6,bag_0_425,0.674419,0.0446874,511,0.236734,0.374394,0.716243,0.0026176,0,insufficient_static_gicp_support,0,366,0.716243,6855,4580,6344,0.0745441,0.599475,8,3.17626

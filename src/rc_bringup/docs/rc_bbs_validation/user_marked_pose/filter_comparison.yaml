@@ -1,0 +1,23 @@
+baseline_dir: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/user_marked_pose/current_capture/probe
+filtered_dir: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/user_marked_pose/obstacle_filter
+output_dir: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/user_marked_pose/obstacle_filter
+case_id: bag_0_226
+max_range_m: 7.0
+gravity_sign: -1.0
+display_voxel_m: 0.2
+approximate_footprint_xy_m:
+- 3.7
+- 0.0
+approximate_footprint_heading_rad: -1.5707963267948966
+xy_xlim_m:
+- -2.0
+- 8.0
+xy_ylim_m:
+- -11.0
+- 4.0
+yz_xlim_m:
+- -11.0
+- 4.0
+yz_ylim_m:
+- -2.0
+- 3.0

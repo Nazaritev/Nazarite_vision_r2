@@ -1,0 +1,124 @@
+map_file: /home/dgut/code/Nazarite/src/rc_bringup/map/1.pcd
+localization_config: /home/dgut/code/Nazarite/src/rc_bringup/config/reality/rc_localization.yaml
+output_dir: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/user_marked_pose/current_capture
+random_seed: 47219
+synthetic_count: 6
+synthetic_radius_m: 7.0
+synthetic_sensor_height_m: 0.8
+synthetic_noise_std_m: 0.02
+synthetic_outlier_fraction: 0.08
+bags: &id001
+- /tmp/rc-bbs-landmark-check/current_bag_20261111T095912Z/current_bag_20261111T095912Z_0.db3
+accumulation_bags: *id001
+bag_scan_fractions:
+- 0.4
+- 0.75
+profiles:
+- name: raw_map_filter_baseline
+  map_filter_voxel_support: false
+- name: strict_1400ms
+  search_budget_ms: 1400
+  bbs_resolution: 0.3
+  bbs_scan_leaf: 0.35
+  bbs_levels: 5
+  bbs_min_hit_fraction: 0.9
+  bbs_threads: 4
+- name: strict_900ms
+  search_budget_ms: 900
+  bbs_resolution: 0.35
+  bbs_scan_leaf: 0.35
+  bbs_levels: 5
+  bbs_min_hit_fraction: 0.9
+  bbs_threads: 4
+- name: single_thread_700ms
+  search_budget_ms: 700
+  bbs_resolution: 0.35
+  bbs_scan_leaf: 0.35
+  bbs_levels: 5
+  bbs_min_hit_fraction: 0.9
+  bbs_threads: 1
+- name: real_diagnostic_1400ms
+  search_budget_ms: 1400
+  bbs_resolution: 0.25
+  bbs_scan_leaf: 0.2
+  bbs_levels: 5
+  bbs_min_hit_fraction: 0.65
+  max_candidates: 8
+  bbs_threads: 4
+- name: fine_modes_700ms
+  search_budget_ms: 700
+  bbs_resolution: 0.3
+  bbs_scan_leaf: 0.35
+  bbs_levels: 5
+  bbs_min_hit_fraction: 0.9
+  max_candidates: 6
+  candidate_separation_m: 0.75
+  candidate_separation_rad: 0.35
+  bbs_threads: 4
+- name: low_score_diagnostic_only
+  search_budget_ms: 1400
+  bbs_resolution: 0.3
+  bbs_scan_leaf: 0.2
+  bbs_levels: 5
+  bbs_min_hit_fraction: 0.35
+  max_candidates: 2
+  bbs_threads: 4
+  real_only: true
+  diagnostic_only: true
+- name: full_map_strict700ms
+  search_budget_ms: 700
+  bbs_resolution: 0.3
+  bbs_scan_leaf: 0.35
+  bbs_levels: 5
+  bbs_min_hit_fraction: 0.9
+  max_candidates: 6
+  bbs_filter_map_by_normals: false
+  bbs_threads: 4
+- name: full_map_real_1400ms
+  search_budget_ms: 1400
+  bbs_resolution: 0.3
+  bbs_scan_leaf: 0.2
+  bbs_levels: 5
+  bbs_min_hit_fraction: 0.65
+  max_candidates: 6
+  bbs_filter_map_by_normals: false
+  bbs_threads: 4
+  real_only: true
+- name: explicit_z_down_real1400ms
+  search_budget_ms: 1400
+  bbs_resolution: 0.3
+  bbs_scan_leaf: 0.2
+  bbs_min_hit_fraction: 0.65
+  max_candidates: 6
+  map_gravity_z_signs:
+  - -1.0
+  bbs_threads: 4
+  real_only: true
+- name: known_z_up_narrow700ms
+  search_budget_ms: 700
+  bbs_resolution: 0.3
+  bbs_scan_leaf: 0.35
+  bbs_min_hit_fraction: 0.9
+  max_candidates: 6
+  map_gravity_z_signs:
+  - 1.0
+  gravity_uncertainty_rad: 0.06
+  roll_pitch_window_rad: 0.08
+  bbs_threads: 4
+synthetic_gravity_error_rad: 0.03
+live_duration_sec: 16.0
+ros_frame_noise_std_m: 0.005
+ros_frame_drop_fraction: 0.1
+ros_profiles:
+- name: robust
+  overrides: {}
+- name: known_gravity_fast
+  overrides:
+    map_gravity_z_signs:
+    - 1.0
+    gravity_uncertainty_rad: 0.06
+    roll_pitch_window_rad: 0.08
+    search_budget_ms: 700
+ros_scan_rate_hz: 40.0
+ros_imu_rate_hz: 200.0
+live_capture_bag_dir: /tmp/rc-bbs-landmark-check/current_bag_20261111T095912Z

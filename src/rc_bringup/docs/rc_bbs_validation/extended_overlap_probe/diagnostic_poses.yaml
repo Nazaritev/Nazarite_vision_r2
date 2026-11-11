@@ -1,0 +1,176 @@
+candidates:
+  - profile: extended_filtered_False_sign_-1
+    case: bag_2_297
+    global_accepted: false
+    map_gravity_z_sign: -1
+    quality_reason: large_residuals
+    consistent_structure_correspondences: 19
+    T_map_sensor_row_major: [0.88938206434249878, -0.30508875846862793, 0.34047079086303711, 2.9151129722595215, 0.37518775463104248, 0.91263347864151001, -0.16227826476097107, -5.4955039024353027, -0.26121583580970764, 0.27206781506538391, 0.92614549398422241, -0.74183088541030884, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_-1
+    case: bag_2_297
+    global_accepted: false
+    map_gravity_z_sign: -1
+    quality_reason: inconsistent_source_target_structure
+    consistent_structure_correspondences: 22
+    T_map_sensor_row_major: [0.88771849870681763, -0.30229246616363525, 0.3472391664981842, 2.9618113040924072, 0.37131500244140625, 0.91600960493087769, -0.15182726085186005, -5.5111417770385742, -0.27217814326286316, 0.26371496915817261, 0.92540460824966431, -0.71593213081359863, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_-1
+    case: bag_2_297
+    global_accepted: false
+    map_gravity_z_sign: -1
+    quality_reason: large_residuals
+    consistent_structure_correspondences: 19
+    T_map_sensor_row_major: [0.89138096570968628, -0.29859626293182373, 0.34099900722503662, 2.9156503677368164, 0.36898297071456909, 0.91497159004211426, -0.16333563625812531, -5.4964790344238281, -0.2632330060005188, 0.27141711115837097, 0.92576521635055542, -0.74102610349655151, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_-1
+    case: bag_2_297
+    global_accepted: false
+    map_gravity_z_sign: -1
+    quality_reason: large_residuals
+    consistent_structure_correspondences: 0
+    T_map_sensor_row_major: [0.69428426027297974, -0.65028113126754761, 0.30838906764984131, 2.9637279510498047, 0.65617257356643677, 0.74796491861343384, 0.099929764866828918, -7.7759313583374023, -0.29564669728279114, 0.13297678530216217, 0.94599699974060059, -0.19150173664093018, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_-1
+    case: bag_2_297
+    global_accepted: false
+    map_gravity_z_sign: -1
+    quality_reason: large_residuals
+    consistent_structure_correspondences: 0
+    T_map_sensor_row_major: [0.68694812059402466, -0.65802055597305298, 0.30840110778808594, 2.9707901477813721, 0.66464012861251831, 0.74050509929656982, 0.099527120590209961, -7.8098783493041992, -0.29386350512504578, 0.13660581409931183, 0.94603550434112549, -0.16750311851501465, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_-1
+    case: bag_2_297
+    global_accepted: false
+    map_gravity_z_sign: -1
+    quality_reason: large_residuals
+    consistent_structure_correspondences: 0
+    T_map_sensor_row_major: [0.67098408937454224, -0.67479723691940308, 0.3072931170463562, 3.0489199161529541, 0.68138611316680908, 0.72459298372268677, 0.10333488881587982, -7.728813648223877, -0.29239249229431152, 0.14004917442798615, 0.9459877610206604, -0.17290455102920532, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_-1
+    case: bag_2_594
+    global_accepted: false
+    map_gravity_z_sign: -1
+    quality_reason: ground_dominated
+    consistent_structure_correspondences: 0
+    T_map_sensor_row_major: [0.79840958118438721, -0.51536661386489868, 0.31135097146034241, 2.3744528293609619, 0.57108789682388306, 0.81201660633087158, -0.12036482989788055, -5.1556143760681152, -0.19079013168811798, 0.27390921115875244, 0.94264143705368042, -0.51704394817352295, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_-1
+    case: bag_2_594
+    global_accepted: false
+    map_gravity_z_sign: -1
+    quality_reason: ground_dominated
+    consistent_structure_correspondences: 0
+    T_map_sensor_row_major: [0.79792052507400513, -0.51558446884155273, 0.31224289536476135, 2.379753589630127, 0.57150816917419434, 0.81176823377609253, -0.12004438042640686, -5.1584019660949707, -0.19157588481903076, 0.2742353081703186, 0.9423871636390686, -0.51937288045883179, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_-1
+    case: bag_2_594
+    global_accepted: false
+    map_gravity_z_sign: -1
+    quality_reason: large_residuals
+    consistent_structure_correspondences: 0
+    T_map_sensor_row_major: [0.7003822922706604, -0.65301990509033203, 0.2881486713886261, 2.9381098747253418, 0.65572142601013184, 0.74812990427017212, 0.1016421765089035, -7.735466480255127, -0.28194701671600342, 0.11775687336921692, 0.95217597484588623, -0.14076197147369385, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_-1
+    case: bag_2_594
+    global_accepted: false
+    map_gravity_z_sign: -1
+    quality_reason: large_residuals
+    consistent_structure_correspondences: 0
+    T_map_sensor_row_major: [0.70594614744186401, -0.64703857898712158, 0.28806418180465698, 2.9210343360900879, 0.65080457925796509, 0.75307190418243408, 0.096622906625270844, -7.7502241134643555, -0.27945184707641602, 0.11926295608282089, 0.9527239203453064, -0.14015814661979675, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_-1
+    case: bag_2_594
+    global_accepted: false
+    map_gravity_z_sign: -1
+    quality_reason: large_residuals
+    consistent_structure_correspondences: 0
+    T_map_sensor_row_major: [0.70401483774185181, -0.64763748645782471, 0.29142528772354126, 2.9319248199462891, 0.65162533521652222, 0.75224292278289795, 0.097544334828853607, -7.7452363967895508, -0.28239601850509644, 0.1212274432182312, 0.95160722732543945, -0.13779252767562866, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_1
+    case: bag_2_297
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: ground_dominated
+    consistent_structure_correspondences: 66
+    T_map_sensor_row_major: [0.73194390535354614, -0.68136447668075562, -0.00075771613046526909, 3.000389575958252, -0.68135732412338257, -0.73194050788879395, 0.0039247851818799973, -4.4580631256103516, -0.0032288124784827232, -0.0023564435541629791, -0.99999207258224487, 0.80924320220947266, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_1
+    case: bag_2_297
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: ground_dominated
+    consistent_structure_correspondences: 71
+    T_map_sensor_row_major: [0.73623114824295044, -0.67671281099319458, -0.0048364102840423584, 3.0068249702453613, -0.67667746543884277, -0.73624426126480103, 0.0072079561650753021, -4.4439787864685059, -0.0084384903311729431, -0.0020340327173471451, -0.99996232986450195, 0.80398273468017578, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_1
+    case: bag_2_297
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: ground_dominated
+    consistent_structure_correspondences: 51
+    T_map_sensor_row_major: [0.71894204616546631, -0.69505983591079712, -0.0037993486039340496, 3.0262212753295898, -0.69504445791244507, -0.71895170211791992, 0.0046598883345723152, -4.4527087211608887, -0.005970450583845377, -0.00070947071071714163, -0.99998193979263306, 0.80481839179992676, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_1
+    case: bag_2_297
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: ground_dominated
+    consistent_structure_correspondences: 52
+    T_map_sensor_row_major: [0.72118908166885376, -0.69270884990692139, -0.0063888924196362495, 3.0104305744171143, -0.69267618656158447, -0.72121721506118774, 0.0067492700181901455, -4.4251708984375, -0.0092830536887049675, -0.00044207254541106522, -0.99995684623718262, 0.80296766757965088, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_1
+    case: bag_2_297
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: ground_dominated
+    consistent_structure_correspondences: 49
+    T_map_sensor_row_major: [0.71298718452453613, -0.70114791393280029, -0.0064127151854336262, 3.0399932861328125, -0.70111900568008423, -0.71301597356796265, 0.0063537214882671833, -4.4058890342712402, -0.0090272622182965279, -3.4045297070406377e-05, -0.99995929002761841, 0.79899823665618896, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_1
+    case: bag_2_297
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: large_residuals
+    consistent_structure_correspondences: 3
+    T_map_sensor_row_major: [0.98988562822341919, -0.12004624307155609, 0.075599908828735352, 3.2469425201416016, -0.13646063208580017, -0.9514194130897522, 0.27600637078285217, -0.66577249765396118, 0.038793705403804779, -0.28353115916252136, -0.95817798376083374, 1.2647135257720947, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_1
+    case: bag_2_594
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: ground_dominated
+    consistent_structure_correspondences: 0
+    T_map_sensor_row_major: [0.77432811260223389, -0.6322026252746582, -0.027125729247927666, 3.0658082962036133, -0.63221138715744019, -0.77473968267440796, 0.009341798722743988, -4.143000602722168, -0.026921287178993225, 0.0099155772477388382, -0.99958837032318115, 0.79293191432952881, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_1
+    case: bag_2_594
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: ground_dominated
+    consistent_structure_correspondences: 37
+    T_map_sensor_row_major: [0.76709401607513428, -0.64123660326004028, -0.019554547965526581, 3.0303707122802734, -0.64129525423049927, -0.76728415489196777, 0.0039354050531983376, -4.358673095703125, -0.017527421936392784, 0.0095214126631617546, -0.99980098009109497, 0.80463534593582153, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_1
+    case: bag_2_594
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: ground_dominated
+    consistent_structure_correspondences: 15
+    T_map_sensor_row_major: [0.6862252950668335, -0.72723418474197388, -0.01501161977648735, 3.1275680065155029, -0.72723019123077393, -0.68636053800582886, 0.0067357481457293034, -4.2371892929077148, -0.015201849862933159, 0.0062946630641818047, -0.99986463785171509, 0.80192101001739502, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_1
+    case: bag_2_594
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: inconsistent_source_target_structure
+    consistent_structure_correspondences: 6
+    T_map_sensor_row_major: [0.96747374534606934, -0.22438238561153412, 0.11682048439979553, 3.5343472957611084, -0.24618494510650635, -0.94136267900466919, 0.23071470856666565, -1.3196747303009033, 0.058202113956212997, -0.25196990370750427, -0.96598327159881592, 1.1942117214202881, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_1
+    case: bag_2_594
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: inconsistent_source_target_structure
+    consistent_structure_correspondences: 4
+    T_map_sensor_row_major: [0.75897884368896484, -0.65051919221878052, 0.027851087972521782, 2.7846236228942871, -0.64726108312606812, -0.74914860725402832, 0.14081653952598572, -1.1662971973419189, -0.0707392618060112, -0.12490370869636536, -0.98964387178421021, 1.2580249309539795, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_1
+    case: bag_2_594
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: inconsistent_source_target_structure
+    consistent_structure_correspondences: 0
+    T_map_sensor_row_major: [0.76681560277938843, -0.64141517877578735, -0.024093009531497955, 2.8601775169372559, -0.63092905282974243, -0.76011687517166138, 0.15540549159049988, -2.1227951049804688, -0.11799293011426926, -0.1039663627743721, -0.98755687475204468, 1.0825707912445068, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_1
+    case: bag_2_594
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: inconsistent_source_target_structure
+    consistent_structure_correspondences: 0
+    T_map_sensor_row_major: [0.76279622316360474, -0.64613884687423706, -0.025426017120480537, 2.8459234237670898, -0.63609546422958374, -0.75685012340545654, 0.15020129084587097, -2.1473023891448975, -0.11629457771778107, -0.098399601876735687, -0.98832839727401733, 1.0788888931274414, 0, 0, 0, 1]
+  - profile: extended_filtered_False_sign_1
+    case: bag_2_594
+    global_accepted: false
+    map_gravity_z_sign: 1
+    quality_reason: gicp_not_converged_before_iteration_limit
+    consistent_structure_correspondences: 6
+    T_map_sensor_row_major: [0.73847657442092896, -0.67331022024154663, 0.036136217415332794, 2.9661757946014404, -0.67077416181564331, -0.72812485694885254, 0.14105366170406342, -1.188539981842041, -0.06866118311882019, -0.12840406596660614, -0.98934215307235718, 1.2615160942077637, 0, 0, 0, 1]

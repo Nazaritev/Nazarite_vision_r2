@@ -1,0 +1,46 @@
+live_duration_sec: 24.0
+localization_config: /home/dgut/code/Nazarite/src/rc_bringup/config/reality/rc_localization.yaml
+map_file: /home/dgut/code/Nazarite/src/rc_bringup/map/1.pcd
+output_dir: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/long_window_real_fixtures
+profiles:
+- name: long_window_production
+- name: long_window_fullmap_080
+  bbs_filter_map_by_normals: false
+  bbs_min_hit_fraction: 0.8
+  max_range: 7.0
+  search_budget_ms: 3000
+  diagnostic_only: true
+live_profiles:
+- name: accumulated_structure_map
+  overrides:
+    accumulation_sec: 0.4
+    accumulation_max_frames: 20
+    verification_min_interval_sec: 0.4
+    verification_timeout_sec: 2.0
+    bbs_min_hit_fraction: 0.65
+- name: accumulated_full_map
+  overrides:
+    accumulation_sec: 0.4
+    accumulation_max_frames: 20
+    verification_min_interval_sec: 0.4
+    verification_timeout_sec: 2.0
+    bbs_filter_map_by_normals: false
+    bbs_min_hit_fraction: 0.8
+    max_range: 7.0
+live_capture_root: /tmp/rc_bbs_overlap_live
+random_seed: 47219
+synthetic_count: 0
+synthetic_gravity_error_rad: 0.03
+synthetic_noise_std_m: 0.02
+synthetic_outlier_fraction: 0.08
+synthetic_radius_m: 7.0
+synthetic_sensor_height_m: 0.8
+bags: &id001
+- /tmp/rc_bbs_overlap_live/accumulated_structure_map/accumulated_structure_map_0.db3
+- /tmp/rc_bbs_overlap_live/accumulated_full_map/accumulated_full_map_0.db3
+bag_scan_fractions:
+- 0.35
+- 0.7
+bag_accumulation_sec: 0.4
+bag_accumulation_max_frames: 20
+accumulation_bags: *id001

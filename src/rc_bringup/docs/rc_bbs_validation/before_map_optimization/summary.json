@@ -1,0 +1,122 @@
+[
+  {
+    "profile": "strict_1400ms",
+    "synthetic_success": 6,
+    "synthetic_attempts": 6,
+    "all_attempts_median_ms": 611.928,
+    "all_attempts_p95_ms": 922.68375,
+    "all_attempts_max_ms": 983.875,
+    "accepted_max_translation_error_m": 0.0308473,
+    "real_quality_accepted": 0,
+    "real_attempts": 5,
+    "cold_map_ms": 1541.93
+  },
+  {
+    "profile": "strict_900ms",
+    "synthetic_success": 3,
+    "synthetic_attempts": 6,
+    "all_attempts_median_ms": 805.0395000000001,
+    "all_attempts_p95_ms": 900.01225,
+    "all_attempts_max_ms": 900.026,
+    "accepted_max_translation_error_m": 0.0188928,
+    "real_quality_accepted": 0,
+    "real_attempts": 5,
+    "cold_map_ms": 1662.14
+  },
+  {
+    "profile": "single_thread_700ms",
+    "synthetic_success": 2,
+    "synthetic_attempts": 6,
+    "all_attempts_median_ms": 699.313,
+    "all_attempts_p95_ms": 699.657,
+    "all_attempts_max_ms": 699.725,
+    "accepted_max_translation_error_m": 0.00393476,
+    "real_quality_accepted": 0,
+    "real_attempts": 5,
+    "cold_map_ms": 1644.79
+  },
+  {
+    "profile": "real_diagnostic_1400ms",
+    "synthetic_success": 0,
+    "synthetic_attempts": 6,
+    "all_attempts_median_ms": 1399.7350000000001,
+    "all_attempts_p95_ms": 1399.93,
+    "all_attempts_max_ms": 1399.98,
+    "accepted_max_translation_error_m": null,
+    "real_quality_accepted": 0,
+    "real_attempts": 5,
+    "cold_map_ms": 1589.86
+  },
+  {
+    "profile": "fine_modes_700ms",
+    "synthetic_success": 3,
+    "synthetic_attempts": 6,
+    "all_attempts_median_ms": 614.2864999999999,
+    "all_attempts_p95_ms": 706.1665,
+    "all_attempts_max_ms": 708.248,
+    "accepted_max_translation_error_m": 0.0266617,
+    "real_quality_accepted": 0,
+    "real_attempts": 5,
+    "cold_map_ms": 1634.86
+  },
+  {
+    "profile": "low_score_diagnostic_only",
+    "synthetic_success": 0,
+    "synthetic_attempts": 0,
+    "all_attempts_median_ms": null,
+    "all_attempts_p95_ms": null,
+    "all_attempts_max_ms": null,
+    "accepted_max_translation_error_m": null,
+    "real_quality_accepted": 0,
+    "real_attempts": 5,
+    "cold_map_ms": 1587.83
+  },
+  {
+    "profile": "full_map_strict700ms",
+    "synthetic_success": 0,
+    "synthetic_attempts": 6,
+    "all_attempts_median_ms": 699.2245,
+    "all_attempts_p95_ms": 699.9825,
+    "all_attempts_max_ms": 700.012,
+    "accepted_max_translation_error_m": null,
+    "real_quality_accepted": 0,
+    "real_attempts": 5,
+    "cold_map_ms": 1602.92
+  },
+  {
+    "profile": "full_map_real_1400ms",
+    "synthetic_success": 0,
+    "synthetic_attempts": 0,
+    "all_attempts_median_ms": null,
+    "all_attempts_p95_ms": null,
+    "all_attempts_max_ms": null,
+    "accepted_max_translation_error_m": null,
+    "real_quality_accepted": 0,
+    "real_attempts": 5,
+    "cold_map_ms": 1660.29
+  },
+  {
+    "profile": "explicit_z_down_real1400ms",
+    "synthetic_success": 0,
+    "synthetic_attempts": 0,
+    "all_attempts_median_ms": null,
+    "all_attempts_p95_ms": null,
+    "all_attempts_max_ms": null,
+    "accepted_max_translation_error_m": null,
+    "real_quality_accepted": 0,
+    "real_attempts": 5,
+    "cold_map_ms": 1603.85
+  },
+  {
+    "profile": "known_z_up_narrow700ms",
+    "synthetic_success": 6,
+    "synthetic_attempts": 6,
+    "all_attempts_median_ms": 207.4145,
+    "all_attempts_p95_ms": 297.07525,
+    "all_attempts_max_ms": 301.126,
+    "accepted_max_translation_error_m": 0.0284989,
+    "real_quality_accepted": 0,
+    "real_attempts": 5,
+    "cold_map_ms": 1641.84
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "source": "/home/dgut/code/Nazarite/src/rc_bringup/map/1.pcd",
+  "projection": "map XY, X right and Y up",
+  "origin_xyz_m": [
+    0,
+    0,
+    0
+  ],
+  "major_grid_m": 1,
+  "minor_grid_m": 0.5,
+  "display_voxel_m": 0.05,
+  "display_points": 53389,
+  "reference_A_xyz_m": [
+    4.6,
+    -4.7,
+    null
+  ],
+  "reference_A_semantic_identity": "unconfirmed",
+  "robot_location": "not annotated",
+  "source_coordinates_transformed": false
+}

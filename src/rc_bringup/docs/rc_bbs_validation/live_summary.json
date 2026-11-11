@@ -1,0 +1,41 @@
+{
+  "counts": {
+    "('UNINITIALIZED', 'building_map_cache')": 8,
+    "('UNINITIALIZED', 'map_ready_waiting_for_sensor')": 7,
+    "('UNINITIALIZED', 'scan_timestamp_stale_or_future')": 3,
+    "('LOST', 'insufficient_bbs_geometry_11')": 3,
+    "('LOST', 'no_bbs_candidate')": 47,
+    "('LOST', 'insufficient_bbs_geometry_10')": 3,
+    "('LOST', 'insufficient_bbs_geometry_0')": 30,
+    "('LOST', 'insufficient_bbs_geometry_1')": 3,
+    "('LOST', 'insufficient_bbs_geometry_4')": 2,
+    "('LOST', 'insufficient_bbs_geometry_26')": 3,
+    "('SEARCHING', 'global_search_running')": 1,
+    "('LOST', 'insufficient_bbs_geometry_5')": 3
+  },
+  "last_status": {
+    "state": "LOST",
+    "pose_valid": "0",
+    "reason": "no_bbs_candidate",
+    "backend": "official_cpu+distinct_leaf_extension",
+    "map_version": "7c1beebcb2f2d3aefeafefa5f1eb504a49f17ce88fd8e827083b149cdb3550b4",
+    "epoch": "0",
+    "active_workers": "0",
+    "verification_count": "0",
+    "source_points": "0",
+    "correspondences": "0",
+    "coverage": "0",
+    "inlier_mse_m2": "inf",
+    "inlier_rmse_m": "inf",
+    "inlier_p95_m": "inf",
+    "capped_all_mse_m2": "inf",
+    "gicp_converged": "0",
+    "nonground_fraction": "0",
+    "information_ratio": "0",
+    "bbs_hit_fraction": "0",
+    "job_ms": "9.97066",
+    "search_ms": "7.82077",
+    "time_to_tracking_ms": "nan",
+    "last_verified_age_sec": "22.6039"
+  }
+}

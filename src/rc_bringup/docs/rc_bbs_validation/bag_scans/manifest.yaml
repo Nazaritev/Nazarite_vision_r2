@@ -1,0 +1,56 @@
+cases:
+- id: bag_0_13
+  pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/bag_scans/bag_0_13.pcd
+  bag: /home/dgut/Nazarite/rosbag2_2026_06_27-09_42_00/rosbag2_2026_06_27-09_42_00_0.db3
+  scan_frame: imu_link
+  stamp: 1782524523.8422065
+  has_ground_truth: false
+  accumulated_scan_count: 1
+  acceleration_sensor:
+  - -0.06560834941186475
+  - 0.23968216431140904
+  - -9.76828105187416
+- id: bag_1_8
+  pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/bag_scans/bag_1_8.pcd
+  bag: /home/dgut/Nazarite/rosbag2_2026_06_27-09_36_09/rosbag2_2026_06_27-09_36_09_0.db3
+  scan_frame: imu_link
+  stamp: 1782524170.8409169
+  has_ground_truth: false
+  accumulated_scan_count: 1
+  acceleration_sensor:
+  - -0.05807718134121742
+  - 0.249674068965563
+  - -9.770633720450283
+- id: bag_1_156
+  pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/bag_scans/bag_1_156.pcd
+  bag: /home/dgut/Nazarite/rosbag2_2026_06_27-09_36_09/rosbag2_2026_06_27-09_36_09_0.db3
+  scan_frame: imu_link
+  stamp: 1782524185.64247
+  has_ground_truth: false
+  accumulated_scan_count: 1
+  acceleration_sensor:
+  - 0.001452196435304361
+  - 0.23159897339344027
+  - -9.758042343378067
+- id: bag_2_297
+  pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/bag_scans/bag_2_297.pcd
+  bag: /tmp/rc_bbs_live_validation3/bag/bag_0.db3
+  scan_frame: imu_link
+  stamp: 1794372754.3425872
+  has_ground_truth: false
+  accumulated_scan_count: 6
+  acceleration_sensor:
+  - -0.026440369941643442
+  - 0.043381801240146164
+  - -9.745693140864372
+- id: bag_2_594
+  pcd: /home/dgut/code/Nazarite/src/rc_bringup/docs/rc_bbs_validation/bag_scans/bag_2_594.pcd
+  bag: /tmp/rc_bbs_live_validation3/bag/bag_0.db3
+  scan_frame: imu_link
+  stamp: 1794372761.7669039
+  has_ground_truth: false
+  accumulated_scan_count: 7
+  acceleration_sensor:
+  - -0.02524286006181501
+  - 0.043920680634677425
+  - -9.749345560267567
