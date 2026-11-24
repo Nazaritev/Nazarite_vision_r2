@@ -191,4 +191,9 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 
+# 说明：PCD 保存也内建于 fastlio_mapping（pcd_save_en），退出时写入源码目录 PCD/
+install(PROGRAMS src/get_pcd.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 ament_package()

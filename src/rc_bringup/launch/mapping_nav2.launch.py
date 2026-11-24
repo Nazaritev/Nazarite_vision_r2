@@ -261,7 +261,7 @@ def generate_launch_description():
                 ],
                 'roi_half_size': 0.5,
                 'roi_z_min': -0.75,
-                'roi_z_max': 3.0
+                'roi_z_max': 3.0,
                 'jump_translation': 0.5,
                 'jump_yaw_deg': 10.0,
             }],
