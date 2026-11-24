@@ -228,6 +228,44 @@ def generate_launch_description():
         #         ],
         #   }],
         # ),
+
+    # map 系有界累积点云：只在定位就绪（map->odom 存在）后启动。
+    # 输入 /cloud_registered 是 odom 系，节点内部用 TF 转到 map 再筛选 ROI。
+    # roi_centers 直接用上面 block_stacking_detection 的 8 个角点：
+    # 每个角点取 1m x 1m（half_size=0.5）、z 从地面到 1.5m 的盒子。
+        Node(
+            package='cloud_accumulator',
+            executable='accumulate',
+            name='cloud_accumulator',
+            output='screen',
+            parameters=[{
+                'use_sim_time': use_sim_time,
+                'input_topic': '/cloud_registered',
+                'output_topic': '/cloud_accumulated',
+                'target_frame': 'map',
+                'tf_timeout': 0.2,
+                'voxel_size': 0.05,
+                'decay_time': 3.0,
+                'max_voxels': 100000,
+                'publish_rate': 2.0,
+                'process_every_n': 1,
+                'roi_centers': [
+                     5.04, -2.47,   # corner_1
+                     3.37, -2.64,   # corner_2
+                     3.46,  0.06,   # corner_3
+                     5.79,  -0.05,  # corner_4
+                     7.09, -1.66,   # corner_5
+                     2.02, -1.48,   # corner_6
+                     7.23,  1.30,   # corner_7   
+                     1.96,  1.43,   # corner_8
+                ],
+                'roi_half_size': 0.5,
+                'roi_z_min': -0.75,
+                'roi_z_max': 3.0
+                'jump_translation': 0.5,
+                'jump_yaw_deg': 10.0,
+            }],
+        ),
     ]
 
     actions.extend([
